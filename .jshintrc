@@ -23,8 +23,5 @@
   "sub"       : true,
   "strict"    : true,
   "white"     : false,
-  "indent"    : 2,
-  "globals":  {
-    "annyang":            false
-  }
+  "indent"    : 2
 }
