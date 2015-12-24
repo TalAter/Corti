@@ -1,0 +1,25 @@
+{
+  "name": "corti",
+  "version": "1.0.0",
+  "description": "Replace window.SpeechRecognition with a mock object and automate your tests",
+  "main": "corti.js",
+  "scripts": {
+    "test": "grunt test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/TalAter/Corti.git"
+  },
+  "keywords": [
+    "speechrecognition",
+    "webkitSpeechRecognition",
+    "speech",
+    "recognition"
+  ],
+  "author": "Tal Ater <tal@talater.com> (https://www.talater.com/)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/TalAter/Corti/issues"
+  },
+  "homepage": "https://github.com/TalAter/Corti"
+}
