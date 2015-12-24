@@ -8,7 +8,7 @@ To easily use Speech Recognition in your own project, check out [annyang](https:
 
 ### Sample Test With Corti
 
-````
+````javascript
 Corti.patch();
 var recognition = new window.SpeechRecognition();
 expect(recognition.isStarted()).toBe(false);
