@@ -182,4 +182,63 @@
 
   });
 
+  describe('SpeechRecognition.interimResults', function() {
+
+    var recognition;
+
+    beforeEach(function() {
+      Corti.patch();
+      recognition = new window.SpeechRecognition();
+    });
+
+    afterEach(function() {
+      Corti.unpatch();
+    });
+
+    it('should not be called as a function', function () {
+      expect(function() {
+        recognition.interimResults();
+      }).toThrowError();
+      expect(function() {
+        recognition.interimResults(2);
+      }).toThrowError();
+    });
+
+    it('should be of type "boolean" when tested directly', function () {
+      expect(typeof recognition.interimResults).toEqual("boolean");
+    });
+
+    it('should default to false', function () {
+      expect(recognition.interimResults).toEqual(false);
+    });
+
+    it('should return the current value when called as an attribute', function () {
+      expect(recognition.interimResults).toEqual(false);
+      recognition.interimResults = true;
+      expect(recognition.interimResults).toEqual(true);
+    });
+
+    it('should return any value it was assigned during assignment', function () {
+      expect(recognition.interimResults = 5).toEqual(5);
+      expect(recognition.interimResults = 5.2).toEqual(5.2);
+      expect(recognition.interimResults = true).toEqual(true);
+    });
+
+    it('should cast anything it is assigned to a boolean', function () {
+      recognition.interimResults = 5;
+      expect(recognition.interimResults).toEqual(Boolean(5));
+      recognition.interimResults = 0;
+      expect(recognition.interimResults).toEqual(Boolean(0));
+      recognition.interimResults = -1;
+      expect(recognition.interimResults).toEqual(Boolean(-1));
+      recognition.interimResults = true;
+      expect(recognition.interimResults).toEqual(Boolean(true));
+      recognition.interimResults = false;
+      expect(recognition.interimResults).toEqual(Boolean(false));
+      recognition.interimResults = [];
+      expect(recognition.interimResults).toEqual(Boolean([]));
+    });
+
+  });
+
 })();

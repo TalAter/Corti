@@ -20,6 +20,7 @@
   var _maxAlternatives = 1;
   var _lang = '';
   var _continuous = false;
+  var _interimResults = false;
 
   var newSpeechRecognition = function() {
     var _self = this;
@@ -49,6 +50,13 @@
       get: function() { return _continuous; },
       set: function(val) {
         _continuous = Boolean(val);
+      }
+    });
+
+    Object.defineProperty(this, 'interimResults', {
+      get: function() { return _interimResults; },
+      set: function(val) {
+        _interimResults = Boolean(val);
       }
     });
 
