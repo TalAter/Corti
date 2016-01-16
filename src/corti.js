@@ -16,10 +16,24 @@
   // Patch DOMException
   var DOMException = DOMException || TypeError;
 
+  var _maxAlternatives = 1;
+
   var newSpeechRecognition = function() {
     var _self = this;
     _self._started = false;
     _self.eventListeners = {'start': [], 'end': []};
+    _self.maxAlternatives = 1;
+
+    Object.defineProperty(this, 'maxAlternatives', {
+      get: function() { return _maxAlternatives; },
+      set: function(val) {
+        if (typeof val === 'number') {
+          _maxAlternatives = Math.floor(val);
+        } else {
+          _maxAlternatives = 0;
+        }
+      }
+    });
 
     this.start = function() {
       if (_self._started) {
