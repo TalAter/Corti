@@ -158,10 +158,12 @@
   describe('SpeechRecognition.onstart', function() {
 
     var spyOnStart;
+    var spyOnStart2;
     var recognition;
 
     beforeEach(function() {
       spyOnStart = jasmine.createSpy();
+      spyOnStart2 = jasmine.createSpy();
       Corti.patch();
       recognition = new window.SpeechRecognition();
     });
@@ -183,15 +185,27 @@
       expect(spyOnStart.calls.count()).toEqual(1);
     });
 
+    it('should overwrite previous callback attached with onstart', function () {
+      expect(spyOnStart).not.toHaveBeenCalled();
+      expect(spyOnStart2).not.toHaveBeenCalled();
+      recognition.onstart = spyOnStart;
+      recognition.onstart = spyOnStart2;
+      recognition.start();
+      expect(spyOnStart).not.toHaveBeenCalled();
+      expect(spyOnStart2.calls.count()).toEqual(1);
+    });
+
   });
 
   describe('SpeechRecognition.onend', function() {
 
     var spyOnEnd;
+    var spyOnEnd2;
     var recognition;
 
     beforeEach(function() {
       spyOnEnd = jasmine.createSpy();
+      spyOnEnd2 = jasmine.createSpy();
       Corti.patch();
       recognition = new window.SpeechRecognition();
     });
@@ -218,6 +232,17 @@
       expect(spyOnEnd.calls.count()).toEqual(1);
       recognition.stop();
       expect(spyOnEnd.calls.count()).toEqual(1);
+    });
+
+    it('should overwrite previous callback attached with onend', function () {
+      expect(spyOnEnd).not.toHaveBeenCalled();
+      expect(spyOnEnd2).not.toHaveBeenCalled();
+      recognition.onend = spyOnEnd;
+      recognition.onend = spyOnEnd2;
+      recognition.start();
+      recognition.abort();
+      expect(spyOnEnd).not.toHaveBeenCalled();
+      expect(spyOnEnd2.calls.count()).toEqual(1);
     });
 
   });
