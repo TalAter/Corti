@@ -25,8 +25,17 @@
   var newSpeechRecognition = function() {
     var _self = this;
     _self._started = false;
-    _self.eventListeners = {'start': [], 'end': [], 'result': []};
+    _self.eventListenerTypes = ['start', 'end', 'result'];
     _self.maxAlternatives = 1;
+
+    // Add listeners for events registered through attributes (e.g. recognition.onend = function) and not as proper listeners
+    _self.eventListenerTypes.forEach(function(eventName) {
+      document.addEventListener(eventName, function () {
+        if (typeof _self['on'+eventName] === 'function') {
+          _self['on'+eventName].call();
+        }
+      }, false);
+    });
 
     Object.defineProperty(this, 'maxAlternatives', {
       get: function() { return _maxAlternatives; },
@@ -65,12 +74,10 @@
         throw new DOMException('Failed to execute \'start\' on \'SpeechRecognition\': recognition has already started.');
       }
       _self._started = true;
-      if (typeof _self.onstart === 'function') {
-        _self.onstart.call();
-      }
-      _self.eventListeners['start'].forEach(function(callback) {
-        callback.call();
-      });
+      // Create and dispatch an event
+      var event = document.createEvent('CustomEvent');
+      event.initCustomEvent('start', false, false, null);
+      document.dispatchEvent(event);
     };
 
     this.abort = function() {
@@ -78,12 +85,10 @@
         return;
       }
       _self._started = false;
-      if (typeof _self.onend === 'function') {
-        _self.onend.call();
-      }
-      _self.eventListeners['end'].forEach(function(callback) {
-        callback.call();
-      });
+      // Create and dispatch an event
+      var event = document.createEvent('CustomEvent');
+      event.initCustomEvent('end', false, false, null);
+      document.dispatchEvent(event);
     };
 
     this.stop = function() {
@@ -96,19 +101,13 @@
 
     this.say = function(sentence) {
       // @TODO Construct a proper SpeechRecognitionEvent response
-      var SREvent = sentence;
-      if (typeof _self.onresult === 'function') {
-        _self.onresult.call(this, SREvent);
-      }
-      _self.eventListeners['result'].forEach(function(callback) {
-        callback.call(this, SREvent);
-      });
+      var event = document.createEvent('CustomEvent');
+      event.initCustomEvent('result', false, false, {'sentence': sentence});
+      document.dispatchEvent(event);
     };
 
     this.addEventListener = function(event, callback) {
-      if (_self.eventListeners[event]) {
-        _self.eventListeners[event].push(callback);
-      }
+      document.addEventListener(event, callback, false);
     };
   };
 
