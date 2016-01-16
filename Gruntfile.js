@@ -6,7 +6,8 @@ module.exports = function(grunt) {
     pkg: grunt.file.readJSON('package.json'),
     jshint: {
       all: [
-        'src/corti.js'
+        'src/corti.js',
+        'test/spec/**.js'
       ],
       options: {
         jshintrc: true
