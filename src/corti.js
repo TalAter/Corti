@@ -101,9 +101,13 @@
     };
 
     this.say = function(sentence) {
-      // @TODO Construct a proper SpeechRecognitionEvent response
       var event = document.createEvent('CustomEvent');
       event.initCustomEvent('result', false, false, {'sentence': sentence});
+      // @TODO Construct a proper SpeechRecognitionResult in event.results
+      event.results = {};
+      event.resultIndex = 0;
+      event.interpretation = null;
+      event.emma = null;
       _listeners.dispatchEvent(event);
     };
 

@@ -528,4 +528,46 @@
 
   });
 
+  describe('SpeechRecognitionEvent', function() {
+
+    var recognition;
+    var event;
+
+    beforeEach(function() {
+      event = undefined;
+      Corti.patch();
+      recognition = new window.SpeechRecognition();
+      recognition.addEventListener('result', function(ev) {
+        event = ev;
+      });
+      recognition.start();
+      recognition.say("You can't take the sky from me");
+    });
+
+    afterEach(function() {
+      Corti.unpatch();
+    });
+
+    it('should be an object', function () {
+      expect(event).toEqual(jasmine.any(Object));
+    });
+
+    it('should contain a results property', function () {
+      expect(event.results).toEqual(jasmine.any(Object));
+    });
+
+    it('should contain a resultIndex property', function () {
+      expect(event.resultIndex).toEqual(0);
+    });
+
+    it('should contain a emma property', function () {
+      expect(event.emma).toEqual(null);
+    });
+
+    it('should contain a interpretation property', function () {
+      expect(event.interpretation).toEqual(null);
+    });
+
+  });
+
 })();
