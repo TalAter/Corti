@@ -101,11 +101,55 @@
     };
 
     this.say = function(sentence) {
+      // Create some speech alternatives
+      var results = [];
+      var commandIterator;
+      var etcIterator;
+      var itemFunction = function(index) {
+        if (undefined === index) {
+          throw new DOMException('Failed to execute \'item\' on \'SpeechRecognitionResult\': 1 argument required, but only 0 present.');
+        }
+        index = Number(index);
+        if (isNaN(index)) {
+          index = 0;
+        }
+        if (index >= this.length) {
+          return null;
+        } else {
+          return this[index];
+        }
+      };
+      for (commandIterator = 0; commandIterator<_maxAlternatives; commandIterator++) {
+        var etc = '';
+        for (etcIterator = 0; etcIterator<commandIterator; etcIterator++) {
+          etc += ' and so on';
+        }
+        results.push(sentence+etc);
+      }
+
+      // Create the event
       var event = document.createEvent('CustomEvent');
       event.initCustomEvent('result', false, false, {'sentence': sentence});
-      // @TODO Construct a proper SpeechRecognitionResult in event.results
-      event.results = {};
       event.resultIndex = 0;
+      event.results = {
+        'item': itemFunction,
+        0: {
+          'item': itemFunction,
+          'final': true
+        }
+      };
+      for (commandIterator = 0; commandIterator<_maxAlternatives; commandIterator++) {
+        event.results[0][commandIterator] = {
+          'transcript': results[commandIterator],
+          'confidence': Math.max(1-0.01*commandIterator, 0.001)
+        };
+      }
+      Object.defineProperty(event.results, 'length', {
+        get: function() { return 1; }
+      });
+      Object.defineProperty(event.results[0], 'length', {
+        get: function() { return _maxAlternatives; }
+      });
       event.interpretation = null;
       event.emma = null;
       _listeners.dispatchEvent(event);
