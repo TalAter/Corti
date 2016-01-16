@@ -293,12 +293,10 @@
   describe('SpeechRecognition.addEventListener("start")', function() {
 
     var spyOnStart;
-    var spyOnEnd;
     var recognition;
 
     beforeEach(function() {
       spyOnStart = jasmine.createSpy();
-      spyOnEnd = jasmine.createSpy();
       Corti.patch();
       recognition = new window.SpeechRecognition();
     });
