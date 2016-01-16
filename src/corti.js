@@ -16,7 +16,9 @@
   // Patch DOMException
   var DOMException = DOMException || TypeError;
 
+  // Speech Recognition attributes
   var _maxAlternatives = 1;
+  var _lang = '';
 
   var newSpeechRecognition = function() {
     var _self = this;
@@ -32,6 +34,13 @@
         } else {
           _maxAlternatives = 0;
         }
+      }
+    });
+
+    Object.defineProperty(this, 'lang', {
+      get: function() { return _lang; },
+      set: function(val) {
+        _lang = val.toString();
       }
     });
 

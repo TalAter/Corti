@@ -61,4 +61,66 @@
 
   });
 
+  describe('SpeechRecognition.lang', function() {
+
+    var recognition;
+
+    beforeEach(function() {
+      Corti.patch();
+      recognition = new window.SpeechRecognition();
+    });
+
+    afterEach(function() {
+      Corti.unpatch();
+    });
+
+    it('should not be called as a function', function () {
+      expect(function() {
+        recognition.lang();
+      }).toThrowError();
+      expect(function() {
+        recognition.lang(2);
+      }).toThrowError();
+    });
+
+    it('should be of type "string" when tested directly', function () {
+      expect(typeof recognition.lang).toEqual("string");
+    });
+
+    it('should default to an empty string', function () {
+      expect(recognition.lang).toEqual('');
+    });
+
+    it('should return the current value when called as an attribute', function () {
+      expect(recognition.lang).toEqual('');
+      recognition.lang = 'en-US';
+      expect(recognition.lang).toEqual('en-US');
+    });
+
+    it('should return any value it was assigned during assignment', function () {
+      expect(recognition.lang = 5).toEqual(5);
+      expect(recognition.lang = 5.2).toEqual(5.2);
+      expect(recognition.lang = 'en-US').toEqual('en-US');
+    });
+
+    it('should cast anything it is assigned to a string', function () {
+      recognition.lang = 5;
+      expect(recognition.lang).toEqual('5');
+      expect(typeof recognition.lang).toEqual("string");
+      recognition.lang = 5.2;
+      expect(recognition.lang).toEqual('5.2');
+      expect(typeof recognition.lang).toEqual("string");
+      recognition.lang = [];
+      expect(recognition.lang).toEqual('');
+      expect(typeof recognition.lang).toEqual("string");
+      recognition.lang = function() {};
+      expect(recognition.lang).toEqual('function () {}');
+      expect(typeof recognition.lang).toEqual("string");
+      recognition.lang = {};
+      expect(recognition.lang).toEqual('[object Object]');
+      expect(typeof recognition.lang).toEqual("string");
+    });
+
+  });
+
 })();
