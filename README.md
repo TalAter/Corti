@@ -29,6 +29,20 @@ Corti.unpatch();
 * stop()
 * addEventListener()
 
+### Attributes Currently Mocked
+
+* interimResults
+* lang
+* continuous
+* maxAlternatives
+* onstart
+* onend
+
+### Events Currently Mocked
+
+* start
+* end
+
 ### Extra Utility Methods Added To Object
 
 * isStarted()
