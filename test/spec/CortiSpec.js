@@ -534,7 +534,6 @@
     var event;
 
     beforeEach(function() {
-      event = undefined;
       Corti.patch();
       recognition = new window.SpeechRecognition();
       recognition.addEventListener('result', function(ev) {
@@ -546,6 +545,7 @@
 
     afterEach(function() {
       Corti.unpatch();
+      event = undefined;
     });
 
     it('should be an object', function () {
