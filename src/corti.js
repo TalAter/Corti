@@ -25,7 +25,7 @@
   var newSpeechRecognition = function() {
     var _self = this;
     _self._started = false;
-    _self.eventListeners = {'start': [], 'end': []};
+    _self.eventListeners = {'start': [], 'end': [], 'result': []};
     _self.maxAlternatives = 1;
 
     Object.defineProperty(this, 'maxAlternatives', {
@@ -92,6 +92,17 @@
 
     this.isStarted = function() {
       return _self._started;
+    };
+
+    this.say = function(sentence) {
+      // @TODO Construct a proper SpeechRecognitionEvent response
+      var SREvent = sentence;
+      if (typeof _self.onresult === 'function') {
+        _self.onresult.call(this, SREvent);
+      }
+      _self.eventListeners['result'].forEach(function(callback) {
+        callback.call(this, SREvent);
+      });
     };
 
     this.addEventListener = function(event, callback) {

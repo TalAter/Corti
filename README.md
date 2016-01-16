@@ -37,15 +37,18 @@ Corti.unpatch();
 * maxAlternatives
 * onstart
 * onend
+* onresult
 
 ### Events Currently Mocked
 
 * start
 * end
+* result
 
 ### Extra Utility Methods Added To Object
 
 * isStarted()
+* say()
 
 ### Author
 Tal Ater: [@TalAter](https://twitter.com/TalAter)

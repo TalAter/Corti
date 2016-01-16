@@ -57,6 +57,10 @@
       expect(recognition.isStarted).toEqual(jasmine.any(Function));
     });
 
+    it('should contain the method say', function () {
+      expect(recognition.say).toEqual(jasmine.any(Function));
+    });
+
     it('should contain the method start', function () {
       expect(recognition.start).toEqual(jasmine.any(Function));
     });
@@ -247,6 +251,45 @@
 
   });
 
+  describe('SpeechRecognition.onresult', function() {
+
+    var spyOnResult;
+    var spyOnResult2;
+    var recognition;
+
+    beforeEach(function() {
+      spyOnResult = jasmine.createSpy();
+      spyOnResult2 = jasmine.createSpy();
+      Corti.patch();
+      recognition = new window.SpeechRecognition();
+    });
+
+    afterEach(function() {
+      Corti.unpatch();
+    });
+
+    it('should attach a callback to result event which will be called once when the speech recognizer returns a result', function () {
+      recognition.onresult = spyOnResult;
+      recognition.start();
+      expect(spyOnResult).not.toHaveBeenCalled();
+      recognition.say("Next time you want to stab me in the back, have the guts to do it to my face");
+      expect(spyOnResult.calls.count()).toEqual(1);
+      recognition.say("Man walks down the street in a hat like that, you know he's not afraid of anything");
+      expect(spyOnResult.calls.count()).toEqual(2);
+    });
+
+    it('should overwrite previous callback attached with onresult', function () {
+      recognition.onresult = spyOnResult;
+      recognition.onresult = spyOnResult2;
+      recognition.start();
+      expect(spyOnResult).not.toHaveBeenCalled();
+      recognition.say("Curse your sudden but inevitable betrayal");
+      expect(spyOnResult).not.toHaveBeenCalled();
+      expect(spyOnResult2.calls.count()).toEqual(1);
+    });
+
+  });
+
   describe('SpeechRecognition.addEventListener("start")', function() {
 
     var spyOnStart;
@@ -316,6 +359,33 @@
 
   });
 
+  describe('SpeechRecognition.addEventListener("result")', function() {
+
+    var spyOnResult;
+    var recognition;
+
+    beforeEach(function() {
+      spyOnResult = jasmine.createSpy();
+      Corti.patch();
+      recognition = new window.SpeechRecognition();
+    });
+
+    afterEach(function() {
+      Corti.unpatch();
+    });
+
+    it('should attach a callback to result event which will be called once when the speech recognizer returns a result', function () {
+      recognition.addEventListener('result', spyOnResult);
+      recognition.start();
+      expect(spyOnResult).not.toHaveBeenCalled();
+      recognition.say("You can't take the sky from me");
+      expect(spyOnResult.calls.count()).toEqual(1);
+      recognition.say("Well, my time of not taking you seriously is coming to a middle");
+      expect(spyOnResult.calls.count()).toEqual(2);
+    });
+
+  });
+
   describe('SpeechRecognition.addEventListener("blerg")', function() {
 
     var spyOnBlerg;
@@ -338,6 +408,33 @@
       recognition.abort();
       recognition.abort();
       expect(spyOnBlerg).not.toHaveBeenCalled();
+    });
+
+  });
+
+  describe('SpeechRecognition.say', function() {
+
+    var spyOnResult;
+    var recognition;
+
+    beforeEach(function() {
+      spyOnResult = jasmine.createSpy();
+      Corti.patch();
+      recognition = new window.SpeechRecognition();
+    });
+
+    afterEach(function() {
+      Corti.unpatch();
+    });
+
+    it('should fire the result event once', function () {
+      recognition.addEventListener('result', spyOnResult);
+      recognition.start();
+      expect(spyOnResult).not.toHaveBeenCalled();
+      recognition.say("You can't take the sky from me");
+      expect(spyOnResult.calls.count()).toEqual(1);
+      recognition.say("Well, my time of not taking you seriously is coming to a middle");
+      expect(spyOnResult.calls.count()).toEqual(2);
     });
 
   });
