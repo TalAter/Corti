@@ -123,4 +123,63 @@
 
   });
 
+  describe('SpeechRecognition.continuous', function() {
+
+    var recognition;
+
+    beforeEach(function() {
+      Corti.patch();
+      recognition = new window.SpeechRecognition();
+    });
+
+    afterEach(function() {
+      Corti.unpatch();
+    });
+
+    it('should not be called as a function', function () {
+      expect(function() {
+        recognition.continuous();
+      }).toThrowError();
+      expect(function() {
+        recognition.continuous(2);
+      }).toThrowError();
+    });
+
+    it('should be of type "boolean" when tested directly', function () {
+      expect(typeof recognition.continuous).toEqual("boolean");
+    });
+
+    it('should default to false', function () {
+      expect(recognition.continuous).toEqual(false);
+    });
+
+    it('should return the current value when called as an attribute', function () {
+      expect(recognition.continuous).toEqual(false);
+      recognition.continuous = true;
+      expect(recognition.continuous).toEqual(true);
+    });
+
+    it('should return any value it was assigned during assignment', function () {
+      expect(recognition.continuous = 5).toEqual(5);
+      expect(recognition.continuous = 5.2).toEqual(5.2);
+      expect(recognition.continuous = true).toEqual(true);
+    });
+
+    it('should cast anything it is assigned to a boolean', function () {
+      recognition.continuous = 5;
+      expect(recognition.continuous).toEqual(Boolean(5));
+      recognition.continuous = 0;
+      expect(recognition.continuous).toEqual(Boolean(0));
+      recognition.continuous = -1;
+      expect(recognition.continuous).toEqual(Boolean(-1));
+      recognition.continuous = true;
+      expect(recognition.continuous).toEqual(Boolean(true));
+      recognition.continuous = false;
+      expect(recognition.continuous).toEqual(Boolean(false));
+      recognition.continuous = [];
+      expect(recognition.continuous).toEqual(Boolean([]));
+    });
+
+  });
+
 })();

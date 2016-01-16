@@ -19,6 +19,7 @@
   // Speech Recognition attributes
   var _maxAlternatives = 1;
   var _lang = '';
+  var _continuous = false;
 
   var newSpeechRecognition = function() {
     var _self = this;
@@ -41,6 +42,13 @@
       get: function() { return _lang; },
       set: function(val) {
         _lang = val.toString();
+      }
+    });
+
+    Object.defineProperty(this, 'continuous', {
+      get: function() { return _continuous; },
+      set: function(val) {
+        _continuous = Boolean(val);
       }
     });
 
