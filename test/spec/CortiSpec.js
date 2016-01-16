@@ -449,4 +449,83 @@
 
   });
 
+  describe('start event', function() {
+
+    var recognition;
+    var event;
+
+    beforeEach(function() {
+      Corti.patch();
+      recognition = new window.SpeechRecognition();
+    });
+
+    afterEach(function() {
+      Corti.unpatch();
+      event = undefined;
+    });
+
+    it('should be returned when using addEventListener', function () {
+      recognition.addEventListener('start', function(ev) {
+        event = ev;
+      });
+      recognition.start();
+      expect(event).toEqual(jasmine.any(Object));
+    });
+
+    it('should be returned when using onstart attribute', function () {
+      recognition.onstart = function(ev) {
+        event = ev;
+      };
+      recognition.start();
+      expect(event).toEqual(jasmine.any(Object));
+    });
+
+    it('should not persist after creating a new SpeechRecognition object', function () {
+      recognition.start();
+      expect(event).toEqual(undefined);
+    });
+
+  });
+
+  describe('end event', function() {
+
+    var recognition;
+    var event;
+
+    beforeEach(function() {
+      Corti.patch();
+      recognition = new window.SpeechRecognition();
+    });
+
+    afterEach(function() {
+      Corti.unpatch();
+      event = undefined;
+    });
+
+    it('should be returned when using addEventListener', function () {
+      recognition.addEventListener('end', function(ev) {
+        event = ev;
+      });
+      recognition.start();
+      recognition.abort();
+      expect(event).toEqual(jasmine.any(Object));
+    });
+
+    it('should be returned when using onend attribute', function () {
+      recognition.onend = function(ev) {
+        event = ev;
+      };
+      recognition.start();
+      recognition.abort();
+      expect(event).toEqual(jasmine.any(Object));
+    });
+
+    it('should not persist after creating a new SpeechRecognition object', function () {
+      recognition.start();
+      recognition.abort();
+      expect(event).toEqual(undefined);
+    });
+
+  });
+
 })();

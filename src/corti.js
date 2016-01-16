@@ -24,15 +24,16 @@
 
   var newSpeechRecognition = function() {
     var _self = this;
+    var _listeners = document.createElement('div');
     _self._started = false;
     _self.eventListenerTypes = ['start', 'end', 'result'];
     _self.maxAlternatives = 1;
 
     // Add listeners for events registered through attributes (e.g. recognition.onend = function) and not as proper listeners
     _self.eventListenerTypes.forEach(function(eventName) {
-      document.addEventListener(eventName, function () {
+      _listeners.addEventListener(eventName, function () {
         if (typeof _self['on'+eventName] === 'function') {
-          _self['on'+eventName].call();
+          _self['on'+eventName].apply(_listeners, arguments);
         }
       }, false);
     });
@@ -77,7 +78,7 @@
       // Create and dispatch an event
       var event = document.createEvent('CustomEvent');
       event.initCustomEvent('start', false, false, null);
-      document.dispatchEvent(event);
+      _listeners.dispatchEvent(event);
     };
 
     this.abort = function() {
@@ -88,7 +89,7 @@
       // Create and dispatch an event
       var event = document.createEvent('CustomEvent');
       event.initCustomEvent('end', false, false, null);
-      document.dispatchEvent(event);
+      _listeners.dispatchEvent(event);
     };
 
     this.stop = function() {
@@ -103,11 +104,11 @@
       // @TODO Construct a proper SpeechRecognitionEvent response
       var event = document.createEvent('CustomEvent');
       event.initCustomEvent('result', false, false, {'sentence': sentence});
-      document.dispatchEvent(event);
+      _listeners.dispatchEvent(event);
     };
 
     this.addEventListener = function(event, callback) {
-      document.addEventListener(event, callback, false);
+      _listeners.addEventListener(event, callback, false);
     };
   };
 
