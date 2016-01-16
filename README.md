@@ -10,16 +10,27 @@ To easily use Speech Recognition in your own project, check out [annyang](https:
 ### Sample Test With Corti
 
 ````javascript
+// Patch the current environment with a mock Speech Recognition object
 Corti.patch();
+
+// Interact with the mock object, like you would with the real SpeechRecognition object
 var recognition = new window.SpeechRecognition();
+recognition.onstart = function() {console.log("I'm listening");};
+recognition.addEventListener('end', function() {console.log("Quiet");});
+recognition.continuous = true;
+
+// Use extra utility methods added to the mock object to assist with testing
 expect(recognition.isStarted()).toBe(false);
-recognition.onstart = function() {console.log('I\'m listening');};
-recognition.addEventListener('end', function() {console.log('Quiet');});
 recognition.start();
 expect(recognition.isStarted()).toBe(true);
 recognition.abort();
 expect(recognition.isStarted()).toBe(false);
-Corti.unpatch();
+
+// Simulate speech recognition
+recognition.addEventListener('result', mySpyFunction);
+expect(mySpyFunction).not.toHaveBeenCalled();
+recognition.say("Next time you want to stab me in the back, have the guts to do it to my face");
+expect(mySpyFunction).toHaveBeenCalled();
 ````
 
 ### Methods Currently Mocked
