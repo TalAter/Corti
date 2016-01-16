@@ -293,10 +293,12 @@
   describe('SpeechRecognition.addEventListener("start")', function() {
 
     var spyOnStart;
+    var spyOnStart2;
     var recognition;
 
     beforeEach(function() {
       spyOnStart = jasmine.createSpy();
+      spyOnStart2 = jasmine.createSpy();
       Corti.patch();
       recognition = new window.SpeechRecognition();
     });
@@ -316,6 +318,16 @@
       expect(spyOnStart.calls.count()).toEqual(1);
       recognition.abort();
       expect(spyOnStart.calls.count()).toEqual(1);
+    });
+
+    it('can attach multiple callbacks and all will respond to an event', function () {
+      expect(spyOnStart).not.toHaveBeenCalled();
+      expect(spyOnStart2).not.toHaveBeenCalled();
+      recognition.addEventListener('start', spyOnStart);
+      recognition.addEventListener('start', spyOnStart2);
+      recognition.start();
+      expect(spyOnStart.calls.count()).toEqual(1);
+      expect(spyOnStart2.calls.count()).toEqual(1);
     });
 
   });
