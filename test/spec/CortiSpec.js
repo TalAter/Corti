@@ -269,7 +269,7 @@
       Corti.unpatch();
     });
 
-    it('should attach a callback to end event which will be called once on stop', function () {
+    it('should attach a callback to end event which will be called once on abort', function () {
       recognition.addEventListener('end', spyOnEnd);
       recognition.start();
       expect(spyOnEnd).not.toHaveBeenCalled();
@@ -279,7 +279,7 @@
       expect(spyOnEnd.calls.count()).toEqual(1);
     });
 
-    it('should attach a callback to end event which will be called once on abort', function () {
+    it('should attach a callback to end event which will be called once on stop', function () {
       recognition.addEventListener('end', spyOnEnd);
       recognition.start();
       expect(spyOnEnd).not.toHaveBeenCalled();
