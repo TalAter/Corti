@@ -36,14 +36,14 @@ recognition.say("Next time you want to stab me in the back, have the guts to do 
 expect(mySpyFunction).toHaveBeenCalled();
 ````
 
-### Methods Currently Mocked
+### Methods Mocked
 
 * start()
 * abort()
 * stop()
 * addEventListener()
 
-### Attributes Currently Mocked
+### Attributes Mocked
 
 * interimResults
 * lang
@@ -53,11 +53,18 @@ expect(mySpyFunction).toHaveBeenCalled();
 * onend
 * onresult
 
-### Events Currently Mocked
+### Events Mocked
 
 * start
 * end
 * result
+
+### Event Objects Mocked
+
+* SpeechRecognitionEvent
+* SpeechRecognitionResultList
+* SpeechRecognitionResult
+* SpeechRecognitionAlternative
 
 ### Extra Utility Methods Added To Object
 
