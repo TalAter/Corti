@@ -16,6 +16,9 @@ Corti.patch();
 // Interact with the mock object, like you would with the real SpeechRecognition object
 var recognition = new window.SpeechRecognition();
 recognition.onstart = function() {console.log("I'm listening");};
+recognition.addEventListener('result', function(sre) {
+  console.log(sre.results.item(sre.resultIndex).item(0).transcript);
+});
 recognition.addEventListener('end', function() {console.log("Quiet");});
 recognition.continuous = true;
 
