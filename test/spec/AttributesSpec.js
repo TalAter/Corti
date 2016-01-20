@@ -48,6 +48,8 @@
       expect(recognition.maxAlternatives).toEqual(5);
       recognition.maxAlternatives = 'argh';
       expect(recognition.maxAlternatives).toEqual(0);
+      recognition.maxAlternatives = undefined;
+      expect(recognition.maxAlternatives).toEqual(0);
     });
 
     it('should round down floats it receives', function () {
@@ -119,6 +121,9 @@
       recognition.lang = {};
       expect(recognition.lang).toEqual('[object Object]');
       expect(typeof recognition.lang).toEqual("string");
+      recognition.lang = undefined;
+      expect(recognition.lang).toEqual('undefined');
+      expect(typeof recognition.lang).toEqual("string");
     });
 
   });
@@ -178,6 +183,8 @@
       expect(recognition.continuous).toEqual(Boolean(false));
       recognition.continuous = [];
       expect(recognition.continuous).toEqual(Boolean([]));
+      recognition.continuous = undefined;
+      expect(recognition.continuous).toEqual(Boolean(undefined));
     });
 
   });
@@ -237,6 +244,8 @@
       expect(recognition.interimResults).toEqual(Boolean(false));
       recognition.interimResults = [];
       expect(recognition.interimResults).toEqual(Boolean([]));
+      recognition.interimResults = undefined;
+      expect(recognition.interimResults).toEqual(Boolean(undefined));
     });
 
   });

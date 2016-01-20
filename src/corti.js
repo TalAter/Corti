@@ -52,6 +52,9 @@
     Object.defineProperty(this, 'lang', {
       get: function() { return _lang; },
       set: function(val) {
+        if (val === undefined) {
+          val = 'undefined';
+        }
         _lang = val.toString();
       }
     });
