@@ -2,7 +2,7 @@
 //! version : 0.2.1
 //! author  : Tal Ater @TalAter
 //! license : MIT
-//! https://github.com/TalAter/SpeechKITT/test/corti.js
+//! https://github.com/TalAter/Corti
 
 (function (undefined) {
   "use strict";
