@@ -23,7 +23,7 @@
   },
   "homepage": "https://github.com/TalAter/Corti",
   "devDependencies": {
-    "grunt": "^1.0.0",
+    "grunt": "^1.0.1",
     "grunt-contrib-jasmine": "^1.0.0",
     "grunt-contrib-jshint": "^1.0.0",
     "grunt-contrib-watch": "^1.0.0",
