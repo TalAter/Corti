@@ -2,7 +2,7 @@
   "name": "corti",
   "version": "0.2.1",
   "description": "Replace window.SpeechRecognition with a mock object and automate your tests",
-  "main": "corti.js",
+  "main": "src/corti.js",
   "scripts": {
     "test": "grunt test"
   },
