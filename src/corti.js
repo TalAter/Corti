@@ -9,12 +9,12 @@
   // jshint strict: false
   if (typeof define === 'function' && define.amd) { // AMD
     define([], function () {
-      return (root.corti = factory());
+      return (root.Corti = factory());
     });
   } else if (typeof module === 'object' && module.exports) { // CommonJS
     module.exports = factory();
   } else { // Browser globals
-    root.corti = factory();
+    root.Corti = factory();
   }
 }(typeof window !== 'undefined' ? window : this, function () {
   "use strict";
@@ -176,7 +176,7 @@
 
   // Expose functionality
   corti = {
-    patch: function(root) {
+    patch: function() {
       if (_productionVersion === false) {
         _productionVersion = root.SpeechRecognition ||
           root.webkitSpeechRecognition ||
@@ -187,7 +187,7 @@
       root.SpeechRecognition = newSpeechRecognition;
     },
 
-    unpatch: function(root) {
+    unpatch: function() {
       root.SpeechRecognition = _productionVersion;
     }
   };
