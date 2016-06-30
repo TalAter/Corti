@@ -4,11 +4,22 @@
 //! license : MIT
 //! https://github.com/TalAter/Corti
 
-(function (undefined) {
+(function (root, factory) {
+  // istanbul ignore next
+  // jshint strict: false
+  if (typeof define === 'function' && define.amd) { // AMD
+    define([], function () {
+      return (root.corti = factory());
+    });
+  } else if (typeof module === 'object' && module.exports) { // CommonJS
+    module.exports = factory();
+  } else { // Browser globals
+    root.corti = factory();
+  }
+}(typeof window !== 'undefined' ? window : this, function () {
   "use strict";
 
-  // Save a reference to the global object (window in the browser)
-  var _root = this;
+  var corti = {};
 
   // Holds the browser's implementation
   var _productionVersion = false;
@@ -164,21 +175,21 @@
   };
 
   // Expose functionality
-  _root.Corti = {
-    patch: function() {
+  corti = {
+    patch: function(root) {
       if (_productionVersion === false) {
-        _productionVersion = _root.SpeechRecognition ||
-          _root.webkitSpeechRecognition ||
-          _root.mozSpeechRecognition ||
-          _root.msSpeechRecognition ||
-          _root.oSpeechRecognition;
+        _productionVersion = root.SpeechRecognition ||
+          root.webkitSpeechRecognition ||
+          root.mozSpeechRecognition ||
+          root.msSpeechRecognition ||
+          root.oSpeechRecognition;
       }
-      _root.SpeechRecognition = newSpeechRecognition;
+      root.SpeechRecognition = newSpeechRecognition;
     },
 
-    unpatch: function() {
-      _root.SpeechRecognition = _productionVersion;
+    unpatch: function(root) {
+      root.SpeechRecognition = _productionVersion;
     }
   };
-
-}).call(this);
+  return corti;
+}));
