@@ -5,8 +5,8 @@
 //! https://github.com/TalAter/Corti
 
 (function (root, factory) {
-  // istanbul ignore next
   // jshint strict: false
+  // istanbul ignore next
   if (typeof define === 'function' && define.amd) { // AMD
     define([], function () {
       return (root.Corti = factory(root));
@@ -18,8 +18,6 @@
   }
 }(typeof window !== 'undefined' ? window : this, function (_root) {
   "use strict";
-
-  var corti = {};
 
   // Holds the browser's implementation
   var _productionVersion = false;
@@ -175,7 +173,7 @@
   };
 
   // Expose functionality
-  corti = {
+  return {
     patch: function() {
       if (_productionVersion === false) {
         _productionVersion = 
@@ -192,5 +190,4 @@
       _root.SpeechRecognition = _productionVersion;
     }
   };
-  return corti;
 }));
