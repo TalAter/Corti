@@ -782,4 +782,43 @@
 
   });
 
+  describe('SpeechRecognition.continuous', function() {
+
+    var recognition;
+    var spyOnResult;
+
+    beforeEach(function() {
+      spyOnResult = jasmine.createSpy();
+      Corti.patch();
+      recognition = new window.SpeechRecognition();
+      recognition.onresult = spyOnResult;
+    });
+
+    afterEach(function() {
+      Corti.unpatch();
+    });
+
+    it('set to false should stop SpeechRecognition after each recognition', function () {
+      expect(recognition.isStarted()).toBe(false);
+      recognition.continuous = false;
+      recognition.start();
+      expect(recognition.isStarted()).toBe(true);
+      recognition.say("Curse your sudden but inevitable betrayal");
+      expect(recognition.isStarted()).toBe(false);
+      expect(spyOnResult.calls.count()).toEqual(1);
+    });
+
+    it('set to true should keep SpeechRecognition running after each recognition', function () {
+      expect(recognition.isStarted()).toBe(false);
+      recognition.continuous = true;
+      recognition.start();
+      expect(recognition.isStarted()).toBe(true);
+      recognition.say("Next time you want to stab me in the back, have the guts to do it to my face");
+      recognition.say("Man walks down the street in a hat like that, you know he's not afraid of anything");
+      expect(recognition.isStarted()).toBe(true);
+      expect(spyOnResult.calls.count()).toEqual(2);
+    });
+
+  });
+
 })();

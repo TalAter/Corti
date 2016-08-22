@@ -156,6 +156,11 @@
       event.interpretation = null;
       event.emma = null;
       _listeners.dispatchEvent(event);
+
+      //stop if not set to continuous mode
+      if (!_self.continuous) {
+        _self.abort();
+      }
     };
 
     this.addEventListener = function(event, callback) {
