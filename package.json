@@ -4,6 +4,7 @@
   "description": "Replace window.SpeechRecognition with a mock object and automate your tests",
   "main": "src/corti.js",
   "scripts": {
+    "start": "grunt watch",
     "test": "grunt test"
   },
   "repository": {
