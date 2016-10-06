@@ -201,6 +201,59 @@
 
   });
 
+  describe('SpeechRecognition.onsoundstart', function() {
+
+    var spyOnSoundStart;
+    var spyOnSoundStart2;
+    var recognition;
+
+    beforeEach(function() {
+      spyOnSoundStart = jasmine.createSpy();
+      spyOnSoundStart2 = jasmine.createSpy();
+      Corti.patch();
+      recognition = new window.SpeechRecognition();
+    });
+
+    afterEach(function() {
+      Corti.unpatch();
+    });
+
+    it('should attach a callback to start event which will be called once on soundstart', function () {
+      recognition.onsoundstart = spyOnSoundStart;
+      recognition.start();
+      expect(spyOnSoundStart).not.toHaveBeenCalled();
+      recognition.say("Next time you want to stab me in the back, have the guts to do it to my face");
+      expect(spyOnSoundStart.calls.count()).toEqual(1);
+    });
+
+    it('should attach a callback which will be called only once until speech recognition is aborted and restarted', function () {
+      recognition.continuous = true;
+      recognition.onsoundstart = spyOnSoundStart;
+      recognition.start();
+      expect(spyOnSoundStart).not.toHaveBeenCalled();
+      recognition.say("Next time you want to stab me in the back, have the guts to do it to my face");
+      expect(spyOnSoundStart.calls.count()).toEqual(1);
+      recognition.say("Man walks down the street in a hat like that, you know he's not afraid of anything");
+      expect(spyOnSoundStart.calls.count()).toEqual(1);
+      recognition.abort();
+      recognition.start();
+      recognition.say("Well, my time of not taking you seriously is coming to a middle");
+      expect(spyOnSoundStart.calls.count()).toEqual(2);
+    });
+
+    it('should overwrite previous callback attached with onsoundstart', function () {
+      recognition.onsoundstart = spyOnSoundStart;
+      recognition.onsoundstart = spyOnSoundStart2;
+      recognition.start();
+      expect(spyOnSoundStart).not.toHaveBeenCalled();
+      expect(spyOnSoundStart2).not.toHaveBeenCalled();
+      recognition.say("Man walks down the street in a hat like that, you know he's not afraid of anything");
+      expect(spyOnSoundStart).not.toHaveBeenCalled();
+      expect(spyOnSoundStart2.calls.count()).toEqual(1);
+    });
+
+  });
+
   describe('SpeechRecognition.onend', function() {
 
     var spyOnEnd;
