@@ -1,5 +1,5 @@
 //! Corti - Replaces the browser's SpeechRecognition with a fake object.
-//! version : 0.3.0
+//! version : 0.4.0
 //! author  : Tal Ater @TalAter
 //! license : MIT
 //! https://github.com/TalAter/Corti
