@@ -262,6 +262,7 @@
       spyOnResult2 = jasmine.createSpy();
       Corti.patch();
       recognition = new window.SpeechRecognition();
+      recognition.continuous = true;
     });
 
     afterEach(function() {
@@ -445,6 +446,17 @@
       expect(spyOnResult.calls.count()).toEqual(1);
       recognition.say("Well, my time of not taking you seriously is coming to a middle");
       expect(spyOnResult.calls.count()).toEqual(2);
+    });
+
+    it('should do nothing when speech recognition isn\'t started', function () {
+      recognition.addEventListener('result', spyOnResult);
+      recognition.start();
+      expect(spyOnResult).not.toHaveBeenCalled();
+      recognition.say("You can't take the sky from me");
+      expect(spyOnResult.calls.count()).toEqual(1);
+      recognition.abort();
+      recognition.say("Well, my time of not taking you seriously is coming to a middle");
+      expect(spyOnResult.calls.count()).toEqual(1);
     });
 
   });

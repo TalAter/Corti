@@ -104,6 +104,9 @@
     };
 
     this.say = function(sentence) {
+      if (!_self._started) {
+        return;
+      }
       // Create some speech alternatives
       var results = [];
       var commandIterator;
