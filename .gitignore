@@ -3,3 +3,4 @@ npm-debug.log
 .grunt
 .idea
 test/coverage
+.DS_Store
