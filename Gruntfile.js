@@ -47,6 +47,20 @@ module.exports = function(grunt) {
           }
         }
       }
+    },
+    browserAMD: {
+      src: ['src/corti.js'],
+      options: {
+        specs: 'test/spec/*Spec.js',
+        outfile: 'test/SpecRunner.html',
+        //vendor: ['test/vendor/corti.js', 'test/init_corti.js'], // https://github.com/cloudchen/grunt-template-jasmine-requirejs/issues/72
+        template: require('grunt-template-jasmine-requirejs'),
+        templateOptions: {
+          requireConfig: {
+            baseUrl: '../'
+          }
+        }
+      }
     }
   });
 

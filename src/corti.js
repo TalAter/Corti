@@ -4,11 +4,20 @@
 //! license : MIT
 //! https://github.com/TalAter/Corti
 
-(function (undefined) {
+(function (root, factory) {
+  // jshint strict: false
+  // istanbul ignore next
+  if (typeof define === 'function' && define.amd) { // AMD
+    define([], function () {
+      return (root.Corti = factory(root));
+    });
+  } else if (typeof module === 'object' && module.exports) { // CommonJS
+    module.exports = factory(root);
+  } else { // Browser globals
+    root.Corti = factory(root);
+  }
+}(typeof window !== 'undefined' ? window : this, function (_root) {
   "use strict";
-
-  // Save a reference to the global object (window in the browser)
-  var _root = this;
 
   // Holds the browser's implementation
   var _productionVersion = false;
@@ -182,10 +191,11 @@
   };
 
   // Expose functionality
-  _root.Corti = {
+  return {
     patch: function() {
       if (_productionVersion === false) {
-        _productionVersion = _root.SpeechRecognition ||
+        _productionVersion = 
+          _root.SpeechRecognition ||
           _root.webkitSpeechRecognition ||
           _root.mozSpeechRecognition ||
           _root.msSpeechRecognition ||
@@ -198,5 +208,4 @@
       _root.SpeechRecognition = _productionVersion;
     }
   };
-
-}).call(this);
+}));
