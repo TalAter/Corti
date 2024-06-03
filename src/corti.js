@@ -11,7 +11,7 @@
   var _root = this;
 
   // Holds the browser's implementation
-  var _productionVersion = false;
+  var _originalSpeechRecognition = false;
 
   // Patch DOMException
   var DOMException = DOMException || TypeError;
@@ -184,8 +184,8 @@
   // Expose functionality
   _root.Corti = {
     patch: function() {
-      if (_productionVersion === false) {
-        _productionVersion = _root.SpeechRecognition ||
+      if (_originalSpeechRecognition === false) {
+        _originalSpeechRecognition = _root.SpeechRecognition ||
           _root.webkitSpeechRecognition ||
           _root.mozSpeechRecognition ||
           _root.msSpeechRecognition ||
@@ -195,7 +195,7 @@
     },
 
     unpatch: function() {
-      _root.SpeechRecognition = _productionVersion;
+      _root.SpeechRecognition = _originalSpeechRecognition;
     }
   };
 
