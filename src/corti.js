@@ -7,16 +7,42 @@
 import DOMException from './DOMException';
 
 class corti {
+  /**
+   * The maximum number of SpeechRecognitionAlternatives provided per SpeechRecognitionResult
+   * @type {number}
+   */
   #maxAlternatives = 1;
 
+  /**
+   * The language of the current SpeechRecognition
+   * @type {string}
+   */
   #lang = '';
 
+  /**
+   * Controls whether continuous results are returned for each recognition, or only a single result
+   * @type {boolean}
+   */
   #continuous = false;
 
+  /**
+   * Indicates whether interim results should be returned (true) or just the final result (false)
+   * @type {boolean}
+   */
   #interimResults = false;
 
+  /**
+   * Indicates whether the recognition service has started
+   * @type {boolean}
+   * @private
+   */
   #started = false;
 
+  /**
+   * Indicates whether sound has started
+   * @type {boolean}
+   * @private
+   */
   #soundStarted = false;
 
   get maxAlternatives() {
@@ -59,10 +85,19 @@ class corti {
     this.#interimResults = Boolean(val);
   }
 
+  /**
+   * Checks if the recognition has started.
+   * This is not part of the spec, but is used by mock object for testing.
+   * @returns {boolean}
+   */
   isStarted() {
     return this.#started;
   }
 
+  /**
+   * Starts the speech recognition
+   * @throws {DOMException} If recognition has already started
+   */
   start() {
     if (this.#started) {
       throw new DOMException("Failed to execute 'start' on 'SpeechRecognition': recognition has already started.");
@@ -73,6 +108,9 @@ class corti {
     // @TODO: Emit a start event
   }
 
+  /**
+   * Aborts the speech recognition
+   */
   abort() {
     if (!this.#started) {
       return;
@@ -83,8 +121,11 @@ class corti {
     // @TODO: Emit an end event
   }
 
+  /**
+   * Stops the speech recognition and attempts to return a SpeechRecognitionResult
+   * @TODO Implement stop's behavior according to the spec. Unlike abort, stop will attempt to return a SpeechRecognitionResult using the audio captured so far.
+   */
   stop() {
-    // @TODO: Implement stop's behavior according to the spec. Unlike abort, stop will attempt to return a SpeechRecognitionResult using the audio captured so far.
     return this.abort();
   }
 }
