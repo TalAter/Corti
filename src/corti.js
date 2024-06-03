@@ -18,94 +18,108 @@
 
   // Speech Recognition attributes
   var _maxAlternatives = 1;
-  var _lang = '';
+  var _lang = "";
   var _continuous = false;
   var _interimResults = false;
 
-  var newSpeechRecognition = function() {
+  var newSpeechRecognition = function () {
     var _self = this;
-    var _listeners = document.createElement('div');
+    var _listeners = document.createElement("div");
     _self._started = false;
     _self._soundStarted = false;
-    _self.eventListenerTypes = ['start', 'soundstart', 'end', 'result'];
+    _self.eventListenerTypes = ["start", "soundstart", "end", "result"];
     _self.maxAlternatives = 1;
 
     // Add listeners for events registered through attributes (e.g. recognition.onend = function) and not as proper listeners
-    _self.eventListenerTypes.forEach(function(eventName) {
-      _listeners.addEventListener(eventName, function () {
-        if (typeof _self['on'+eventName] === 'function') {
-          _self['on'+eventName].apply(_listeners, arguments);
-        }
-      }, false);
+    _self.eventListenerTypes.forEach(function (eventName) {
+      _listeners.addEventListener(
+        eventName,
+        function () {
+          if (typeof _self["on" + eventName] === "function") {
+            _self["on" + eventName].apply(_listeners, arguments);
+          }
+        },
+        false,
+      );
     });
 
-    Object.defineProperty(this, 'maxAlternatives', {
-      get: function() { return _maxAlternatives; },
-      set: function(val) {
-        if (typeof val === 'number') {
+    Object.defineProperty(this, "maxAlternatives", {
+      get: function () {
+        return _maxAlternatives;
+      },
+      set: function (val) {
+        if (typeof val === "number") {
           _maxAlternatives = Math.floor(val);
         } else {
           _maxAlternatives = 0;
         }
-      }
+      },
     });
 
-    Object.defineProperty(this, 'lang', {
-      get: function() { return _lang; },
-      set: function(val) {
+    Object.defineProperty(this, "lang", {
+      get: function () {
+        return _lang;
+      },
+      set: function (val) {
         if (val === undefined) {
-          val = 'undefined';
+          val = "undefined";
         }
         _lang = val.toString();
-      }
+      },
     });
 
-    Object.defineProperty(this, 'continuous', {
-      get: function() { return _continuous; },
-      set: function(val) {
+    Object.defineProperty(this, "continuous", {
+      get: function () {
+        return _continuous;
+      },
+      set: function (val) {
         _continuous = Boolean(val);
-      }
+      },
     });
 
-    Object.defineProperty(this, 'interimResults', {
-      get: function() { return _interimResults; },
-      set: function(val) {
+    Object.defineProperty(this, "interimResults", {
+      get: function () {
+        return _interimResults;
+      },
+      set: function (val) {
         _interimResults = Boolean(val);
-      }
+      },
     });
 
-    this.start = function() {
+    this.start = function () {
       if (_self._started) {
-        throw new DOMException('Failed to execute \'start\' on \'SpeechRecognition\': recognition has already started.');
+        throw new DOMException(
+          "Failed to execute 'start' on 'SpeechRecognition': recognition has already started.",
+        );
       }
       _self._started = true;
       // Create and dispatch an event
-      var event = document.createEvent('CustomEvent');
-      event.initCustomEvent('start', false, false, null);
+      var event = document.createEvent("CustomEvent");
+      event.initCustomEvent("start", false, false, null);
       _listeners.dispatchEvent(event);
     };
 
-    this.abort = function() {
+    this.abort = function () {
       if (!_self._started) {
         return;
       }
       _self._started = false;
       _self._soundStarted = false;
       // Create and dispatch an event
-      var event = document.createEvent('CustomEvent');
-      event.initCustomEvent('end', false, false, null);
+      var event = document.createEvent("CustomEvent");
+      event.initCustomEvent("end", false, false, null);
       _listeners.dispatchEvent(event);
     };
 
-    this.stop = function() {
+    this.stop = function () {
       return _self.abort();
     };
 
-    this.isStarted = function() {
+    this.isStarted = function () {
       return _self._started;
     };
 
-    this.say = function(sentence) {
+    this.say = function (sentence) {
       if (!_self._started) {
         return;
       }
@@ -113,9 +127,11 @@
       var results = [];
       var commandIterator;
       var etcIterator;
-      var itemFunction = function(index) {
+      var itemFunction = function (index) {
         if (undefined === index) {
-          throw new DOMException('Failed to execute \'item\' on \'SpeechRecognitionResult\': 1 argument required, but only 0 present.');
+          throw new DOMException(
+            "Failed to execute 'item' on 'SpeechRecognitionResult': 1 argument required, but only 0 present.",
+          );
         }
         index = Number(index);
         if (isNaN(index)) {
@@ -127,36 +143,50 @@
           return this[index];
         }
       };
-      for (commandIterator = 0; commandIterator<_maxAlternatives; commandIterator++) {
-        var etc = '';
-        for (etcIterator = 0; etcIterator<commandIterator; etcIterator++) {
-          etc += ' and so on';
+      for (
+        commandIterator = 0;
+        commandIterator < _maxAlternatives;
+        commandIterator++
+      ) {
+        var etc = "";
+        for (etcIterator = 0; etcIterator < commandIterator; etcIterator++) {
+          etc += " and so on";
         }
-        results.push(sentence+etc);
+        results.push(sentence + etc);
       }
 
       // Create the start event
-      var startEvent = document.createEvent('CustomEvent');
-      startEvent.initCustomEvent('result', false, false, {'sentence': sentence}); // @TODO: Is this using deprecated functionality?
+      var startEvent = document.createEvent("CustomEvent");
+      startEvent.initCustomEvent("result", false, false, {
+        sentence: sentence,
+      }); // @TODO: Is this using deprecated functionality?
       startEvent.resultIndex = 0;
       startEvent.results = {
-        'item': itemFunction,
+        item: itemFunction,
         0: {
-          'item': itemFunction,
-          'final': true // @TODO: Should this be isFinal?
-        }
+          item: itemFunction,
+          final: true, // @TODO: Should this be isFinal?
+        },
       };
-      for (commandIterator = 0; commandIterator<_maxAlternatives; commandIterator++) {
+      for (
+        commandIterator = 0;
+        commandIterator < _maxAlternatives;
+        commandIterator++
+      ) {
         startEvent.results[0][commandIterator] = {
-          'transcript': results[commandIterator],
-          'confidence': Math.max(1-0.01*commandIterator, 0.001)
+          transcript: results[commandIterator],
+          confidence: Math.max(1 - 0.01 * commandIterator, 0.001),
         };
       }
-      Object.defineProperty(startEvent.results, 'length', {
-        get: function() { return 1; }
+      Object.defineProperty(startEvent.results, "length", {
+        get: function () {
+          return 1;
+        },
       });
-      Object.defineProperty(startEvent.results[0], 'length', {
-        get: function() { return _maxAlternatives; }
+      Object.defineProperty(startEvent.results[0], "length", {
+        get: function () {
+          return _maxAlternatives;
+        },
       });
       startEvent.interpretation = null;
       startEvent.emma = null;
@@ -165,8 +195,8 @@
       // Create soundstart event
       if (!_self._soundStarted) {
         _self._soundStarted = true;
-        var soundStartEvent = document.createEvent('CustomEvent');
-        soundStartEvent.initCustomEvent('soundstart', false, false, null);
+        var soundStartEvent = document.createEvent("CustomEvent");
+        soundStartEvent.initCustomEvent("soundstart", false, false, null);
         _listeners.dispatchEvent(soundStartEvent);
       }
 
@@ -176,16 +206,17 @@
       }
     };
 
-    this.addEventListener = function(event, callback) {
+    this.addEventListener = function (event, callback) {
       _listeners.addEventListener(event, callback, false);
     };
   };
 
   // Expose functionality
   _root.Corti = {
-    patch: function() {
+    patch: function () {
       if (_originalSpeechRecognition === false) {
-        _originalSpeechRecognition = _root.SpeechRecognition ||
+        _originalSpeechRecognition =
+          _root.SpeechRecognition ||
           _root.webkitSpeechRecognition ||
           _root.mozSpeechRecognition ||
           _root.msSpeechRecognition ||
@@ -194,9 +225,8 @@
       _root.SpeechRecognition = newSpeechRecognition;
     },
 
-    unpatch: function() {
+    unpatch: function () {
       _root.SpeechRecognition = _originalSpeechRecognition;
-    }
+    },
   };
-
 }).call(this);
