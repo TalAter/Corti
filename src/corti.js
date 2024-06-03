@@ -5,26 +5,24 @@
 //! https://github.com/TalAter/Corti
 
 (function (undefined) {
-  "use strict";
-
   // Save a reference to the global object (window in the browser)
-  var _root = this; // @TODO: Consider globalThis
+  const _root = this; // @TODO: Consider globalThis
 
   // Holds the browser's implementation
-  var _originalSpeechRecognition = false;
+  let _originalSpeechRecognition = false;
 
   // Patch DOMException
   var DOMException = DOMException || TypeError;
 
   // Speech Recognition attributes
-  var _maxAlternatives = 1;
-  var _lang = "";
-  var _continuous = false;
-  var _interimResults = false;
+  let _maxAlternatives = 1;
+  let _lang = "";
+  let _continuous = false;
+  let _interimResults = false;
 
-  var newSpeechRecognition = function () {
-    var _self = this;
-    var _listeners = document.createElement("div");
+  const newSpeechRecognition = function () {
+    const _self = this;
+    const _listeners = document.createElement("div");
     _self._started = false;
     _self._soundStarted = false;
     _self.eventListenerTypes = ["start", "soundstart", "end", "result"];
@@ -35,8 +33,8 @@
       _listeners.addEventListener(
         eventName,
         function () {
-          if (typeof _self["on" + eventName] === "function") {
-            _self["on" + eventName].apply(_listeners, arguments);
+          if (typeof _self[`on${eventName}`] === "function") {
+            _self[`on${eventName}`].apply(_listeners, arguments);
           }
         },
         false,
@@ -44,10 +42,10 @@
     });
 
     Object.defineProperty(this, "maxAlternatives", {
-      get: function () {
+      get() {
         return _maxAlternatives;
       },
-      set: function (val) {
+      set(val) {
         if (typeof val === "number") {
           _maxAlternatives = Math.floor(val);
         } else {
@@ -57,10 +55,10 @@
     });
 
     Object.defineProperty(this, "lang", {
-      get: function () {
+      get() {
         return _lang;
       },
-      set: function (val) {
+      set(val) {
         if (val === undefined) {
           val = "undefined";
         }
@@ -69,19 +67,19 @@
     });
 
     Object.defineProperty(this, "continuous", {
-      get: function () {
+      get() {
         return _continuous;
       },
-      set: function (val) {
+      set(val) {
         _continuous = Boolean(val);
       },
     });
 
     Object.defineProperty(this, "interimResults", {
-      get: function () {
+      get() {
         return _interimResults;
       },
-      set: function (val) {
+      set(val) {
         _interimResults = Boolean(val);
       },
     });
@@ -94,7 +92,7 @@
       }
       _self._started = true;
       // Create and dispatch an event
-      var event = document.createEvent("CustomEvent");
+      const event = document.createEvent("CustomEvent");
       event.initCustomEvent("start", false, false, null);
       _listeners.dispatchEvent(event);
     };
@@ -106,7 +104,7 @@
       _self._started = false;
       _self._soundStarted = false;
       // Create and dispatch an event
-      var event = document.createEvent("CustomEvent");
+      const event = document.createEvent("CustomEvent");
       event.initCustomEvent("end", false, false, null);
       _listeners.dispatchEvent(event);
     };
@@ -124,10 +122,10 @@
         return;
       }
       // Create some speech alternatives
-      var results = [];
-      var commandIterator;
-      var etcIterator;
-      var itemFunction = function (index) {
+      const results = [];
+      let commandIterator;
+      let etcIterator;
+      const itemFunction = function (index) {
         if (undefined === index) {
           throw new DOMException(
             "Failed to execute 'item' on 'SpeechRecognitionResult': 1 argument required, but only 0 present.",
@@ -139,16 +137,15 @@
         }
         if (index >= this.length) {
           return null;
-        } else {
-          return this[index];
         }
+        return this[index];
       };
       for (
         commandIterator = 0;
         commandIterator < _maxAlternatives;
         commandIterator++
       ) {
-        var etc = "";
+        let etc = "";
         for (etcIterator = 0; etcIterator < commandIterator; etcIterator++) {
           etc += " and so on";
         }
@@ -156,9 +153,9 @@
       }
 
       // Create the start event
-      var startEvent = document.createEvent("CustomEvent");
+      const startEvent = document.createEvent("CustomEvent");
       startEvent.initCustomEvent("result", false, false, {
-        sentence: sentence,
+        sentence,
       }); // @TODO: Is this using deprecated functionality?
       startEvent.resultIndex = 0;
       startEvent.results = {
@@ -179,12 +176,12 @@
         };
       }
       Object.defineProperty(startEvent.results, "length", {
-        get: function () {
+        get() {
           return 1;
         },
       });
       Object.defineProperty(startEvent.results[0], "length", {
-        get: function () {
+        get() {
           return _maxAlternatives;
         },
       });
@@ -195,12 +192,12 @@
       // Create soundstart event
       if (!_self._soundStarted) {
         _self._soundStarted = true;
-        var soundStartEvent = document.createEvent("CustomEvent");
+        const soundStartEvent = document.createEvent("CustomEvent");
         soundStartEvent.initCustomEvent("soundstart", false, false, null);
         _listeners.dispatchEvent(soundStartEvent);
       }
 
-      //stop if not set to continuous mode
+      // stop if not set to continuous mode
       if (!_self.continuous) {
         _self.abort();
       }
@@ -213,7 +210,7 @@
 
   // Expose functionality
   _root.Corti = {
-    patch: function () {
+    patch() {
       if (_originalSpeechRecognition === false) {
         _originalSpeechRecognition =
           _root.SpeechRecognition ||
@@ -225,7 +222,7 @@
       _root.SpeechRecognition = newSpeechRecognition;
     },
 
-    unpatch: function () {
+    unpatch() {
       _root.SpeechRecognition = _originalSpeechRecognition;
     },
   };
