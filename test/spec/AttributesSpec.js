@@ -1,30 +1,27 @@
-(function() {
-  "use strict";
+(function () {
+  describe('SpeechRecognition.maxAlternatives', function () {
+    let recognition;
 
-  describe('SpeechRecognition.maxAlternatives', function() {
-
-    var recognition;
-
-    beforeEach(function() {
+    beforeEach(function () {
       Corti.patch();
       recognition = new window.SpeechRecognition();
     });
 
-    afterEach(function() {
+    afterEach(function () {
       Corti.unpatch();
     });
 
     it('should not be called as a function', function () {
-      expect(function() {
+      expect(function () {
         recognition.maxAlternatives();
       }).toThrowError();
-      expect(function() {
+      expect(function () {
         recognition.maxAlternatives(2);
       }).toThrowError();
     });
 
     it('should be of type "number" when tested directly', function () {
-      expect(typeof recognition.maxAlternatives).toEqual("number");
+      expect(typeof recognition.maxAlternatives).toEqual('number');
     });
 
     it('should default to 1', function () {
@@ -38,9 +35,9 @@
     });
 
     it('should return any value it was assigned during assignment', function () {
-      expect(recognition.maxAlternatives = 5).toEqual(5);
-      expect(recognition.maxAlternatives = 5.2).toEqual(5.2);
-      expect(recognition.maxAlternatives = 'argh').toEqual('argh');
+      expect((recognition.maxAlternatives = 5)).toEqual(5);
+      expect((recognition.maxAlternatives = 5.2)).toEqual(5.2);
+      expect((recognition.maxAlternatives = 'argh')).toEqual('argh');
     });
 
     it('should set value to 0 when assigned anything but a number', function () {
@@ -60,33 +57,31 @@
       recognition.maxAlternatives = 5.9;
       expect(recognition.maxAlternatives).toEqual(5);
     });
-
   });
 
-  describe('SpeechRecognition.lang', function() {
+  describe('SpeechRecognition.lang', function () {
+    let recognition;
 
-    var recognition;
-
-    beforeEach(function() {
+    beforeEach(function () {
       Corti.patch();
       recognition = new window.SpeechRecognition();
     });
 
-    afterEach(function() {
+    afterEach(function () {
       Corti.unpatch();
     });
 
     it('should not be called as a function', function () {
-      expect(function() {
+      expect(function () {
         recognition.lang();
       }).toThrowError();
-      expect(function() {
+      expect(function () {
         recognition.lang(2);
       }).toThrowError();
     });
 
     it('should be of type "string" when tested directly', function () {
-      expect(typeof recognition.lang).toEqual("string");
+      expect(typeof recognition.lang).toEqual('string');
     });
 
     it('should default to an empty string', function () {
@@ -100,58 +95,56 @@
     });
 
     it('should return any value it was assigned during assignment', function () {
-      expect(recognition.lang = 5).toEqual(5);
-      expect(recognition.lang = 5.2).toEqual(5.2);
-      expect(recognition.lang = 'en-US').toEqual('en-US');
+      expect((recognition.lang = 5)).toEqual(5);
+      expect((recognition.lang = 5.2)).toEqual(5.2);
+      expect((recognition.lang = 'en-US')).toEqual('en-US');
     });
 
     it('should cast anything it is assigned to a string', function () {
       recognition.lang = 5;
       expect(recognition.lang).toEqual('5');
-      expect(typeof recognition.lang).toEqual("string");
+      expect(typeof recognition.lang).toEqual('string');
       recognition.lang = 5.2;
       expect(recognition.lang).toEqual('5.2');
-      expect(typeof recognition.lang).toEqual("string");
+      expect(typeof recognition.lang).toEqual('string');
       recognition.lang = [];
       expect(recognition.lang).toEqual('');
-      expect(typeof recognition.lang).toEqual("string");
-      recognition.lang = function() {};
+      expect(typeof recognition.lang).toEqual('string');
+      recognition.lang = function () {};
       expect(recognition.lang).toEqual('function () {}');
-      expect(typeof recognition.lang).toEqual("string");
+      expect(typeof recognition.lang).toEqual('string');
       recognition.lang = {};
       expect(recognition.lang).toEqual('[object Object]');
-      expect(typeof recognition.lang).toEqual("string");
+      expect(typeof recognition.lang).toEqual('string');
       recognition.lang = undefined;
       expect(recognition.lang).toEqual('undefined');
-      expect(typeof recognition.lang).toEqual("string");
+      expect(typeof recognition.lang).toEqual('string');
     });
-
   });
 
-  describe('SpeechRecognition.continuous', function() {
+  describe('SpeechRecognition.continuous', function () {
+    let recognition;
 
-    var recognition;
-
-    beforeEach(function() {
+    beforeEach(function () {
       Corti.patch();
       recognition = new window.SpeechRecognition();
     });
 
-    afterEach(function() {
+    afterEach(function () {
       Corti.unpatch();
     });
 
     it('should not be called as a function', function () {
-      expect(function() {
+      expect(function () {
         recognition.continuous();
       }).toThrowError();
-      expect(function() {
+      expect(function () {
         recognition.continuous(2);
       }).toThrowError();
     });
 
     it('should be of type "boolean" when tested directly', function () {
-      expect(typeof recognition.continuous).toEqual("boolean");
+      expect(typeof recognition.continuous).toEqual('boolean');
     });
 
     it('should default to false', function () {
@@ -165,9 +158,9 @@
     });
 
     it('should return any value it was assigned during assignment', function () {
-      expect(recognition.continuous = 5).toEqual(5);
-      expect(recognition.continuous = 5.2).toEqual(5.2);
-      expect(recognition.continuous = true).toEqual(true);
+      expect((recognition.continuous = 5)).toEqual(5);
+      expect((recognition.continuous = 5.2)).toEqual(5.2);
+      expect((recognition.continuous = true)).toEqual(true);
     });
 
     it('should cast anything it is assigned to a boolean', function () {
@@ -186,33 +179,31 @@
       recognition.continuous = undefined;
       expect(recognition.continuous).toEqual(Boolean(undefined));
     });
-
   });
 
-  describe('SpeechRecognition.interimResults', function() {
+  describe('SpeechRecognition.interimResults', function () {
+    let recognition;
 
-    var recognition;
-
-    beforeEach(function() {
+    beforeEach(function () {
       Corti.patch();
       recognition = new window.SpeechRecognition();
     });
 
-    afterEach(function() {
+    afterEach(function () {
       Corti.unpatch();
     });
 
     it('should not be called as a function', function () {
-      expect(function() {
+      expect(function () {
         recognition.interimResults();
       }).toThrowError();
-      expect(function() {
+      expect(function () {
         recognition.interimResults(2);
       }).toThrowError();
     });
 
     it('should be of type "boolean" when tested directly', function () {
-      expect(typeof recognition.interimResults).toEqual("boolean");
+      expect(typeof recognition.interimResults).toEqual('boolean');
     });
 
     it('should default to false', function () {
@@ -226,9 +217,9 @@
     });
 
     it('should return any value it was assigned during assignment', function () {
-      expect(recognition.interimResults = 5).toEqual(5);
-      expect(recognition.interimResults = 5.2).toEqual(5.2);
-      expect(recognition.interimResults = true).toEqual(true);
+      expect((recognition.interimResults = 5)).toEqual(5);
+      expect((recognition.interimResults = 5.2)).toEqual(5.2);
+      expect((recognition.interimResults = true)).toEqual(true);
     });
 
     it('should cast anything it is assigned to a boolean', function () {
@@ -247,7 +238,5 @@
       recognition.interimResults = undefined;
       expect(recognition.interimResults).toEqual(Boolean(undefined));
     });
-
   });
-
 })();

@@ -1,8 +1,5 @@
-(function() {
-  "use strict";
-
-  describe('Corti', function() {
-
+(function () {
+  describe('Corti', function () {
     it('should exist in global namespace', function () {
       expect(Corti).toEqual(jasmine.any(Object));
     });
@@ -14,22 +11,18 @@
     it('should contain unpatch method', function () {
       expect(Corti.unpatch).toEqual(jasmine.any(Function));
     });
-
   });
 
-  describe('Corti.patch', function() {
-
+  describe('Corti.patch', function () {
     it('should make SpeechRecognition defined', function () {
       expect(window.SpeechRecognition).toBeUndefined();
       Corti.patch();
       expect(window.SpeechRecognition).toBeDefined();
       Corti.unpatch();
     });
-
   });
 
-  describe('Corti.unpatch', function() {
-
+  describe('Corti.unpatch', function () {
     it('should make SpeechRecognition undefined', function () {
       expect(window.SpeechRecognition).toBeUndefined();
       Corti.patch();
@@ -37,19 +30,17 @@
       Corti.unpatch();
       expect(window.SpeechRecognition).toBeUndefined();
     });
-
   });
 
-  describe('new SpeechRecognition', function() {
+  describe('new SpeechRecognition', function () {
+    let recognition;
 
-    var recognition;
-
-    beforeEach(function() {
+    beforeEach(function () {
       Corti.patch();
       recognition = new window.SpeechRecognition();
     });
 
-    afterEach(function() {
+    afterEach(function () {
       Corti.unpatch();
     });
 
@@ -76,19 +67,17 @@
     it('should contain the method addEventListener', function () {
       expect(recognition.addEventListener).toEqual(jasmine.any(Function));
     });
-
   });
 
-  describe('SpeechRecognition.start', function() {
+  describe('SpeechRecognition.start', function () {
+    let recognition;
 
-    var recognition;
-
-    beforeEach(function() {
+    beforeEach(function () {
       Corti.patch();
       recognition = new window.SpeechRecognition();
     });
 
-    afterEach(function() {
+    afterEach(function () {
       Corti.unpatch();
     });
 
@@ -102,23 +91,21 @@
       expect(recognition.isStarted()).toBe(false);
       recognition.start();
       expect(recognition.isStarted()).toBe(true);
-      expect(function() {
+      expect(function () {
         recognition.start();
       }).toThrowError();
     });
-
   });
 
-  describe('SpeechRecognition.abort', function() {
+  describe('SpeechRecognition.abort', function () {
+    let recognition;
 
-    var recognition;
-
-    beforeEach(function() {
+    beforeEach(function () {
       Corti.patch();
       recognition = new window.SpeechRecognition();
     });
 
-    afterEach(function() {
+    afterEach(function () {
       Corti.unpatch();
     });
 
@@ -131,19 +118,17 @@
       recognition.abort();
       expect(recognition.isStarted()).toBe(false);
     });
-
   });
 
-  describe('SpeechRecognition.stop', function() {
+  describe('SpeechRecognition.stop', function () {
+    let recognition;
 
-    var recognition;
-
-    beforeEach(function() {
+    beforeEach(function () {
       Corti.patch();
       recognition = new window.SpeechRecognition();
     });
 
-    afterEach(function() {
+    afterEach(function () {
       Corti.unpatch();
     });
 
@@ -156,23 +141,21 @@
       recognition.stop();
       expect(recognition.isStarted()).toBe(false);
     });
-
   });
 
-  describe('SpeechRecognition.onstart', function() {
+  describe('SpeechRecognition.onstart', function () {
+    let spyOnStart;
+    let spyOnStart2;
+    let recognition;
 
-    var spyOnStart;
-    var spyOnStart2;
-    var recognition;
-
-    beforeEach(function() {
+    beforeEach(function () {
       spyOnStart = jasmine.createSpy();
       spyOnStart2 = jasmine.createSpy();
       Corti.patch();
       recognition = new window.SpeechRecognition();
     });
 
-    afterEach(function() {
+    afterEach(function () {
       Corti.unpatch();
     });
 
@@ -181,7 +164,7 @@
       recognition.onstart = spyOnStart;
       recognition.start();
       expect(spyOnStart.calls.count()).toEqual(1);
-      expect(function() {
+      expect(function () {
         recognition.start();
       }).toThrowError();
       expect(spyOnStart.calls.count()).toEqual(1);
@@ -198,23 +181,21 @@
       expect(spyOnStart).not.toHaveBeenCalled();
       expect(spyOnStart2.calls.count()).toEqual(1);
     });
-
   });
 
-  describe('SpeechRecognition.onsoundstart', function() {
+  describe('SpeechRecognition.onsoundstart', function () {
+    let spyOnSoundStart;
+    let spyOnSoundStart2;
+    let recognition;
 
-    var spyOnSoundStart;
-    var spyOnSoundStart2;
-    var recognition;
-
-    beforeEach(function() {
+    beforeEach(function () {
       spyOnSoundStart = jasmine.createSpy();
       spyOnSoundStart2 = jasmine.createSpy();
       Corti.patch();
       recognition = new window.SpeechRecognition();
     });
 
-    afterEach(function() {
+    afterEach(function () {
       Corti.unpatch();
     });
 
@@ -222,7 +203,7 @@
       recognition.onsoundstart = spyOnSoundStart;
       recognition.start();
       expect(spyOnSoundStart).not.toHaveBeenCalled();
-      recognition.say("Next time you want to stab me in the back, have the guts to do it to my face");
+      recognition.say('Next time you want to stab me in the back, have the guts to do it to my face');
       expect(spyOnSoundStart.calls.count()).toEqual(1);
     });
 
@@ -231,13 +212,13 @@
       recognition.onsoundstart = spyOnSoundStart;
       recognition.start();
       expect(spyOnSoundStart).not.toHaveBeenCalled();
-      recognition.say("Next time you want to stab me in the back, have the guts to do it to my face");
+      recognition.say('Next time you want to stab me in the back, have the guts to do it to my face');
       expect(spyOnSoundStart.calls.count()).toEqual(1);
       recognition.say("Man walks down the street in a hat like that, you know he's not afraid of anything");
       expect(spyOnSoundStart.calls.count()).toEqual(1);
       recognition.abort();
       recognition.start();
-      recognition.say("Well, my time of not taking you seriously is coming to a middle");
+      recognition.say('Well, my time of not taking you seriously is coming to a middle');
       expect(spyOnSoundStart.calls.count()).toEqual(2);
     });
 
@@ -251,23 +232,21 @@
       expect(spyOnSoundStart).not.toHaveBeenCalled();
       expect(spyOnSoundStart2.calls.count()).toEqual(1);
     });
-
   });
 
-  describe('SpeechRecognition.onend', function() {
+  describe('SpeechRecognition.onend', function () {
+    let spyOnEnd;
+    let spyOnEnd2;
+    let recognition;
 
-    var spyOnEnd;
-    var spyOnEnd2;
-    var recognition;
-
-    beforeEach(function() {
+    beforeEach(function () {
       spyOnEnd = jasmine.createSpy();
       spyOnEnd2 = jasmine.createSpy();
       Corti.patch();
       recognition = new window.SpeechRecognition();
     });
 
-    afterEach(function() {
+    afterEach(function () {
       Corti.unpatch();
     });
 
@@ -301,16 +280,14 @@
       expect(spyOnEnd).not.toHaveBeenCalled();
       expect(spyOnEnd2.calls.count()).toEqual(1);
     });
-
   });
 
-  describe('SpeechRecognition.onresult', function() {
+  describe('SpeechRecognition.onresult', function () {
+    let spyOnResult;
+    let spyOnResult2;
+    let recognition;
 
-    var spyOnResult;
-    var spyOnResult2;
-    var recognition;
-
-    beforeEach(function() {
+    beforeEach(function () {
       spyOnResult = jasmine.createSpy();
       spyOnResult2 = jasmine.createSpy();
       Corti.patch();
@@ -318,7 +295,7 @@
       recognition.continuous = true;
     });
 
-    afterEach(function() {
+    afterEach(function () {
       Corti.unpatch();
     });
 
@@ -326,7 +303,7 @@
       recognition.onresult = spyOnResult;
       recognition.start();
       expect(spyOnResult).not.toHaveBeenCalled();
-      recognition.say("Next time you want to stab me in the back, have the guts to do it to my face");
+      recognition.say('Next time you want to stab me in the back, have the guts to do it to my face');
       expect(spyOnResult.calls.count()).toEqual(1);
       recognition.say("Man walks down the street in a hat like that, you know he's not afraid of anything");
       expect(spyOnResult.calls.count()).toEqual(2);
@@ -337,27 +314,25 @@
       recognition.onresult = spyOnResult2;
       recognition.start();
       expect(spyOnResult).not.toHaveBeenCalled();
-      recognition.say("Curse your sudden but inevitable betrayal");
+      recognition.say('Curse your sudden but inevitable betrayal');
       expect(spyOnResult).not.toHaveBeenCalled();
       expect(spyOnResult2.calls.count()).toEqual(1);
     });
-
   });
 
-  describe('SpeechRecognition.addEventListener("start")', function() {
+  describe('SpeechRecognition.addEventListener("start")', function () {
+    let spyOnStart;
+    let spyOnStart2;
+    let recognition;
 
-    var spyOnStart;
-    var spyOnStart2;
-    var recognition;
-
-    beforeEach(function() {
+    beforeEach(function () {
       spyOnStart = jasmine.createSpy();
       spyOnStart2 = jasmine.createSpy();
       Corti.patch();
       recognition = new window.SpeechRecognition();
     });
 
-    afterEach(function() {
+    afterEach(function () {
       Corti.unpatch();
     });
 
@@ -366,7 +341,7 @@
       recognition.addEventListener('start', spyOnStart);
       recognition.start();
       expect(spyOnStart.calls.count()).toEqual(1);
-      expect(function() {
+      expect(function () {
         recognition.start();
       }).toThrowError();
       expect(spyOnStart.calls.count()).toEqual(1);
@@ -383,21 +358,19 @@
       expect(spyOnStart.calls.count()).toEqual(1);
       expect(spyOnStart2.calls.count()).toEqual(1);
     });
-
   });
 
-  describe('SpeechRecognition.addEventListener("end")', function() {
+  describe('SpeechRecognition.addEventListener("end")', function () {
+    let spyOnEnd;
+    let recognition;
 
-    var spyOnEnd;
-    var recognition;
-
-    beforeEach(function() {
+    beforeEach(function () {
       spyOnEnd = jasmine.createSpy();
       Corti.patch();
       recognition = new window.SpeechRecognition();
     });
 
-    afterEach(function() {
+    afterEach(function () {
       Corti.unpatch();
     });
 
@@ -420,21 +393,19 @@
       recognition.stop();
       expect(spyOnEnd.calls.count()).toEqual(1);
     });
-
   });
 
-  describe('SpeechRecognition.addEventListener("result")', function() {
+  describe('SpeechRecognition.addEventListener("result")', function () {
+    let spyOnResult;
+    let recognition;
 
-    var spyOnResult;
-    var recognition;
-
-    beforeEach(function() {
+    beforeEach(function () {
       spyOnResult = jasmine.createSpy();
       Corti.patch();
       recognition = new window.SpeechRecognition();
     });
 
-    afterEach(function() {
+    afterEach(function () {
       Corti.unpatch();
     });
 
@@ -444,24 +415,22 @@
       expect(spyOnResult).not.toHaveBeenCalled();
       recognition.say("You can't take the sky from me");
       expect(spyOnResult.calls.count()).toEqual(1);
-      recognition.say("Well, my time of not taking you seriously is coming to a middle");
+      recognition.say('Well, my time of not taking you seriously is coming to a middle');
       expect(spyOnResult.calls.count()).toEqual(2);
     });
-
   });
 
-  describe('SpeechRecognition.addEventListener("blerg")', function() {
+  describe('SpeechRecognition.addEventListener("blerg")', function () {
+    let spyOnBlerg;
+    let recognition;
 
-    var spyOnBlerg;
-    var recognition;
-
-    beforeEach(function() {
+    beforeEach(function () {
       spyOnBlerg = jasmine.createSpy();
       Corti.patch();
       recognition = new window.SpeechRecognition();
     });
 
-    afterEach(function() {
+    afterEach(function () {
       Corti.unpatch();
     });
 
@@ -473,21 +442,19 @@
       recognition.abort();
       expect(spyOnBlerg).not.toHaveBeenCalled();
     });
-
   });
 
-  describe('SpeechRecognition.say', function() {
+  describe('SpeechRecognition.say', function () {
+    let spyOnResult;
+    let recognition;
 
-    var spyOnResult;
-    var recognition;
-
-    beforeEach(function() {
+    beforeEach(function () {
       spyOnResult = jasmine.createSpy();
       Corti.patch();
       recognition = new window.SpeechRecognition();
     });
 
-    afterEach(function() {
+    afterEach(function () {
       Corti.unpatch();
     });
 
@@ -497,40 +464,38 @@
       expect(spyOnResult).not.toHaveBeenCalled();
       recognition.say("You can't take the sky from me");
       expect(spyOnResult.calls.count()).toEqual(1);
-      recognition.say("Well, my time of not taking you seriously is coming to a middle");
+      recognition.say('Well, my time of not taking you seriously is coming to a middle');
       expect(spyOnResult.calls.count()).toEqual(2);
     });
 
-    it('should do nothing when speech recognition isn\'t started', function () {
+    it("should do nothing when speech recognition isn't started", function () {
       recognition.addEventListener('result', spyOnResult);
       recognition.start();
       expect(spyOnResult).not.toHaveBeenCalled();
       recognition.say("You can't take the sky from me");
       expect(spyOnResult.calls.count()).toEqual(1);
       recognition.abort();
-      recognition.say("Well, my time of not taking you seriously is coming to a middle");
+      recognition.say('Well, my time of not taking you seriously is coming to a middle');
       expect(spyOnResult.calls.count()).toEqual(1);
     });
-
   });
 
-  describe('start event', function() {
+  describe('start event', function () {
+    let recognition;
+    let event;
 
-    var recognition;
-    var event;
-
-    beforeEach(function() {
+    beforeEach(function () {
       Corti.patch();
       recognition = new window.SpeechRecognition();
     });
 
-    afterEach(function() {
+    afterEach(function () {
       Corti.unpatch();
       event = undefined;
     });
 
     it('should be returned when using addEventListener', function () {
-      recognition.addEventListener('start', function(ev) {
+      recognition.addEventListener('start', function (ev) {
         event = ev;
       });
       recognition.start();
@@ -538,7 +503,7 @@
     });
 
     it('should be returned when using onstart attribute', function () {
-      recognition.onstart = function(ev) {
+      recognition.onstart = function (ev) {
         event = ev;
       };
       recognition.start();
@@ -549,26 +514,24 @@
       recognition.start();
       expect(event).toEqual(undefined);
     });
-
   });
 
-  describe('end event', function() {
+  describe('end event', function () {
+    let recognition;
+    let event;
 
-    var recognition;
-    var event;
-
-    beforeEach(function() {
+    beforeEach(function () {
       Corti.patch();
       recognition = new window.SpeechRecognition();
     });
 
-    afterEach(function() {
+    afterEach(function () {
       Corti.unpatch();
       event = undefined;
     });
 
     it('should be returned when using addEventListener', function () {
-      recognition.addEventListener('end', function(ev) {
+      recognition.addEventListener('end', function (ev) {
         event = ev;
       });
       recognition.start();
@@ -577,7 +540,7 @@
     });
 
     it('should be returned when using onend attribute', function () {
-      recognition.onend = function(ev) {
+      recognition.onend = function (ev) {
         event = ev;
       };
       recognition.start();
@@ -590,25 +553,23 @@
       recognition.abort();
       expect(event).toEqual(undefined);
     });
-
   });
 
-  describe('SpeechRecognitionEvent', function() {
+  describe('SpeechRecognitionEvent', function () {
+    let recognition;
+    let event;
 
-    var recognition;
-    var event;
-
-    beforeEach(function() {
+    beforeEach(function () {
       Corti.patch();
       recognition = new window.SpeechRecognition();
-      recognition.addEventListener('result', function(ev) {
+      recognition.addEventListener('result', function (ev) {
         event = ev;
       });
       recognition.start();
       recognition.say("You can't take the sky from me");
     });
 
-    afterEach(function() {
+    afterEach(function () {
       Corti.unpatch();
       event = undefined;
     });
@@ -632,19 +593,17 @@
     it('should contain a interpretation property with the value null', function () {
       expect(event.interpretation).toEqual(null);
     });
-
   });
 
-  describe('SpeechRecognitionResultList (SpeechRecognitionEvent.results)', function() {
+  describe('SpeechRecognitionResultList (SpeechRecognitionEvent.results)', function () {
+    let recognition;
+    let resultsListObject;
+    let event;
 
-    var recognition;
-    var resultsListObject;
-    var event;
-
-    beforeEach(function() {
+    beforeEach(function () {
       Corti.patch();
       recognition = new window.SpeechRecognition();
-      recognition.addEventListener('result', function(ev) {
+      recognition.addEventListener('result', function (ev) {
         resultsListObject = ev.results;
         event = ev;
       });
@@ -652,7 +611,7 @@
       recognition.say("You can't take the sky from me");
     });
 
-    afterEach(function() {
+    afterEach(function () {
       Corti.unpatch();
       resultsListObject = undefined;
     });
@@ -676,33 +635,31 @@
     it('should contain SpeechRecognitionResult object in index defined by resultIndex', function () {
       expect(resultsListObject[event.resultIndex]).toEqual(jasmine.any(Object));
     });
-
   });
 
-  describe('SpeechRecognitionResultList.item', function() {
+  describe('SpeechRecognitionResultList.item', function () {
+    let recognition;
+    let resultsListObject;
+    const sentence = "You can't take the sky from me";
 
-    var recognition;
-    var resultsListObject;
-    var sentence = "You can't take the sky from me";
-
-    beforeEach(function() {
+    beforeEach(function () {
       Corti.patch();
       recognition = new window.SpeechRecognition();
       recognition.maxAlternatives = 5;
-      recognition.addEventListener('result', function(ev) {
+      recognition.addEventListener('result', function (ev) {
         resultsListObject = ev.results;
       });
       recognition.start();
       recognition.say(sentence);
     });
 
-    afterEach(function() {
+    afterEach(function () {
       Corti.unpatch();
       resultsListObject = undefined;
     });
 
     it('should throw an exception if called with no arguments', function () {
-      expect(function() {
+      expect(function () {
         resultsListObject.item();
       }).toThrowError();
     });
@@ -722,25 +679,23 @@
     it('should return null if argument is greater than or equal to the number of SpeechRecognitionResults', function () {
       expect(resultsListObject.item(99)).toEqual(null);
     });
-
   });
 
-  describe('SpeechRecognitionResult (SpeechRecognitionEvent.results[0])', function() {
+  describe('SpeechRecognitionResult (SpeechRecognitionEvent.results[0])', function () {
+    let recognition;
+    let resultObject;
 
-    var recognition;
-    var resultObject;
-
-    beforeEach(function() {
+    beforeEach(function () {
       Corti.patch();
       recognition = new window.SpeechRecognition();
-      recognition.addEventListener('result', function(ev) {
+      recognition.addEventListener('result', function (ev) {
         resultObject = ev.results[ev.resultIndex];
       });
       recognition.start();
       recognition.say("You can't take the sky from me");
     });
 
-    afterEach(function() {
+    afterEach(function () {
       Corti.unpatch();
       resultObject = undefined;
     });
@@ -765,33 +720,31 @@
     it('should contain a final attribute with a value of true', function () {
       expect(resultObject.final).toEqual(true);
     });
-
   });
 
-  describe('SpeechRecognitionResult.item', function() {
+  describe('SpeechRecognitionResult.item', function () {
+    let recognition;
+    let resultObject;
+    const sentence = "You can't take the sky from me";
 
-    var recognition;
-    var resultObject;
-    var sentence = "You can't take the sky from me";
-
-    beforeEach(function() {
+    beforeEach(function () {
       Corti.patch();
       recognition = new window.SpeechRecognition();
       recognition.maxAlternatives = 5;
-      recognition.addEventListener('result', function(ev) {
+      recognition.addEventListener('result', function (ev) {
         resultObject = ev.results[ev.resultIndex];
       });
       recognition.start();
       recognition.say(sentence);
     });
 
-    afterEach(function() {
+    afterEach(function () {
       Corti.unpatch();
       resultObject = undefined;
     });
 
     it('should throw an exception if called with no arguments', function () {
-      expect(function() {
+      expect(function () {
         resultObject.item();
       }).toThrowError();
     });
@@ -812,25 +765,23 @@
     it('should return null if argument is greater than or equal to the number of alternatives returned', function () {
       expect(resultObject.item(99)).toEqual(null);
     });
-
   });
 
-  describe('SpeechRecognitionAlternative (SpeechRecognitionEvent.results[0][n])', function() {
+  describe('SpeechRecognitionAlternative (SpeechRecognitionEvent.results[0][n])', function () {
+    let recognition;
+    let alternativeObject;
 
-    var recognition;
-    var alternativeObject;
-
-    beforeEach(function() {
+    beforeEach(function () {
       Corti.patch();
       recognition = new window.SpeechRecognition();
-      recognition.addEventListener('result', function(ev) {
+      recognition.addEventListener('result', function (ev) {
         alternativeObject = ev.results[ev.resultIndex][0];
       });
       recognition.start();
       recognition.say("You can't take the sky from me");
     });
 
-    afterEach(function() {
+    afterEach(function () {
       Corti.unpatch();
       alternativeObject = undefined;
     });
@@ -844,22 +795,20 @@
       expect(alternativeObject.confidence <= 1).toEqual(true);
       expect(alternativeObject.confidence >= 0).toEqual(true);
     });
-
   });
 
-  describe('SpeechRecognition.continuous', function() {
+  describe('SpeechRecognition.continuous', function () {
+    let recognition;
+    let spyOnResult;
 
-    var recognition;
-    var spyOnResult;
-
-    beforeEach(function() {
+    beforeEach(function () {
       spyOnResult = jasmine.createSpy();
       Corti.patch();
       recognition = new window.SpeechRecognition();
       recognition.onresult = spyOnResult;
     });
 
-    afterEach(function() {
+    afterEach(function () {
       Corti.unpatch();
     });
 
@@ -868,7 +817,7 @@
       recognition.continuous = false;
       recognition.start();
       expect(recognition.isStarted()).toBe(true);
-      recognition.say("Curse your sudden but inevitable betrayal");
+      recognition.say('Curse your sudden but inevitable betrayal');
       expect(recognition.isStarted()).toBe(false);
       expect(spyOnResult.calls.count()).toEqual(1);
     });
@@ -878,12 +827,10 @@
       recognition.continuous = true;
       recognition.start();
       expect(recognition.isStarted()).toBe(true);
-      recognition.say("Next time you want to stab me in the back, have the guts to do it to my face");
+      recognition.say('Next time you want to stab me in the back, have the guts to do it to my face');
       recognition.say("Man walks down the street in a hat like that, you know he's not afraid of anything");
       expect(recognition.isStarted()).toBe(true);
       expect(spyOnResult.calls.count()).toEqual(2);
     });
-
   });
-
 })();
