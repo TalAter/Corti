@@ -8,7 +8,7 @@
   "use strict";
 
   // Save a reference to the global object (window in the browser)
-  var _root = this;
+  var _root = this; // @TODO: Consider globalThis
 
   // Holds the browser's implementation
   var _originalSpeechRecognition = false;
@@ -137,13 +137,13 @@
 
       // Create the start event
       var startEvent = document.createEvent('CustomEvent');
-      startEvent.initCustomEvent('result', false, false, {'sentence': sentence});
+      startEvent.initCustomEvent('result', false, false, {'sentence': sentence}); // @TODO: Is this using deprecated functionality?
       startEvent.resultIndex = 0;
       startEvent.results = {
         'item': itemFunction,
         0: {
           'item': itemFunction,
-          'final': true
+          'final': true // @TODO: Should this be isFinal?
         }
       };
       for (commandIterator = 0; commandIterator<_maxAlternatives; commandIterator++) {
