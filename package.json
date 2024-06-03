@@ -16,10 +16,10 @@
   },
   "scripts": {
     "dev": "npm-run-all --parallel format:watch lint:watch",
-    "format": "prettier --write 'src/**/*.js' 'test/spec/**/*.js' 'package.json' '.eslintrc.json'",
-    "format:watch": "chokidar 'src/**/*.js' 'test/spec/**/*.js' -c 'npm run format'",
-    "lint": "eslint 'src/**/*.js' 'test/spec/**/*.js'",
-    "lint:watch": "chokidar 'src/**/*.js' 'test/spec/**/*.js' -c 'npm run lint'",
+    "format": "prettier --write 'src/**/*.js' 'test/**/*.js' 'package.json' '.eslintrc.json'",
+    "format:watch": "chokidar 'src/**/*.js' 'test/**/*.js' -c 'npm run format'",
+    "lint": "eslint 'src/**/*.js' 'test/**/*.js'",
+    "lint:watch": "chokidar 'src/**/*.js' 'test/**/*.js' -c 'npm run lint'",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "devDependencies": {
