@@ -2,12 +2,7 @@
   "name": "corti",
   "version": "1.0.0-dev",
   "description": "Replace window.SpeechRecognition with a mock object and automate your tests",
-  "keywords": [
-    "recognition",
-    "speech",
-    "speechrecognition",
-    "webkitSpeechRecognition"
-  ],
+  "keywords": ["recognition", "speech", "speechrecognition", "webkitSpeechRecognition"],
   "homepage": "https://github.com/TalAter/Corti",
   "bugs": {
     "url": "https://github.com/TalAter/Corti/issues"
