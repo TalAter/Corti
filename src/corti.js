@@ -19,10 +19,6 @@ class corti {
 
   #soundStarted = false;
 
-  constructor() {
-    this.#started = false;
-  }
-
   get maxAlternatives() {
     return this.#maxAlternatives;
   }
