@@ -211,23 +211,19 @@ class corti {
   /**
    * Emit an event to all registered listeners
    * @param {string} eventType The type of event to emit
+   * @param {Object} eventObject The event object to emit
    * @todo Corti will emit events in the order they were registered with addEventListener and then with the on* property. This is not the same as the Chrome implementation which will emit the listener registered with on* at the order it was registered.
    */
-  #emit(eventType, event) {
-    let eventObject;
-    if (event) {
-      eventObject = event;
-    } else {
-      eventObject = new BasicEvent(eventType);
-    }
+  #emit(eventType, eventObject) {
+    const eventToEmit = eventObject || new BasicEvent(eventType);
 
     // Iterate over the listeners for the given event type
     if (this.#listeners.has(eventType)) {
-      this.#listeners.get(eventType).forEach(listener => listener(eventObject));
+      this.#listeners.get(eventType).forEach(listener => listener(eventToEmit));
     }
     const onListener = this.#onListeners.get(`on${eventType}`);
     if (onListener) {
-      onListener(eventObject);
+      onListener(eventToEmit);
     }
   }
 }
