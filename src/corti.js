@@ -97,6 +97,7 @@ class corti {
   /**
    * Starts the speech recognition
    * @throws {DOMException} If recognition has already started
+   * @todo Emit a start event
    */
   start() {
     if (this.#started) {
@@ -104,12 +105,11 @@ class corti {
     }
 
     this.#started = true;
-
-    // @TODO: Emit a start event
   }
 
   /**
    * Aborts the speech recognition
+   * @todo Emit an end event
    */
   abort() {
     if (!this.#started) {
@@ -117,13 +117,11 @@ class corti {
     }
     this.#started = false;
     this.#soundStarted = false;
-
-    // @TODO: Emit an end event
   }
 
   /**
    * Stops the speech recognition and attempts to return a SpeechRecognitionResult
-   * @TODO Implement stop's behavior according to the spec. Unlike abort, stop will attempt to return a SpeechRecognitionResult using the audio captured so far.
+   * @todo Implement stop's behavior according to the spec. Unlike abort, stop will attempt to return a SpeechRecognitionResult using the audio captured so far.
    */
   stop() {
     return this.abort();
