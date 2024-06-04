@@ -209,6 +209,22 @@ describe('SpeechRecognition', () => {
     });
   });
 
+  describe('events', () => {
+    it('should run callbacks in the order they were registered with addEventListener and then with the on* property', () => {
+      let output = '';
+      recognition.onstart = () => (output += '1');
+      recognition.addEventListener('start', () => (output += '2'));
+      recognition.addEventListener('start', () => (output += '3'));
+      recognition.start();
+      expect(output).toBe('231');
+      recognition.abort();
+      output = '';
+      recognition.onstart = () => (output += '4');
+      recognition.start();
+      expect(output).toBe('234');
+    });
+  });
+
   describe('start event', () => {
     it('should run each callback registered with addEventListener once per start', () => {
       const startListener1 = vi.fn();
