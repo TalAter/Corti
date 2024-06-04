@@ -1,4 +1,4 @@
-import { afterAll, beforeEach, beforeAll, vi, it, expect, describe } from 'vitest';
+import { afterAll, beforeEach, beforeAll, vi, it, expect, describe, test } from 'vitest';
 
 import corti from '../src/corti';
 
@@ -20,6 +20,8 @@ beforeEach(() => {
 
   recognition = new globalThis.SpeechRecognition();
 });
+
+test.todo('removeEventListener()');
 
 describe('SpeechRecognition.addEventListener()', () => {
   it('should be a method', () => {

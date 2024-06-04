@@ -181,6 +181,14 @@ class corti {
   }
 
   /**
+   * Remove an event listener for the given event type
+   * @param {string} type The type of event to remove
+   * @param {Function} listener The callback function to be removed
+   * @todo Implement removeEventListener
+   */
+  removeEventListener(type, listener) {}
+
+  /**
    * Emit an event to all registered listeners
    * @param {string} eventType The type of event to emit
    * @todo Corti will emit events in the order they were registered with addEventListener and then with the on* property. This is not the same as the Chrome implementation which will emit the listener registered with on* at the order it was registered.
