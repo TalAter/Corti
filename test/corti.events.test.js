@@ -224,7 +224,7 @@ describe('end event', () => {
     expect(spyFn2).toBeCalledTimes(2);
   });
 
-  it('should pass the event event object to the callback', () => {
+  it('should pass the event object to the callback', () => {
     recognition.onend = spyFn1;
     recognition.addEventListener('end', spyFn2);
     recognition.start();
