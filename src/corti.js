@@ -45,6 +45,46 @@ class corti {
    */
   #soundStarted = false;
 
+  /**
+   * Listeners for the events registered with addEventListener
+   * @type {Map<string, Function[]>}
+   * @private
+   * @todo Add support for other listeners defined in the spec https://dvcs.w3.org/hg/speech-api/raw-file/tip/webspeechapi#speechreco-events
+   */
+  #listeners = new Map([
+    ['start', []],
+    ['soundstart', []],
+    ['end', []],
+    ['result', []],
+  ]);
+
+  /**
+   * Listeners for the events registered with on* methods
+   * @type {Map<string, Function|null>}
+   * @private
+   * @todo Add support for other listeners defined in the spec https://dvcs.w3.org/hg/speech-api/raw-file/tip/webspeechapi#speechreco-events
+   */
+  #onListeners = new Map([
+    ['onstart', null],
+    ['onsoundstart', null],
+    ['onend', null],
+    ['onresult', null],
+  ]);
+
+  constructor() {
+    // Dynamically add getters and setters for on* properties
+    for (const eventType of this.#onListeners.keys()) {
+      Object.defineProperty(this, eventType, {
+        get: () => this.#onListeners.get(eventType),
+        set: value => {
+          if (typeof value === 'function') {
+            this.#onListeners.set(eventType, value);
+          }
+        },
+      });
+    }
+  }
+
   get maxAlternatives() {
     return this.#maxAlternatives;
   }
@@ -97,7 +137,6 @@ class corti {
   /**
    * Starts the speech recognition
    * @throws {DOMException} If recognition has already started
-   * @todo Emit a start event
    */
   start() {
     if (this.#started) {
@@ -105,6 +144,9 @@ class corti {
     }
 
     this.#started = true;
+
+    // Emit a start event
+    this.#emit('start');
   }
 
   /**
@@ -117,6 +159,7 @@ class corti {
     }
     this.#started = false;
     this.#soundStarted = false;
+    this.#emit('end');
   }
 
   /**
@@ -125,6 +168,40 @@ class corti {
    */
   stop() {
     return this.abort();
+  }
+
+  /**
+   * Register an event listener for the given event type
+   * @param {string} type The type of event to listen for
+   * @param {Function} listener The callback function to be called when the event is fired
+   */
+  addEventListener(type, listener) {
+    if (this.#listeners.has(type)) {
+      this.#listeners.get(type).push(listener);
+    }
+  }
+
+  /**
+   * Emit an event to all registered listeners
+   * @param {string} eventType The type of event to emit
+   */
+  #emit(eventType) {
+    // Create a new event object
+    let eventObject;
+    if (typeof window !== 'undefined') {
+      eventObject = new window.Event(eventType);
+    } else {
+      eventObject = { type: eventType };
+    }
+
+    // Iterate over the listeners for the given event type
+    if (this.#listeners.has(eventType)) {
+      this.#listeners.get(eventType).forEach(listener => listener(eventObject));
+    }
+    const onListener = this.#onListeners.get(`on${eventType}`);
+    if (onListener) {
+      onListener(eventObject);
+    }
   }
 }
 
