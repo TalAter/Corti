@@ -2,6 +2,8 @@ import { afterAll, beforeEach, beforeAll, vi, it, expect, describe, test } from 
 
 import corti from '../src/corti';
 
+import SpeechRecognitionResultList from '../src/SpeechRecognitionResultList';
+
 beforeAll(() => {
   vi.stubGlobal('SpeechRecognition', corti);
 });
@@ -232,6 +234,36 @@ describe('end event', () => {
 
     expect(spyFn1).toHaveBeenCalledWith(expect.objectContaining({ type: 'end' }));
     expect(spyFn2).toHaveBeenCalledWith(expect.objectContaining({ type: 'end' }));
+  });
+});
+
+describe('result event', () => {
+  it('should run each callback registered with addEventListener or onresult once per result returned', () => {
+    recognition.addEventListener('result', spyFn1);
+    recognition.onresult = spyFn2;
+    recognition.continuous = true;
+    recognition.start();
+    expect(spyFn1).toBeCalledTimes(0);
+    expect(spyFn2).toBeCalledTimes(0);
+    recognition.say('Next time you want to stab me in the back, have the guts to do it to my face');
+    expect(spyFn1).toBeCalledTimes(1);
+    expect(spyFn2).toBeCalledTimes(1);
+    recognition.say("Man walks down the street in a hat like that, you know he's not afraid of anything");
+    expect(spyFn1).toBeCalledTimes(2);
+    expect(spyFn2).toBeCalledTimes(2);
+  });
+
+  it('should pass the event object to the callback', () => {
+    recognition.onresult = spyFn1;
+    recognition.start();
+    recognition.say('Next time you want to stab me in the back, have the guts to do it to my face');
+    expect(spyFn1).toHaveBeenCalledWith(
+      expect.objectContaining({
+        type: 'result',
+        results: expect.any(SpeechRecognitionResultList),
+        resultIndex: expect.any(Number),
+      })
+    );
   });
 });
 
