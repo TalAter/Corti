@@ -73,7 +73,7 @@ class corti {
 
   constructor() {
     // Dynamically add getters and setters for on* properties
-    for (const eventType of this.#onListeners.keys()) {
+    this.#onListeners.forEach((_, eventType) => {
       Object.defineProperty(this, eventType, {
         get: () => this.#onListeners.get(eventType),
         set: value => {
@@ -82,7 +82,7 @@ class corti {
           }
         },
       });
-    }
+    });
   }
 
   get maxAlternatives() {
@@ -180,6 +180,8 @@ class corti {
     }
   }
 
+  /* eslint class-methods-use-this: "off" */
+  /* eslint no-unused-vars: "off" */
   /**
    * Remove an event listener for the given event type
    * @param {string} type The type of event to remove

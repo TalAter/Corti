@@ -126,16 +126,24 @@ describe('SpeechRecognition.on* event handler properties', () => {
   });
 });
 
-it('should run callbacks in the order they were registered with addEventListener and then with the on* property', () => {
+it('should run callbacks in the order they were registered with addEventListener followed by the on* property', () => {
   let output = '';
-  recognition.onstart = () => (output += '1');
-  recognition.addEventListener('start', () => (output += '2'));
-  recognition.addEventListener('start', () => (output += '3'));
+  recognition.onstart = () => {
+    output += '1';
+  };
+  recognition.addEventListener('start', () => {
+    output += '2';
+  });
+  recognition.addEventListener('start', () => {
+    output += '3';
+  });
   recognition.start();
   expect(output).toBe('231');
   recognition.abort();
   output = '';
-  recognition.onstart = () => (output += '4');
+  recognition.onstart = () => {
+    output += '4';
+  };
   recognition.start();
   expect(output).toBe('234');
 });
@@ -229,7 +237,11 @@ describe('end event', () => {
 
 describe('nonexistent event', () => {
   it('should not throw an error', () => {
-    expect(() => recognition.addEventListener('blerg', spyFn1)).not.toThrowError();
-    expect(() => (recognition.onblerg = spyFn1)).not.toThrowError();
+    expect(() => {
+      recognition.addEventListener('blerg', spyFn1);
+    }).not.toThrowError();
+    expect(() => {
+      recognition.onblerg = spyFn1;
+    }).not.toThrowError();
   });
 });
