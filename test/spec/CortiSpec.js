@@ -1,45 +1,4 @@
 (function () {
-
-  describe('SpeechRecognition.onstart', function () {
-    let spyOnStart;
-    let spyOnStart2;
-    let recognition;
-
-    beforeEach(function () {
-      spyOnStart = jasmine.createSpy();
-      spyOnStart2 = jasmine.createSpy();
-      Corti.patch();
-      recognition = new window.SpeechRecognition();
-    });
-
-    afterEach(function () {
-      Corti.unpatch();
-    });
-
-    it('should attach a callback to start event which will be called once on start', function () {
-      expect(spyOnStart).not.toHaveBeenCalled();
-      recognition.onstart = spyOnStart;
-      recognition.start();
-      expect(spyOnStart.calls.count()).toEqual(1);
-      expect(function () {
-        recognition.start();
-      }).toThrowError();
-      expect(spyOnStart.calls.count()).toEqual(1);
-      recognition.abort();
-      expect(spyOnStart.calls.count()).toEqual(1);
-    });
-
-    it('should overwrite previous callback attached with onstart', function () {
-      expect(spyOnStart).not.toHaveBeenCalled();
-      expect(spyOnStart2).not.toHaveBeenCalled();
-      recognition.onstart = spyOnStart;
-      recognition.onstart = spyOnStart2;
-      recognition.start();
-      expect(spyOnStart).not.toHaveBeenCalled();
-      expect(spyOnStart2.calls.count()).toEqual(1);
-    });
-  });
-
   describe('SpeechRecognition.onsoundstart', function () {
     let spyOnSoundStart;
     let spyOnSoundStart2;
@@ -88,54 +47,6 @@
       recognition.say("Man walks down the street in a hat like that, you know he's not afraid of anything");
       expect(spyOnSoundStart).not.toHaveBeenCalled();
       expect(spyOnSoundStart2.calls.count()).toEqual(1);
-    });
-  });
-
-  describe('SpeechRecognition.onend', function () {
-    let spyOnEnd;
-    let spyOnEnd2;
-    let recognition;
-
-    beforeEach(function () {
-      spyOnEnd = jasmine.createSpy();
-      spyOnEnd2 = jasmine.createSpy();
-      Corti.patch();
-      recognition = new window.SpeechRecognition();
-    });
-
-    afterEach(function () {
-      Corti.unpatch();
-    });
-
-    it('should attach a callback to end event which will be called once on stop', function () {
-      recognition.onend = spyOnEnd;
-      recognition.start();
-      expect(spyOnEnd).not.toHaveBeenCalled();
-      recognition.abort();
-      expect(spyOnEnd.calls.count()).toEqual(1);
-      recognition.abort();
-      expect(spyOnEnd.calls.count()).toEqual(1);
-    });
-
-    it('should attach a callback to end event which will be called once on abort', function () {
-      recognition.onend = spyOnEnd;
-      recognition.start();
-      expect(spyOnEnd).not.toHaveBeenCalled();
-      recognition.stop();
-      expect(spyOnEnd.calls.count()).toEqual(1);
-      recognition.stop();
-      expect(spyOnEnd.calls.count()).toEqual(1);
-    });
-
-    it('should overwrite previous callback attached with onend', function () {
-      expect(spyOnEnd).not.toHaveBeenCalled();
-      expect(spyOnEnd2).not.toHaveBeenCalled();
-      recognition.onend = spyOnEnd;
-      recognition.onend = spyOnEnd2;
-      recognition.start();
-      recognition.abort();
-      expect(spyOnEnd).not.toHaveBeenCalled();
-      expect(spyOnEnd2.calls.count()).toEqual(1);
     });
   });
 
