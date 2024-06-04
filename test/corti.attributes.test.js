@@ -17,7 +17,12 @@ describe('SpeechRecognition definition', () => {
 
 describe('SpeechRecognition', () => {
   let recognition;
+  let spyFn1;
+  let spyFn2;
+
   beforeEach(() => {
+    spyFn1 = vi.fn();
+    spyFn2 = vi.fn();
     recognition = new globalThis.SpeechRecognition();
   });
 
@@ -149,6 +154,30 @@ describe('SpeechRecognition', () => {
       expect(recognition.continuous).toEqual(Boolean([]));
       recognition.continuous = undefined;
       expect(recognition.continuous).toEqual(Boolean(undefined));
+    });
+
+    it('should cause SpeechRecognition to stop after a single result when set to false', () => {
+      recognition.addEventListener('end', spyFn1);
+      recognition.addEventListener('result', spyFn2);
+      recognition.continuous = false;
+      recognition.start();
+      expect(spyFn1).toBeCalledTimes(0);
+      recognition.say('Next time you want to stab me in the back, have the guts to do it to my face');
+      recognition.say("You can't take the sky from me");
+      expect(spyFn1).toBeCalledTimes(1);
+      expect(spyFn2).toBeCalledTimes(1);
+    });
+
+    it('should cause SpeechRecognition to recognize multiple consecutive results when set to true', () => {
+      recognition.addEventListener('end', spyFn1);
+      recognition.addEventListener('result', spyFn2);
+      recognition.continuous = true;
+      recognition.start();
+      expect(spyFn1).toBeCalledTimes(0);
+      recognition.say('Next time you want to stab me in the back, have the guts to do it to my face');
+      recognition.say("You can't take the sky from me");
+      expect(spyFn1).toBeCalledTimes(0);
+      expect(spyFn2).toBeCalledTimes(2);
     });
   });
 
