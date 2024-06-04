@@ -171,6 +171,15 @@ describe('start event', () => {
     expect(spyFn1).toBeCalledTimes(0);
     expect(spyFn2).toBeCalledTimes(2);
   });
+
+  it('should pass the event event object to the callback', () => {
+    recognition.onstart = spyFn1;
+    recognition.addEventListener('start', spyFn2);
+    recognition.start();
+
+    expect(spyFn1).toHaveBeenCalledWith(expect.objectContaining({ type: 'start' }));
+    expect(spyFn2).toHaveBeenCalledWith(expect.objectContaining({ type: 'start' }));
+  });
 });
 
 describe('end event', () => {
@@ -205,6 +214,16 @@ describe('end event', () => {
     recognition.stop();
     expect(spyFn1).toBeCalledTimes(0);
     expect(spyFn2).toBeCalledTimes(2);
+  });
+
+  it('should pass the event event object to the callback', () => {
+    recognition.onend = spyFn1;
+    recognition.addEventListener('end', spyFn2);
+    recognition.start();
+    recognition.abort();
+
+    expect(spyFn1).toHaveBeenCalledWith(expect.objectContaining({ type: 'end' }));
+    expect(spyFn2).toHaveBeenCalledWith(expect.objectContaining({ type: 'end' }));
   });
 });
 
