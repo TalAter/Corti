@@ -11,7 +11,13 @@ afterAll(() => {
 });
 
 let recognition;
+let spyFn1;
+let spyFn2;
+
 beforeEach(() => {
+  spyFn1 = vi.fn();
+  spyFn2 = vi.fn();
+
   recognition = new globalThis.SpeechRecognition();
 });
 
@@ -21,53 +27,48 @@ describe('SpeechRecognition.addEventListener()', () => {
   });
 
   it('should attach a callback to an event which will be called once per emit', () => {
-    const startListener = vi.fn();
-    recognition.addEventListener('start', startListener);
+    recognition.addEventListener('start', spyFn1);
     recognition.start();
-    expect(startListener).toBeCalledTimes(1);
+    expect(spyFn1).toBeCalledTimes(1);
     expect(function shiny() {
       recognition.start();
     }).toThrowError();
-    expect(startListener).toBeCalledTimes(1);
+    expect(spyFn1).toBeCalledTimes(1);
     recognition.abort();
-    expect(startListener).toBeCalledTimes(1);
+    expect(spyFn1).toBeCalledTimes(1);
     recognition.start();
-    expect(startListener).toBeCalledTimes(2);
+    expect(spyFn1).toBeCalledTimes(2);
   });
 
   it('should support attaching multiple callbacks to an event', () => {
-    const startListener1 = vi.fn();
-    const startListener2 = vi.fn();
-    recognition.addEventListener('start', startListener1);
+    recognition.addEventListener('start', spyFn1);
     recognition.start();
-    expect(startListener1).toBeCalledTimes(1);
-    expect(startListener2).toBeCalledTimes(0);
+    expect(spyFn1).toBeCalledTimes(1);
+    expect(spyFn2).toBeCalledTimes(0);
     recognition.abort();
-    expect(startListener1).toBeCalledTimes(1);
-    expect(startListener2).toBeCalledTimes(0);
-    recognition.addEventListener('start', startListener2);
+    expect(spyFn1).toBeCalledTimes(1);
+    expect(spyFn2).toBeCalledTimes(0);
+    recognition.addEventListener('start', spyFn2);
     recognition.start();
-    expect(startListener1).toBeCalledTimes(2);
-    expect(startListener2).toBeCalledTimes(1);
+    expect(spyFn1).toBeCalledTimes(2);
+    expect(spyFn2).toBeCalledTimes(1);
   });
 
   it('should support attaching callback to different events', () => {
-    const startListener = vi.fn();
-    const endListener = vi.fn();
-    recognition.addEventListener('start', startListener);
-    recognition.addEventListener('end', endListener);
+    recognition.addEventListener('start', spyFn1);
+    recognition.addEventListener('end', spyFn2);
     recognition.start();
-    expect(startListener).toBeCalledTimes(1);
-    expect(endListener).toBeCalledTimes(0);
+    expect(spyFn1).toBeCalledTimes(1);
+    expect(spyFn2).toBeCalledTimes(0);
     recognition.abort();
-    expect(startListener).toBeCalledTimes(1);
-    expect(endListener).toBeCalledTimes(1);
+    expect(spyFn1).toBeCalledTimes(1);
+    expect(spyFn2).toBeCalledTimes(1);
     recognition.start();
-    expect(startListener).toBeCalledTimes(2);
-    expect(endListener).toBeCalledTimes(1);
+    expect(spyFn1).toBeCalledTimes(2);
+    expect(spyFn2).toBeCalledTimes(1);
     recognition.stop();
-    expect(startListener).toBeCalledTimes(2);
-    expect(endListener).toBeCalledTimes(2);
+    expect(spyFn1).toBeCalledTimes(2);
+    expect(spyFn2).toBeCalledTimes(2);
   });
 
   // @TODO: Check for context in which callbacks are called
@@ -91,40 +92,35 @@ describe('SpeechRecognition.on* event handler properties', () => {
   });
 
   it('should be of type function when assigned a function', () => {
-    recognition.onstart = function shiny() {};
+    recognition.onstart = spyFn1;
     expect(recognition.onstart).toBeInstanceOf(Function);
   });
 
   it('should return the current value when called as an attribute', () => {
-    const sampleFunction = function shiny() {};
     expect(recognition.onstart).toBeNull();
-    recognition.onstart = sampleFunction;
-    expect(recognition.onstart).toBe(sampleFunction);
+    recognition.onstart = spyFn1;
+    expect(recognition.onstart).toBe(spyFn1);
   });
 
   it('should overwrite the previous function when assigned a new one', () => {
-    const sampleFunction1 = vi.fn();
-    const sampleFunction2 = vi.fn();
-    recognition.onstart = sampleFunction1;
-    expect(recognition.onstart).toBe(sampleFunction1);
-    recognition.onstart = sampleFunction2;
-    expect(recognition.onstart).toBe(sampleFunction2);
+    recognition.onstart = spyFn1;
+    expect(recognition.onstart).toBe(spyFn1);
+    recognition.onstart = spyFn2;
+    expect(recognition.onstart).toBe(spyFn2);
   });
 
   it('should support attaching a single callback to different events', () => {
-    const sampleFunction1 = vi.fn();
-    const sampleFunction2 = vi.fn();
-    recognition.onstart = sampleFunction1;
-    recognition.onstart = sampleFunction2;
-    expect(sampleFunction1).toBeCalledTimes(0);
-    expect(sampleFunction2).toBeCalledTimes(0);
+    recognition.onstart = spyFn1;
+    recognition.onstart = spyFn2;
+    expect(spyFn1).toBeCalledTimes(0);
+    expect(spyFn2).toBeCalledTimes(0);
     recognition.start();
-    expect(sampleFunction1).toBeCalledTimes(0);
-    expect(sampleFunction2).toBeCalledTimes(1);
+    expect(spyFn1).toBeCalledTimes(0);
+    expect(spyFn2).toBeCalledTimes(1);
     recognition.abort();
     recognition.start();
-    expect(sampleFunction1).toBeCalledTimes(0);
-    expect(sampleFunction2).toBeCalledTimes(2);
+    expect(spyFn1).toBeCalledTimes(0);
+    expect(spyFn2).toBeCalledTimes(2);
   });
 });
 
@@ -144,37 +140,33 @@ it('should run callbacks in the order they were registered with addEventListener
 
 describe('start event', () => {
   it('should run each callback registered with addEventListener once per start', () => {
-    const startListener1 = vi.fn();
-    const startListener2 = vi.fn();
-    recognition.addEventListener('start', startListener1);
+    recognition.addEventListener('start', spyFn1);
     recognition.start();
-    expect(startListener1).toBeCalledTimes(1);
+    expect(spyFn1).toBeCalledTimes(1);
     expect(function shiny() {
       recognition.start();
     }).toThrowError();
-    expect(startListener2).toBeCalledTimes(0);
-    recognition.addEventListener('start', startListener2);
-    expect(startListener1).toBeCalledTimes(1);
+    expect(spyFn2).toBeCalledTimes(0);
+    recognition.addEventListener('start', spyFn2);
+    expect(spyFn1).toBeCalledTimes(1);
     recognition.abort();
-    expect(startListener1).toBeCalledTimes(1);
+    expect(spyFn1).toBeCalledTimes(1);
     recognition.start();
-    expect(startListener1).toBeCalledTimes(2);
-    expect(startListener2).toBeCalledTimes(1);
+    expect(spyFn1).toBeCalledTimes(2);
+    expect(spyFn2).toBeCalledTimes(1);
   });
 
   it('should run the last callback registered with onstart once per start', () => {
-    const startListener1 = vi.fn();
-    const startListener2 = vi.fn();
-    recognition.onstart = startListener1;
-    recognition.onstart = startListener2;
+    recognition.onstart = spyFn1;
+    recognition.onstart = spyFn2;
     recognition.start();
-    expect(startListener1).toBeCalledTimes(0);
-    expect(startListener2).toBeCalledTimes(1);
+    expect(spyFn1).toBeCalledTimes(0);
+    expect(spyFn2).toBeCalledTimes(1);
     recognition.abort();
-    expect(startListener1).toBeCalledTimes(0);
-    expect(startListener2).toBeCalledTimes(1);
+    expect(spyFn1).toBeCalledTimes(0);
+    expect(spyFn2).toBeCalledTimes(1);
     recognition.start();
-    expect(startListener1).toBeCalledTimes(0);
-    expect(startListener2).toBeCalledTimes(2);
+    expect(spyFn1).toBeCalledTimes(0);
+    expect(spyFn2).toBeCalledTimes(2);
   });
 });
