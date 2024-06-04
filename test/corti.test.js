@@ -244,5 +244,21 @@ describe('SpeechRecognition', () => {
       expect(startListener1).toBeCalledTimes(2);
       expect(startListener2).toBeCalledTimes(1);
     });
+
+    it('should run the last callback registered with onstart once per start', () => {
+      const startListener1 = vi.fn();
+      const startListener2 = vi.fn();
+      recognition.onstart = startListener1;
+      recognition.onstart = startListener2;
+      recognition.start();
+      expect(startListener1).toBeCalledTimes(0);
+      expect(startListener2).toBeCalledTimes(1);
+      recognition.abort();
+      expect(startListener1).toBeCalledTimes(0);
+      expect(startListener2).toBeCalledTimes(1);
+      recognition.start();
+      expect(startListener1).toBeCalledTimes(0);
+      expect(startListener2).toBeCalledTimes(2);
+    });
   });
 });
