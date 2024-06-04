@@ -4,6 +4,7 @@
 //! license : MIT
 //! https://github.com/TalAter/Corti
 
+import BasicEvent from './BasicEvent';
 import DOMException from './DOMException';
 
 class corti {
@@ -212,13 +213,12 @@ class corti {
    * @param {string} eventType The type of event to emit
    * @todo Corti will emit events in the order they were registered with addEventListener and then with the on* property. This is not the same as the Chrome implementation which will emit the listener registered with on* at the order it was registered.
    */
-  #emit(eventType) {
-    // Create a new event object
+  #emit(eventType, event) {
     let eventObject;
-    if (typeof window !== 'undefined') {
-      eventObject = new window.Event(eventType);
+    if (event) {
+      eventObject = event;
     } else {
-      eventObject = { type: eventType };
+      eventObject = new BasicEvent(eventType);
     }
 
     // Iterate over the listeners for the given event type
