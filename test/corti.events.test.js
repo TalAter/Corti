@@ -109,7 +109,7 @@ describe('SpeechRecognition.on* event handler properties', () => {
     expect(recognition.onstart).toBe(spyFn2);
   });
 
-  it('should support attaching a single callback to different events', () => {
+  it('should support attaching just a single callback to different events', () => {
     recognition.onstart = spyFn1;
     recognition.onstart = spyFn2;
     expect(spyFn1).toBeCalledTimes(0);
@@ -166,6 +166,41 @@ describe('start event', () => {
     expect(spyFn1).toBeCalledTimes(0);
     expect(spyFn2).toBeCalledTimes(1);
     recognition.start();
+    expect(spyFn1).toBeCalledTimes(0);
+    expect(spyFn2).toBeCalledTimes(2);
+  });
+});
+
+describe('end event', () => {
+  it('should run each callback registered with addEventListener once per SpeechRecognition service disconnect', () => {
+    recognition.addEventListener('end', spyFn1);
+    recognition.addEventListener('end', spyFn2);
+    recognition.start();
+    expect(spyFn1).toBeCalledTimes(0);
+    expect(spyFn2).toBeCalledTimes(0);
+    recognition.abort();
+    expect(spyFn1).toBeCalledTimes(1);
+    expect(spyFn2).toBeCalledTimes(1);
+    recognition.start();
+    recognition.stop();
+    expect(spyFn1).toBeCalledTimes(2);
+    expect(spyFn2).toBeCalledTimes(2);
+    recognition.stop();
+    expect(spyFn1).toBeCalledTimes(2);
+    expect(spyFn2).toBeCalledTimes(2);
+  });
+
+  it('should run the last callback registered with onend once per SpeechRecognition service disconnect', () => {
+    recognition.onend = spyFn1;
+    recognition.onend = spyFn2;
+    recognition.start();
+    expect(spyFn1).toBeCalledTimes(0);
+    expect(spyFn2).toBeCalledTimes(0);
+    recognition.abort();
+    expect(spyFn1).toBeCalledTimes(0);
+    expect(spyFn2).toBeCalledTimes(1);
+    recognition.start();
+    recognition.stop();
     expect(spyFn1).toBeCalledTimes(0);
     expect(spyFn2).toBeCalledTimes(2);
   });
