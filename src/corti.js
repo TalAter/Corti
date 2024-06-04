@@ -151,7 +151,6 @@ class corti {
 
   /**
    * Aborts the speech recognition
-   * @todo Emit an end event
    */
   abort() {
     if (!this.#started) {
