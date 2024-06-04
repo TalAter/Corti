@@ -207,3 +207,10 @@ describe('end event', () => {
     expect(spyFn2).toBeCalledTimes(2);
   });
 });
+
+describe('nonexistent event', () => {
+  it('should not throw an error', () => {
+    expect(() => recognition.addEventListener('blerg', spyFn1)).not.toThrowError();
+    expect(() => (recognition.onblerg = spyFn1)).not.toThrowError();
+  });
+});
