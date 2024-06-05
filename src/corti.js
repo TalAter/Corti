@@ -204,7 +204,7 @@ class corti {
     }
 
     const SREvent = new SpeechRecognitionEvent('result', {
-      results: new SpeechRecognitionResultList(),
+      results: new SpeechRecognitionResultList([]),
       resultIndex: 0,
     });
     this.#emit('result', SREvent);
