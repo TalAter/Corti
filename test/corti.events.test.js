@@ -1,4 +1,4 @@
-import { afterAll, beforeEach, beforeAll, vi, it, expect, describe, test } from 'vitest';
+import { afterAll, beforeAll, beforeEach, describe, expect, it, test, vi } from 'vitest';
 
 import corti from '../src/corti';
 
