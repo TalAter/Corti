@@ -16,17 +16,16 @@ let spyFn1;
 beforeEach(() => {
   spyFn1 = vi.fn();
   recognition = new globalThis.SpeechRecognition();
+  recognition.addEventListener('result', spyFn1);
 });
 
 describe('SpeechRecognition.say()', () => {
   it("should do nothing when speech recognition isn't started", () => {
-    recognition.addEventListener('result', spyFn1);
     recognition.say("You can't take the sky from me");
     expect(spyFn1).toBeCalledTimes(0);
   });
 
   it('should fire the result event once per phrase said', () => {
-    recognition.addEventListener('result', spyFn1);
     recognition.continuous = true;
     recognition.start();
     expect(spyFn1).toBeCalledTimes(0);
