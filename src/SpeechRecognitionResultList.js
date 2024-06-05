@@ -11,7 +11,7 @@ class SpeechRecognitionResultList {
   }
 
   *[Symbol.iterator]() {
-    for (let i = 0; i < this.length; i++) {
+    for (let i = 0; i < this.length; i += 1) {
       yield this[i];
     }
   }
