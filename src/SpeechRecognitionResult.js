@@ -1,14 +1,11 @@
 class SpeechRecognitionResult {
+  isFinal = true;
+
   constructor(alternatives = []) {
     alternatives.forEach((alternative, index) => {
       this[index] = alternative;
     });
     this.length = alternatives.length;
-    this.isFinal = true;
-  }
-
-  get isFinal() {
-    return this.isFinal;
   }
 
   item(index) {
