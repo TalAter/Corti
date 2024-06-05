@@ -8,6 +8,7 @@ import BasicEvent from './BasicEvent';
 import DOMException from './DOMException';
 import SpeechRecognitionEvent from './SpeechRecognitionEvent';
 import SpeechRecognitionResultList from './SpeechRecognitionResultList';
+import SpeechRecognitionResult from './SpeechRecognitionResult';
 
 class corti {
   /**
@@ -204,7 +205,7 @@ class corti {
     }
 
     const SREvent = new SpeechRecognitionEvent('result', {
-      results: new SpeechRecognitionResultList([]),
+      results: new SpeechRecognitionResultList([new SpeechRecognitionResult()]),
       resultIndex: 0,
     });
     this.#emit('result', SREvent);
