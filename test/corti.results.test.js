@@ -105,8 +105,8 @@ describe('SpeechRecognitionResultList (SpeechRecognitionEvent.results)', () => {
     });
 
     it('should return the first result if the given index is not a number', () => {
-      expect(resultListObject.item('goldstar')).toEqual(expect.any(SpeechRecognitionResult));
-      expect(resultListObject.item(NaN)).toEqual(expect.any(SpeechRecognitionResult));
+      expect(resultListObject.item('goldstar')).toEqual(resultListObject.item(0));
+      expect(resultListObject.item(NaN)).toEqual(resultListObject.item(0));
     });
 
     it('should throw a TypeError if called with no arguments', () => {
