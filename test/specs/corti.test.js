@@ -32,11 +32,11 @@ describe('SpeechRecognition', () => {
     });
   });
 
-  // describe('.say()', () => {
-  //   it('should be a method', () => {
-  //     expect(recognition.say).toBeInstanceOf(Function);
-  //   });
-  // });
+  describe('.say()', () => {
+    it('should be a method', () => {
+      expect(recognition.say).toBeInstanceOf(Function);
+    });
+  });
 
   describe('.start()', () => {
     it('should be a method', () => {
