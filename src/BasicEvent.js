@@ -4,4 +4,4 @@ class BasicEvent {
   }
 }
 
-export default typeof window !== 'undefined' ? Event : BasicEvent;
+export default typeof globalThis.Event !== 'undefined' ? globalThis.Event : BasicEvent;
