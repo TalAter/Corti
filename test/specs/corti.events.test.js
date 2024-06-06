@@ -74,9 +74,6 @@ describe('SpeechRecognition.addEventListener()', () => {
     expect(spyFn1).toBeCalledTimes(2);
     expect(spyFn2).toBeCalledTimes(2);
   });
-
-  // @TODO: Check for context in which callbacks are called
-  // @TODO: Check for execution order of callbacks
 });
 
 describe('SpeechRecognition.on* event handler properties', () => {
