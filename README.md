@@ -1,5 +1,4 @@
 # Corti
-[![Build Status](https://travis-ci.org/TalAter/Corti.svg?branch=master)](https://travis-ci.org/TalAter/Corti)
 
 Corti is a drop in replacement for the browser's SpeechRecognition object. It mocks some of the behaviour of the native object to facilitate automated testing, and provides a number of extra methods beyond the spec to help testing.
 
