@@ -1,4 +1,6 @@
 import { afterAll, beforeAll, beforeEach, describe, expect, it, vi } from 'vitest';
+import { getSentence } from './testUtils';
+
 import corti from '../src/corti';
 
 beforeAll(() => {
@@ -162,8 +164,8 @@ describe('SpeechRecognition', () => {
       recognition.continuous = false;
       recognition.start();
       expect(spyFn1).toBeCalledTimes(0);
-      recognition.say('Next time you want to stab me in the back, have the guts to do it to my face');
-      recognition.say("You can't take the sky from me");
+      recognition.say(getSentence(0));
+      recognition.say(getSentence(1));
       expect(spyFn1).toBeCalledTimes(1);
       expect(spyFn2).toBeCalledTimes(1);
     });
@@ -174,8 +176,8 @@ describe('SpeechRecognition', () => {
       recognition.continuous = true;
       recognition.start();
       expect(spyFn1).toBeCalledTimes(0);
-      recognition.say('Next time you want to stab me in the back, have the guts to do it to my face');
-      recognition.say("You can't take the sky from me");
+      recognition.say(getSentence(0));
+      recognition.say(getSentence(1));
       expect(spyFn1).toBeCalledTimes(0);
       expect(spyFn2).toBeCalledTimes(2);
     });

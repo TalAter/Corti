@@ -1,4 +1,5 @@
 import { afterAll, beforeAll, beforeEach, describe, expect, it, vi } from 'vitest';
+import { getLastSpiedSpeechRecognitionEvent, getSentence } from './testUtils';
 
 import corti from '../src/corti';
 
@@ -21,7 +22,8 @@ beforeEach(() => {
 
 describe('SpeechRecognition.say()', () => {
   it("should do nothing when speech recognition isn't started", () => {
-    recognition.say("You can't take the sky from me");
+    recognition.abort();
+    recognition.say(getSentence(0));
     expect(spyFn1).toBeCalledTimes(0);
   });
 
@@ -29,9 +31,9 @@ describe('SpeechRecognition.say()', () => {
     recognition.continuous = true;
     recognition.start();
     expect(spyFn1).toBeCalledTimes(0);
-    recognition.say("You can't take the sky from me");
+    recognition.say(getSentence(0));
     expect(spyFn1).toBeCalledTimes(1);
-    recognition.say('Well, my time of not taking you seriously is coming to a middle');
+    recognition.say(getSentence(1));
     expect(spyFn1).toBeCalledTimes(2);
   });
 });

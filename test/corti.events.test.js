@@ -1,7 +1,7 @@
 import { afterAll, beforeAll, beforeEach, describe, expect, it, test, vi } from 'vitest';
+import { getSentence } from './testUtils';
 
 import corti from '../src/corti';
-
 import SpeechRecognitionResultList from '../src/SpeechRecognitionResultList';
 
 beforeAll(() => {
@@ -245,10 +245,10 @@ describe('result event', () => {
     recognition.start();
     expect(spyFn1).toBeCalledTimes(0);
     expect(spyFn2).toBeCalledTimes(0);
-    recognition.say('Next time you want to stab me in the back, have the guts to do it to my face');
+    recognition.say(getSentence(0));
     expect(spyFn1).toBeCalledTimes(1);
     expect(spyFn2).toBeCalledTimes(1);
-    recognition.say("Man walks down the street in a hat like that, you know he's not afraid of anything");
+    recognition.say(getSentence(1));
     expect(spyFn1).toBeCalledTimes(2);
     expect(spyFn2).toBeCalledTimes(2);
   });
@@ -256,7 +256,7 @@ describe('result event', () => {
   it('should pass the event object to the callback', () => {
     recognition.onresult = spyFn1;
     recognition.start();
-    recognition.say('Next time you want to stab me in the back, have the guts to do it to my face');
+    recognition.say(getSentence(0));
     expect(spyFn1).toHaveBeenCalledWith(
       expect.objectContaining({
         type: 'result',

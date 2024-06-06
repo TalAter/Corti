@@ -1,7 +1,7 @@
 import { afterAll, beforeAll, beforeEach, describe, expect, it, test, vi } from 'vitest';
+import { getLastSpiedSpeechRecognitionEvent, getSentence } from './testUtils';
 
 import corti from '../src/corti';
-
 import SpeechRecognitionEvent from '../src/SpeechRecognitionEvent';
 import SpeechRecognitionResultList from '../src/SpeechRecognitionResultList';
 import SpeechRecognitionResult from '../src/SpeechRecognitionResult';
@@ -14,7 +14,6 @@ afterAll(() => {
   vi.unstubAllGlobals();
 });
 
-const sampleSentence = "You can't take the sky from me";
 let recognition;
 let spyFn1;
 
@@ -24,7 +23,7 @@ beforeEach(() => {
   recognition = new globalThis.SpeechRecognition();
   recognition.addEventListener('result', spyFn1);
   recognition.start();
-  recognition.say(sampleSentence);
+  recognition.say(getSentence(0));
 });
 
 describe('SpeechRecognitionEvent', () => {
@@ -70,7 +69,7 @@ describe('SpeechRecognitionResultList (SpeechRecognitionEvent.results)', () => {
   let resultListObject;
 
   beforeEach(() => {
-    resultListObject = spyFn1.mock.calls[spyFn1.mock.calls.length - 1][0].results;
+    resultListObject = getLastSpiedSpeechRecognitionEvent(spyFn1).results;
   });
 
   it('should be a SpeechRecognitionResultList object', () => {
