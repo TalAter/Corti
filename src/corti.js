@@ -223,7 +223,11 @@ class corti {
       }
     }
 
-    const speechRecognitionAlternatives = sentences.map(sentence => new SpeechRecognitionAlternative(sentence));
+    const speechRecognitionAlternatives = sentences.map((sentence, index) => {
+      // Confidence starts at 0.95 and decreases by 10% but never under 0.01
+      const confidence = Math.max(0.95 * Math.pow(0.9, index), 0.01);
+      return new SpeechRecognitionAlternative(sentence, confidence);
+    });
 
     const SREvent = new SpeechRecognitionEvent('result', {
       results: new SpeechRecognitionResultList([new SpeechRecognitionResult(speechRecognitionAlternatives)]),
