@@ -76,9 +76,11 @@ describe('SpeechRecognitionResultList (SpeechRecognitionEvent.results)', () => {
     expect(resultListObject).toBeInstanceOf(SpeechRecognitionResultList);
   });
 
-  it('should have a length attribute which is a number', () => {
-    expect(resultListObject.length).toBeDefined();
-    expect(typeof resultListObject.length).toEqual('number');
+  describe('.length', () => {
+    it('should return a number', () => {
+      expect(resultListObject.length).toBeDefined();
+      expect(typeof resultListObject.length).toEqual('number');
+    });
   });
 
   it('should be iterable', () => {
