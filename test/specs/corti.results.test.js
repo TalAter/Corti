@@ -120,7 +120,9 @@ describe('SpeechRecognitionResultList (SpeechRecognitionEvent.results)', () => {
     });
   });
 
-  test.todo('should have a length equal to the number of results returned');
+  test('should have a length equal to the number of results returned', () => {
+    expect(resultListObject.length).toEqual(1);
+  });
 });
 
 describe('SpeechRecognitionResult', () => {
