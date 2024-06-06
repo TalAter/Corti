@@ -1,6 +1,6 @@
 import { afterAll, beforeAll, beforeEach, describe, expect, it, vi } from 'vitest';
 
-import corti from '../src/corti';
+import corti from '../../src/corti';
 
 beforeAll(() => {
   vi.stubGlobal('SpeechRecognition', corti);

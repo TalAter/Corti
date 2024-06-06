@@ -1,11 +1,11 @@
 import { afterAll, beforeAll, beforeEach, describe, expect, it, test, vi } from 'vitest';
-import { getLastSpiedSpeechRecognitionEvent, getSentence } from './testUtils';
+import { getLastSpiedSpeechRecognitionEvent, getSentence } from '../testUtils';
 
-import corti from '../src/corti';
-import SpeechRecognitionEvent from '../src/SpeechRecognitionEvent';
-import SpeechRecognitionResultList from '../src/SpeechRecognitionResultList';
-import SpeechRecognitionResult from '../src/SpeechRecognitionResult';
-import SpeechRecognitionAlternative from '../src/SpeechRecognitionAlternative';
+import corti from '../../src/corti';
+import SpeechRecognitionEvent from '../../src/SpeechRecognitionEvent';
+import SpeechRecognitionResultList from '../../src/SpeechRecognitionResultList';
+import SpeechRecognitionResult from '../../src/SpeechRecognitionResult';
+import SpeechRecognitionAlternative from '../../src/SpeechRecognitionAlternative';
 
 beforeAll(() => {
   vi.stubGlobal('SpeechRecognition', corti);
