@@ -5,6 +5,7 @@ import corti from '../src/corti';
 import SpeechRecognitionEvent from '../src/SpeechRecognitionEvent';
 import SpeechRecognitionResultList from '../src/SpeechRecognitionResultList';
 import SpeechRecognitionResult from '../src/SpeechRecognitionResult';
+import SpeechRecognitionAlternative from '../src/SpeechRecognitionAlternative';
 
 beforeAll(() => {
   vi.stubGlobal('SpeechRecognition', corti);
@@ -22,6 +23,7 @@ beforeEach(() => {
 
   recognition = new globalThis.SpeechRecognition();
   recognition.addEventListener('result', spyFn1);
+  recognition.continuous = true;
   recognition.start();
   recognition.say(getSentence(0));
 });
@@ -119,4 +121,71 @@ describe('SpeechRecognitionResultList (SpeechRecognitionEvent.results)', () => {
   });
 
   test.todo('should have a length equal to the number of results returned');
+});
+
+describe('SpeechRecognitionResult', () => {
+  let resultObject;
+
+  beforeEach(() => {
+    resultObject = getLastSpiedSpeechRecognitionEvent(spyFn1).results.item(0);
+  });
+
+  it('should be a SpeechRecognitionResult object', () => {
+    expect(resultObject).toBeInstanceOf(SpeechRecognitionResult);
+  });
+
+  describe('.length', () => {
+    it('should return a number', () => {
+      expect(resultObject.length).toBeDefined();
+      expect(resultObject.length).toEqual(expect.any(Number));
+    });
+
+    it('should be equal to the maxAlternatives setting', () => {
+      recognition.maxAlternatives = 1;
+      recognition.say(getSentence(1));
+      expect(getLastSpiedSpeechRecognitionEvent(spyFn1).results.item(0).length).toEqual(1);
+      recognition.maxAlternatives = 4;
+      recognition.say(getSentence(2));
+      expect(getLastSpiedSpeechRecognitionEvent(spyFn1).results.item(0).length).toEqual(4);
+    });
+  });
+
+  describe('.item()', () => {
+    it('should return the SpeechRecognitionAlternative at the given index', () => {
+      expect(resultObject.item).toEqual(expect.any(Function));
+      expect(resultObject.item(0)).toEqual(expect.any(SpeechRecognitionAlternative));
+    });
+
+    it('should return null if the given index is out of bounds', () => {
+      expect(resultObject.item(999)).toEqual(null);
+    });
+
+    it('should return the first result if the given index is not a number', () => {
+      expect(resultObject.item('goldstar')).toEqual(resultObject.item(0));
+      expect(resultObject.item(NaN)).toEqual(resultObject.item(0));
+    });
+
+    it('should throw a TypeError if called with no arguments', () => {
+      expect(() => resultObject.item()).toThrowError(TypeError);
+      expect(() => resultObject.item()).toThrowError(
+        "Failed to execute 'item' on 'SpeechRecognitionResult': 1 argument required, but only 0 present."
+      );
+    });
+  });
+
+  it('should contain an isFinal attribute with a value of true', () => {
+    expect(resultObject.isFinal).toEqual(true);
+  });
+
+  it('should be iterable', () => {
+    expect(resultObject[Symbol.iterator]).toEqual(expect.any(Function));
+    expect([...resultObject]).toEqual([expect.any(SpeechRecognitionAlternative)]);
+    let count = 0;
+    /* eslint-disable no-restricted-syntax */
+    for (const result of resultObject) {
+      expect(result).toEqual(expect.any(SpeechRecognitionAlternative));
+      count += 1;
+    }
+    expect(count).toEqual(1);
+  });
 });
