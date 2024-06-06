@@ -4,12 +4,12 @@
 //! license : MIT
 //! https://github.com/TalAter/Corti
 
-import BasicEvent from './BasicEvent';
-import DOMException from './DOMException';
-import SpeechRecognitionEvent from './SpeechRecognitionEvent';
-import SpeechRecognitionResultList from './SpeechRecognitionResultList';
-import SpeechRecognitionResult from './SpeechRecognitionResult';
-import SpeechRecognitionAlternative from './SpeechRecognitionAlternative';
+import BasicEvent from './BasicEvent.js';
+import DOMException from './DOMException.js';
+import SpeechRecognitionEvent from './SpeechRecognitionEvent.js';
+import SpeechRecognitionResultList from './SpeechRecognitionResultList.js';
+import SpeechRecognitionResult from './SpeechRecognitionResult.js';
+import SpeechRecognitionAlternative from './SpeechRecognitionAlternative.js';
 
 class corti {
   /**
