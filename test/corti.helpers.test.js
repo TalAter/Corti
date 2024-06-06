@@ -18,6 +18,8 @@ beforeEach(() => {
   spyFn1 = vi.fn();
   recognition = new globalThis.SpeechRecognition();
   recognition.addEventListener('result', spyFn1);
+  recognition.continuous = true;
+  recognition.start();
 });
 
 describe('SpeechRecognition.say()', () => {
@@ -28,8 +30,6 @@ describe('SpeechRecognition.say()', () => {
   });
 
   it('should fire the result event once per phrase said', () => {
-    recognition.continuous = true;
-    recognition.start();
     expect(spyFn1).toBeCalledTimes(0);
     recognition.say(getSentence(0));
     expect(spyFn1).toBeCalledTimes(1);
