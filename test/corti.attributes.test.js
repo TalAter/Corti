@@ -39,7 +39,7 @@ describe('SpeechRecognition', () => {
     });
 
     it('should be of type "number" when tested directly', () => {
-      expect(typeof recognition.maxAlternatives).toEqual('number');
+      expect(recognition.maxAlternatives).toEqual(expect.any(Number));
     });
 
     it('should default to 1', () => {
@@ -111,7 +111,7 @@ describe('SpeechRecognition', () => {
       expect(recognition.lang).toEqual('[object Object]');
       recognition.lang = undefined;
       expect(recognition.lang).toEqual('undefined');
-      expect(typeof recognition.lang).toEqual('string');
+      expect(recognition.lang).toEqual(expect.any(String));
     });
 
     it('should return the current value when called as an attribute', () => {

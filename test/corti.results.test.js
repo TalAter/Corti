@@ -81,7 +81,7 @@ describe('SpeechRecognitionResultList (SpeechRecognitionEvent.results)', () => {
   describe('.length', () => {
     it('should return a number', () => {
       expect(resultListObject.length).toBeDefined();
-      expect(typeof resultListObject.length).toEqual('number');
+      expect(resultListObject.length).toEqual(expect.any(Number));
     });
   });
 
