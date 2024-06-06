@@ -1,74 +1,115 @@
 # Corti
 
-Corti is a drop in replacement for the browser's SpeechRecognition object. It mocks some of the behaviour of the native object to facilitate automated testing, and provides a number of extra methods beyond the spec to help testing.
+Corti is a drop in replacement for the browser's SpeechRecognition object. It mocks the behaviour of the native object to facilitate automated testing, and provides a number of extra methods beyond the SpeechRecognition spec to help testing (e.g., to simulate speech in automated tests).
 
-For an example of using Corti to test a real project, check out [SpeechKITT](https://github.com/TalAter/SpeechKITT).
+💡 To easily use Speech Recognition in your own project, check out [annyang](https://github.com/TalAter/annyang).
 
-To easily use Speech Recognition in your own project, check out [annyang](https://github.com/TalAter/annyang).
+## Getting Started
 
-### Sample Test With Corti
+### Installation
 
-````javascript
-// Patch the current environment with a mock Speech Recognition object
-Corti.patch();
+Install `corti` as a dev dependency using npm:
 
-// Interact with the mock object, like you would with the real SpeechRecognition object
-var recognition = new window.SpeechRecognition();
-recognition.onstart = function() {console.log("I'm listening");};
-recognition.addEventListener('result', function(sre) {
-  console.log(sre.results.item(sre.resultIndex).item(0).transcript);
+```bash
+npm install --save-dev corti
+```
+
+### Usage
+
+#### In node.js
+
+```javascript
+// Vitest example
+import corti from '../src/corti.js';
+import { describe, it, expect, beforeEach, beforeAll, afterAll, vi } from 'vitest';
+
+beforeAll(() => {
+  vi.stubGlobal('SpeechRecognition', corti);
 });
-recognition.addEventListener('end', function() {console.log("Quiet");});
-recognition.continuous = true;
 
-// Use extra utility methods added to the mock object to assist with testing
-expect(recognition.isStarted()).toBe(false);
-recognition.start();
-expect(recognition.isStarted()).toBe(true);
-recognition.abort();
-expect(recognition.isStarted()).toBe(false);
+afterAll(() => {
+  vi.unstubAllGlobals();
+});
 
-// Simulate speech recognition
-recognition.addEventListener('result', mySpyFunction);
-expect(mySpyFunction).not.toHaveBeenCalled();
-recognition.say("Next time you want to stab me in the back, have the guts to do it to my face");
-expect(mySpyFunction).toHaveBeenCalled();
-````
+describe('Mirror mirror on the wall', () => {
+  let recognition;
+  let spyFn;
+
+  beforeEach(() => {
+    recognition = new globalThis.SpeechRecognition();
+    spyFn = vi.fn();
+    recognition.maxAlternatives = 5;
+    recognition.onresult = spyFn;
+    recognition.start();
+  });
+
+  it('should call callback when called with a single sentence', () => {
+    recognition.say('Hello world');
+    expect(spyFn).toHaveBeenCalled();
+    const event = spyFn.mock.calls[0][0];
+    expect(event.results[0][0].transcript).toBe('Hello world');
+  });
+
+  it('should call callback when called with multiple sentences', () => {
+    recognition.say(['Hello world', 'How are you?']);
+    expect(spyFn).toHaveBeenCalled();
+    const event = spyFn.mock.calls[0][0];
+    expect(event.results[0][0].transcript).toBe('Hello world');
+    expect(event.results[0][1].transcript).toBe('How are you?');
+  });
+});
+```
+
+#### In Browser
+```html
+<script type="module">
+  import corti from 'corti.js';
+  window.SpeechRecognition = corti;
+  const recognition = new window.SpeechRecognition();
+  recognition.onresult = () => console.log('I hear it!');
+  recognition.start();
+  recognition.say('Hello world');
+</script>
+```
+
+For an example of how Corti is used in a real project, check out [SpeechKITT](https://github.com/TalAter/SpeechKITT).
 
 ### Methods Mocked
 
-* start()
-* abort()
-* stop()
-* addEventListener()
+* `start()`
+* `abort()`
+* `stop()`
+* `addEventListener()`
 
 ### Attributes Mocked
 
-* interimResults
-* lang
-* continuous
-* maxAlternatives
-* onstart
-* onend
-* onresult
+* `interimResults`
+* `lang`
+* `continuous`
+* `maxAlternatives`
+* `onstart`
+* `onend`
+* `onresult`
+* `onsoundstart`
 
 ### Events Mocked
 
-* start
-* end
-* result
+* `start`
+* `end`
+* `result`
+* `soundstart`
 
-### Event Objects Mocked
+### Objects Mocked
 
-* SpeechRecognitionEvent
-* SpeechRecognitionResultList
-* SpeechRecognitionResult
-* SpeechRecognitionAlternative
+* `SpeechRecognitionEvent`
+* `SpeechRecognitionResultList`
+* `SpeechRecognitionResult`
+* `SpeechRecognitionAlternative`
 
-### Extra Utility Methods Added To Object
+### Extra Utility Methods Added To Mocked SpeechRecognition Object
 
-* isStarted()
-* say()
+* `isStarted()`
+* `say()`
 
 ### Author
 Tal Ater: [@TalAter](https://twitter.com/TalAter)
