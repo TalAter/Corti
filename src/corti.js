@@ -197,15 +197,33 @@ class corti {
 
   /**
    * Simulate speech said and recognized (if SpeechRecognition is running)
-   * @param {string} sentence The sentence to be said
-   * @todo Add support for alternatives
+   * @param {string|string[]} alternatives The sentence or sentences to be said
    */
-  say(sentence, alternatives = []) {
+  say(alternatives) {
     if (!this.#started) {
       return;
     }
 
-    const speechRecognitionAlternatives = [new SpeechRecognitionAlternative(sentence)];
+    const sentences = Array.isArray(alternatives) ? alternatives : [alternatives];
+
+    // Ensure the length of speechRecognitionAlternatives matches #maxAlternatives
+    if (sentences.length > this.#maxAlternatives) {
+      sentences.splice(this.#maxAlternatives);
+    } else {
+      const paddingNeeded = this.#maxAlternatives - sentences.length;
+      let previousPaddedSentence = sentences[0];
+      for (let i = 0; i < paddingNeeded; i += 1) {
+        // if i is even, add "and so on" to previousPaddedSentence else add "and so forth"
+        if (i % 2 === 0) {
+          previousPaddedSentence = `${previousPaddedSentence} and so on`;
+        } else {
+          previousPaddedSentence = `${previousPaddedSentence} and so forth`;
+        }
+        sentences.push(previousPaddedSentence);
+      }
+    }
+
+    const speechRecognitionAlternatives = sentences.map(sentence => new SpeechRecognitionAlternative(sentence));
 
     const SREvent = new SpeechRecognitionEvent('result', {
       results: new SpeechRecognitionResultList([new SpeechRecognitionResult(speechRecognitionAlternatives)]),
