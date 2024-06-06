@@ -9,6 +9,7 @@ import DOMException from './DOMException';
 import SpeechRecognitionEvent from './SpeechRecognitionEvent';
 import SpeechRecognitionResultList from './SpeechRecognitionResultList';
 import SpeechRecognitionResult from './SpeechRecognitionResult';
+import SpeechRecognitionAlternative from './SpeechRecognitionAlternative';
 
 class corti {
   /**
@@ -199,13 +200,15 @@ class corti {
    * @param {string} sentence The sentence to be said
    * @todo Add support for alternatives
    */
-  say(sentence) {
+  say(sentence, alternatives = []) {
     if (!this.#started) {
       return;
     }
 
+    const speechRecognitionAlternatives = [new SpeechRecognitionAlternative(sentence)];
+
     const SREvent = new SpeechRecognitionEvent('result', {
-      results: new SpeechRecognitionResultList([new SpeechRecognitionResult()]),
+      results: new SpeechRecognitionResultList([new SpeechRecognitionResult(speechRecognitionAlternatives)]),
       resultIndex: 0,
     });
     this.#emit('result', SREvent);
