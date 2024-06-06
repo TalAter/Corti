@@ -189,3 +189,25 @@ describe('SpeechRecognitionResult', () => {
     expect(count).toEqual(1);
   });
 });
+
+describe('SpeechRecognitionAlternative', () => {
+  let alternativeObject;
+
+  beforeEach(() => {
+    alternativeObject = getLastSpiedSpeechRecognitionEvent(spyFn1).results.item(0).item(0);
+  });
+
+  it('should be a SpeechRecognitionAlternative object', () => {
+    expect(alternativeObject).toBeInstanceOf(SpeechRecognitionAlternative);
+  });
+
+  it('should contain a transcript attribute with a string value', () => {
+    expect(alternativeObject.transcript).toEqual(expect.any(String));
+  });
+
+  it('should contain a confidence attribute with a number between 0 and 1', () => {
+    expect(alternativeObject.confidence).toEqual(expect.any(Number));
+    expect(alternativeObject.confidence).toBeGreaterThanOrEqual(0);
+    expect(alternativeObject.confidence).toBeLessThanOrEqual(1);
+  });
+});
