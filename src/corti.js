@@ -44,13 +44,6 @@ class corti {
   #started = false;
 
   /**
-   * Indicates whether sound has started
-   * @type {boolean}
-   * @private
-   */
-  #soundStarted = false;
-
-  /**
    * Listeners for the events registered with addEventListener
    * @type {Map<string, Function[]>}
    * @private
@@ -150,8 +143,8 @@ class corti {
 
     this.#started = true;
 
-    // Emit a start event
     this.#emit('start');
+    this.#emit('soundstart');
   }
 
   /**
@@ -162,7 +155,6 @@ class corti {
       return;
     }
     this.#started = false;
-    this.#soundStarted = false;
     this.#emit('end');
   }
 

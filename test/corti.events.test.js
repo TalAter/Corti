@@ -267,6 +267,29 @@ describe('result event', () => {
   });
 });
 
+describe('soundstart event', () => {
+  it('should run each callback registered with addEventListener or onsoundstart once per start', () => {
+    recognition.addEventListener('soundstart', spyFn1);
+    recognition.onsoundstart = spyFn2;
+    recognition.continuous = true;
+    expect(spyFn1).toBeCalledTimes(0);
+    expect(spyFn2).toBeCalledTimes(0);
+    recognition.start();
+    expect(spyFn1).toBeCalledTimes(1);
+    expect(spyFn2).toBeCalledTimes(1);
+    recognition.say(getSentence(0));
+    recognition.say(getSentence(1));
+    expect(spyFn1).toBeCalledTimes(1);
+    expect(spyFn2).toBeCalledTimes(1);
+    recognition.abort();
+    expect(spyFn1).toBeCalledTimes(1);
+    expect(spyFn2).toBeCalledTimes(1);
+    recognition.start();
+    expect(spyFn1).toBeCalledTimes(2);
+    expect(spyFn2).toBeCalledTimes(2);
+  });
+});
+
 describe('nonexistent event', () => {
   it('should not throw an error', () => {
     expect(() => {
