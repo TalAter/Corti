@@ -16,8 +16,8 @@
   },
   "scripts": {
     "dev": "npm-run-all --parallel format:watch lint:watch",
-    "format": "prettier --write 'src/**/*.js' 'test/**/*.js' 'package.json' '.eslintrc.json'",
-    "format:watch": "chokidar 'src/**/*.js' 'test/**/*.js' -c 'npm run format'",
+    "format": "prettier --write 'src/**/*.js' 'test/**/*.js' 'test/**/*.html' 'package.json' '.eslintrc.json'",
+    "format:watch": "chokidar 'src/**/*.js' 'test/**/*.js' 'test/**/*.html' 'package.json' '.eslintrc.json' -c 'npm run format'",
     "lint": "eslint 'src/**/*.js' 'test/**/*.js'",
     "lint:watch": "chokidar 'src/**/*.js' 'test/**/*.js' -c 'npm run lint'",
     "test": "vitest"
