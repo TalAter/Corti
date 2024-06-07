@@ -20,7 +20,7 @@ npm install --save-dev corti
 
 ```javascript
 // Vitest example
-import corti from '../src/corti.js';
+import corti from 'corti';
 import { describe, it, expect, beforeEach, beforeAll, afterAll, vi } from 'vitest';
 
 beforeAll(() => {
