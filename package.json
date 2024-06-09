@@ -33,7 +33,6 @@
     "lint:watch": "chokidar 'src/**/*.js' 'test/**/*.js' -c 'npm run lint'",
     "test": "vitest"
   },
-  "type": "module",
   "devDependencies": {
     "chokidar-cli": "^3.0.0",
     "eslint": "^8.57.0",
