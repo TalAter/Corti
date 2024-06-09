@@ -4,9 +4,9 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>corti Manual Testing</title>
-    <script src="../dist/corti.js"></script>
-    <script>
-      window.SpeechRecognition = corti.SpeechRecognition;
+    <script type="module">
+      import { SpeechRecognition } from '../dist/corti.mjs.js';
+      window.SpeechRecognition = SpeechRecognition;
     </script>
   </head>
   <body>

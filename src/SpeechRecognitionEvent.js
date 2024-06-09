@@ -1,4 +1,4 @@
-import BasicEvent from './BasicEvent.js';
+import BasicEvent from './BasicEvent';
 
 class SpeechRecognitionEvent extends BasicEvent {
   interpretation = null;

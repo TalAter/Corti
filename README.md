@@ -20,11 +20,11 @@ npm install --save-dev corti
 
 ```javascript
 // Vitest example
-import corti from 'corti';
+import { SpeechRecognition } from 'corti';
 import { describe, it, expect, beforeEach, beforeAll, afterAll, vi } from 'vitest';
 
 beforeAll(() => {
-  vi.stubGlobal('SpeechRecognition', corti);
+  vi.stubGlobal('SpeechRecognition', SpeechRecognition);
 });
 
 afterAll(() => {
@@ -60,11 +60,29 @@ describe('Mirror mirror on the wall', () => {
 });
 ```
 
-#### In Browser
+#### In Browser (ESM)
 ```html
 <script type="module">
-  import corti from 'corti.js';
-  window.SpeechRecognition = corti;
+  // Mock native SpeechRecognition
+  import { SpeechRecognition } from 'corti.js';
+  window.SpeechRecognition = SpeechRecognition;
+
+  // Run some tests
+  const recognition = new window.SpeechRecognition();
+  recognition.onresult = () => console.log('I hear it!');
+  recognition.start();
+  recognition.say('Hello world');
+</script>
+```
+
+#### In Browser (without modules)
+```html
+<script src="../dist/corti.js"></script>
+<script>
+  // Mock native SpeechRecognition
+  window.SpeechRecognition = corti.SpeechRecognition;
+
+  // Run some tests
   const recognition = new window.SpeechRecognition();
   recognition.onresult = () => console.log('I hear it!');
   recognition.start();
@@ -101,6 +119,7 @@ For an example of how Corti is used in a real project, check out [SpeechKITT](ht
 
 ### Objects Mocked
 
+* `SpeechRecognition`
 * `SpeechRecognitionEvent`
 * `SpeechRecognitionResultList`
 * `SpeechRecognitionResult`

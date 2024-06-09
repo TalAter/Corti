@@ -1,15 +1,106 @@
+'use strict';
+
+class BasicEvent {
+  constructor(type) {
+    this.type = type;
+  }
+}
+
+var BasicEvent$1 = typeof globalThis.Event !== 'undefined' ? globalThis.Event : BasicEvent;
+
+const CustomDOMException = (() => {
+  if (typeof globalThis.DOMException !== 'undefined') {
+    return globalThis.DOMException;
+  }
+  return class DOMException extends Error {
+    constructor(message, name) {
+      super(message);
+      this.name = name || 'DOMException';
+    }
+  };
+})();
+
+class SpeechRecognitionEvent extends BasicEvent$1 {
+  interpretation = null;
+
+  emma = null;
+
+  constructor(type, { resultIndex, results }) {
+    super(type);
+    this.resultIndex = resultIndex;
+    this.results = results;
+  }
+}
+
+class SpeechRecognitionResultList {
+  constructor(results = []) {
+    results.forEach((result, index) => {
+      this[index] = result;
+    });
+    this.length = results.length;
+  }
+
+  item(index) {
+    if (arguments.length === 0) {
+      throw new TypeError(
+        "Failed to execute 'item' on 'SpeechRecognitionResultList': 1 argument required, but only 0 present."
+      );
+    }
+    if (typeof index !== 'number' || Number.isNaN(index)) {
+      return this[0] || null;
+    }
+    return this[index] || null;
+  }
+
+  *[Symbol.iterator]() {
+    for (let i = 0; i < this.length; i += 1) {
+      yield this[i];
+    }
+  }
+}
+
+class SpeechRecognitionResult {
+  isFinal = true;
+
+  constructor(alternatives = []) {
+    alternatives.forEach((alternative, index) => {
+      this[index] = alternative;
+    });
+    this.length = alternatives.length;
+  }
+
+  item(index) {
+    if (arguments.length === 0) {
+      throw new TypeError(
+        "Failed to execute 'item' on 'SpeechRecognitionResult': 1 argument required, but only 0 present."
+      );
+    }
+    if (typeof index !== 'number' || Number.isNaN(index)) {
+      return this[0] || null;
+    }
+    return this[index] || null;
+  }
+
+  *[Symbol.iterator]() {
+    for (let i = 0; i < this.length; i += 1) {
+      yield this[i];
+    }
+  }
+}
+
+class SpeechRecognitionAlternative {
+  constructor(transcript, confidence = 1) {
+    this.transcript = transcript;
+    this.confidence = confidence;
+  }
+}
+
 //! Corti - A mock implementation of the browser’s SpeechRecognition for automated testing
 //! version : 1.0.0-dev
 //! author  : Tal Ater @TalAter
 //! license : MIT
 //! https://github.com/TalAter/Corti
 
-import BasicEvent from './BasicEvent';
-import DOMException from './DOMException';
-import SpeechRecognitionEvent from './SpeechRecognitionEvent';
-import SpeechRecognitionResultList from './SpeechRecognitionResultList';
-import SpeechRecognitionResult from './SpeechRecognitionResult';
-import SpeechRecognitionAlternative from './SpeechRecognitionAlternative';
 
 class SpeechRecognition {
   /**
@@ -138,7 +229,7 @@ class SpeechRecognition {
    */
   start() {
     if (this.#started) {
-      throw new DOMException("Failed to execute 'start' on 'SpeechRecognition': recognition has already started.");
+      throw new CustomDOMException("Failed to execute 'start' on 'SpeechRecognition': recognition has already started.");
     }
 
     this.#started = true;
@@ -239,7 +330,7 @@ class SpeechRecognition {
    * @todo Corti will emit events in the order they were registered with addEventListener and then with the on* property. This is not the same as the Chrome implementation which will emit the listener registered with on* at the order it was registered.
    */
   #emit(eventType, eventObject) {
-    const eventToEmit = eventObject || new BasicEvent(eventType);
+    const eventToEmit = eventObject || new BasicEvent$1(eventType);
 
     // Iterate over the listeners for the given event type
     if (this.#listeners.has(eventType)) {
@@ -252,10 +343,9 @@ class SpeechRecognition {
   }
 }
 
-export {
-  SpeechRecognition,
-  SpeechRecognitionEvent,
-  SpeechRecognitionResultList,
-  SpeechRecognitionResult,
-  SpeechRecognitionAlternative,
-};
+exports.SpeechRecognition = SpeechRecognition;
+exports.SpeechRecognitionAlternative = SpeechRecognitionAlternative;
+exports.SpeechRecognitionEvent = SpeechRecognitionEvent;
+exports.SpeechRecognitionResult = SpeechRecognitionResult;
+exports.SpeechRecognitionResultList = SpeechRecognitionResultList;
+//# sourceMappingURL=corti.cjs.js.map
