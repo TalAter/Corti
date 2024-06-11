@@ -16,7 +16,7 @@ npm install --save-dev corti
 
 ### Usage
 
-#### In node.js
+#### In node.js (ESM)
 
 ```javascript
 // Vitest example
@@ -57,6 +57,27 @@ describe('Mirror mirror on the wall', () => {
     expect(event.results[0][0].transcript).toBe('Hello world');
     expect(event.results[0][1].transcript).toBe('How are you?');
   });
+});
+```
+
+#### In node.js (CJS)
+```javascript
+// Jest example
+const { SpeechRecognition } = require('corti');
+
+beforeAll(() => {
+  global.SpeechRecognition = SpeechRecognition;
+});
+
+test('SpeechRecognition', () => {
+  const speech = new globalThis.SpeechRecognition();
+  const spyFn = jest.fn();
+  speech.onresult = spyFn;
+  speech.continuous = true;
+  speech.start();
+  speech.say('Hello world');
+  speech.say('Hello world');
+  expect(spyFn.mock.calls.length).toBe(2);
 });
 ```
 
