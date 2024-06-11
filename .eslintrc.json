@@ -1,0 +1,20 @@
+{
+  "env": {
+    "browser": true,
+    "node": true,
+    "es2022": true
+  },
+  "extends": ["eslint:recommended", "airbnb-base", "plugin:prettier/recommended"],
+  "parserOptions": {
+    "ecmaVersion": 2022,
+    "sourceType": "module"
+  },
+  "plugins": ["import"],
+  "rules": {
+    "linebreak-style": 0,
+    "quotes": 0,
+    "no-console": "off",
+    "max-len": ["error", { "code": 120, "ignoreComments": true }],
+    "func-names": ["warn", "as-needed"]
+  }
+}
