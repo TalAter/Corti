@@ -1,9 +1,3 @@
-//! Corti - A mock implementation of the browser’s SpeechRecognition for automated testing
-//! version : 1.0.0-dev
-//! author  : Tal Ater @TalAter
-//! license : MIT
-//! https://github.com/TalAter/Corti
-
 import BasicEvent from './BasicEvent';
 import DOMException from './DOMException';
 import SpeechRecognitionEvent from './SpeechRecognitionEvent';

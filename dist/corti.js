@@ -1,3 +1,8 @@
+//! Corti - A mock implementation of the browser's SpeechRecognition for automated testing
+//! version : 1.0.0-rc.1
+//! author  : Tal Ater @TalAter
+//! license : MIT
+//! https://github.com/TalAter/Corti
 var corti = (function (exports) {
   'use strict';
 
@@ -95,13 +100,6 @@ var corti = (function (exports) {
       this.confidence = confidence;
     }
   }
-
-  //! Corti - A mock implementation of the browser’s SpeechRecognition for automated testing
-  //! version : 1.0.0-dev
-  //! author  : Tal Ater @TalAter
-  //! license : MIT
-  //! https://github.com/TalAter/Corti
-
 
   class SpeechRecognition {
     /**
