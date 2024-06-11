@@ -1,7 +1,7 @@
 import { afterAll, beforeAll, beforeEach, describe, expect, it, test, vi } from 'vitest';
 import { getSentence } from '../testUtils';
 
-import { SpeechRecognition, SpeechRecognitionResultList } from '../../dist/corti.mjs';
+import { SpeechRecognition, SpeechRecognitionResultList } from '../../dist/corti';
 
 beforeAll(() => {
   vi.stubGlobal('SpeechRecognition', SpeechRecognition);

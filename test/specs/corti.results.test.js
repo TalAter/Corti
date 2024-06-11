@@ -7,7 +7,7 @@ import {
   SpeechRecognitionResultList,
   SpeechRecognitionResult,
   SpeechRecognitionAlternative,
-} from '../../dist/corti.mjs';
+} from '../../dist/corti';
 
 beforeAll(() => {
   vi.stubGlobal('SpeechRecognition', SpeechRecognition);

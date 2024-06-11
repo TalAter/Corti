@@ -8,7 +8,7 @@ export default {
       sourcemap: true,
     },
     {
-      file: 'dist/corti.mjs.js',
+      file: 'dist/corti.mjs',
       format: 'esm',
       sourcemap: true,
     },

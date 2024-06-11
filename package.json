@@ -10,11 +10,11 @@
   "license": "MIT",
   "author": "Tal Ater <tal@talater.com> (https://www.talater.com/)",
   "main": "dist/corti.cjs.js",
-  "module": "dist/corti.mjs.js",
+  "module": "dist/corti.mjs",
   "browser": "dist/corti.js",
   "exports": {
     ".": {
-      "import": "./dist/corti.mjs.js",
+      "import": "./dist/corti.mjs",
       "require": "./dist/corti.cjs.js",
       "default": "./dist/corti.js"
     }

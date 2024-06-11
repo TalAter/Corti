@@ -342,4 +342,4 @@ class SpeechRecognition {
 }
 
 export { SpeechRecognition, SpeechRecognitionAlternative, SpeechRecognitionEvent, SpeechRecognitionResult, SpeechRecognitionResultList };
-//# sourceMappingURL=corti.mjs.js.map
+//# sourceMappingURL=corti.mjs.map
