@@ -1,20 +1,26 @@
 # Corti
 
-Corti is a drop in replacement for the browser's SpeechRecognition object. It mocks the behaviour of the native object to facilitate automated testing, and provides a number of extra methods beyond the SpeechRecognition spec to help testing (e.g., to simulate speech in automated tests).
+Corti is a mock implementation of the browser’s SpeechRecognition API (aka webkitSpeechRecognition) for automated testing. It helps developers simulate speech recognition functionalities and test their applications in a controlled environment without relying on actual speech input.
 
 💡 To easily use Speech Recognition in your own project, check out [annyang](https://github.com/TalAter/annyang).
+
+## Features
+- Mock SpeechRecognition API for testing purposes (can replace window.SpeechRecognition, window.webkitSpeechRecognition, window.mozSpeechRecognition, etc.)
+- Compatible with all JavaScript testing frameworks
+- Can be required (CJS), imported (ESM), or included via a script tag for testing in Node.js or in a browser
+- Adds additional functionality to the SpeechRecognition API to support programmatically simulating speech and checking the current status
 
 ## Getting Started
 
 ### Installation
 
-Install `corti` as a dev dependency using npm:
+Install `corti` as a dev dependency using npm / pnpm / bun / yarn / etc:
 
-```bash
+```sh
 npm install --save-dev corti
 ```
 
-### Usage
+### Sample Usage
 
 #### In node.js (ESM)
 
@@ -111,7 +117,7 @@ test('SpeechRecognition', () => {
 </script>
 ```
 
-For an example of how Corti is used in a real project, check out [SpeechKITT](https://github.com/TalAter/SpeechKITT).
+For an example of how Corti is used in a real project, check out [how SpeechRecognition is mocked and tested in Corti](https://github.com/TalAter/Corti/tree/master/test/specs).
 
 ### Methods Mocked
 
