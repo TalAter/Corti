@@ -2,16 +2,24 @@
   "name": "corti",
   "version": "1.0.0",
   "description": "Replace window.SpeechRecognition with a mock object and automate your tests",
-  "keywords": ["recognition", "speech", "speechrecognition", "webkitSpeechRecognition"],
+  "keywords": [
+    "recognition",
+    "speech",
+    "speechrecognition",
+    "webkitSpeechRecognition",
+    "mock",
+    "test"
+  ],
   "homepage": "https://github.com/TalAter/Corti",
   "bugs": {
     "url": "https://github.com/TalAter/Corti/issues"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/TalAter/Corti.git"
+  },
   "license": "MIT",
   "author": "Tal Ater <tal@talater.com> (https://www.talater.com/)",
-  "main": "dist/corti.cjs.js",
-  "module": "dist/corti.mjs",
-  "browser": "dist/corti.js",
   "exports": {
     ".": {
       "import": "./dist/corti.mjs",
@@ -19,10 +27,14 @@
       "default": "./dist/corti.js"
     }
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/TalAter/Corti.git"
-  },
+  "main": "dist/corti.cjs.js",
+  "module": "dist/corti.mjs",
+  "browser": "dist/corti.js",
+  "files": [
+    "dist",
+    "LICENSE",
+    "README.md"
+  ],
   "scripts": {
     "build": "rollup -c",
     "build:watch": "rollup -c -w",
@@ -45,6 +57,5 @@
     "rollup": "^4.18.0",
     "vitest": "^1.6.0"
   },
-  "files": ["dist", "LICENSE", "README.md"],
   "packageManager": "pnpm@9.1.2+sha512.127dc83b9ea10c32be65d22a8efb4a65fb952e8fefbdfded39bdc3c97efc32d31b48b00420df2c1187ace28c921c902f0cb5a134a4d032b8b5295cbfa2c681e2"
 }
