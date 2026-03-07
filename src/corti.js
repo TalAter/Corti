@@ -1,5 +1,3 @@
-import BasicEvent from './BasicEvent';
-import DOMException from './DOMException';
 import SpeechRecognitionEvent from './SpeechRecognitionEvent';
 import SpeechRecognitionResultList from './SpeechRecognitionResultList';
 import SpeechRecognitionResult from './SpeechRecognitionResult';
@@ -233,7 +231,7 @@ class SpeechRecognition {
    * @todo Corti will emit events in the order they were registered with addEventListener and then with the on* property. This is not the same as the Chrome implementation which will emit the listener registered with on* at the order it was registered.
    */
   #emit(eventType, eventObject) {
-    const eventToEmit = eventObject || new BasicEvent(eventType);
+    const eventToEmit = eventObject || new Event(eventType);
 
     // Iterate over the listeners for the given event type
     if (this.#listeners.has(eventType)) {

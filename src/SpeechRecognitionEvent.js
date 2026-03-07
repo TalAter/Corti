@@ -1,6 +1,4 @@
-import BasicEvent from './BasicEvent';
-
-class SpeechRecognitionEvent extends BasicEvent {
+class SpeechRecognitionEvent extends Event {
   interpretation = null;
 
   emma = null;

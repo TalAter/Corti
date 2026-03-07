@@ -5,27 +5,7 @@
 //! https://github.com/TalAter/Corti
 'use strict';
 
-class BasicEvent {
-  constructor(type) {
-    this.type = type;
-  }
-}
-
-var BasicEvent$1 = typeof globalThis.Event !== 'undefined' ? globalThis.Event : BasicEvent;
-
-const CustomDOMException = (() => {
-  if (typeof globalThis.DOMException !== 'undefined') {
-    return globalThis.DOMException;
-  }
-  return class DOMException extends Error {
-    constructor(message, name) {
-      super(message);
-      this.name = name || 'DOMException';
-    }
-  };
-})();
-
-class SpeechRecognitionEvent extends BasicEvent$1 {
+class SpeechRecognitionEvent extends Event {
   interpretation = null;
 
   emma = null;
@@ -227,7 +207,7 @@ class SpeechRecognition {
    */
   start() {
     if (this.#started) {
-      throw new CustomDOMException("Failed to execute 'start' on 'SpeechRecognition': recognition has already started.");
+      throw new DOMException("Failed to execute 'start' on 'SpeechRecognition': recognition has already started.");
     }
 
     this.#started = true;
@@ -328,7 +308,7 @@ class SpeechRecognition {
    * @todo Corti will emit events in the order they were registered with addEventListener and then with the on* property. This is not the same as the Chrome implementation which will emit the listener registered with on* at the order it was registered.
    */
   #emit(eventType, eventObject) {
-    const eventToEmit = eventObject || new BasicEvent$1(eventType);
+    const eventToEmit = eventObject || new Event(eventType);
 
     // Iterate over the listeners for the given event type
     if (this.#listeners.has(eventType)) {
