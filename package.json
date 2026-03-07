@@ -46,7 +46,8 @@
     "dev": "tsup --watch",
     "format": "prettier --write 'src/**/*.ts' 'test/**/*.ts' 'test/**/*.cjs' 'test/**/*.html' 'package.json'",
     "lint": "eslint src test",
-    "test": "vitest",
+    "test": "vitest run",
+    "test:watch": "vitest",
     "typecheck": "tsc --noEmit"
   },
   "devDependencies": {
