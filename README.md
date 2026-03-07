@@ -5,10 +5,12 @@ Corti is a mock implementation of the browser’s SpeechRecognition API (aka web
 💡 To easily use Speech Recognition in your own project, check out [annyang](https://github.com/TalAter/annyang).
 
 ## Features
+
 - Mock SpeechRecognition API for testing purposes (can replace window.SpeechRecognition, window.webkitSpeechRecognition, window.mozSpeechRecognition, etc.)
 - Compatible with all JavaScript testing frameworks
 - Can be required (CJS), imported (ESM), or included via a script tag for testing in Node.js or in a browser
 - Written in TypeScript — ships with full type declarations
+
 - Adds additional functionality to the SpeechRecognition API to support programmatically simulating speech and checking the current status
 
 ## Getting Started
@@ -68,6 +70,7 @@ describe('Mirror mirror on the wall', () => {
 ```
 
 #### In node.js (CJS)
+
 ```javascript
 // Jest example
 const { SpeechRecognition } = require('corti');
@@ -89,6 +92,7 @@ test('SpeechRecognition', () => {
 ```
 
 #### In Browser (script tag)
+
 ```html
 <script src="https://cdnjs.cloudflare.com/ajax/libs/corti/2.0.0/corti.iife.min.js"></script>
 <script>
@@ -107,44 +111,47 @@ For an example of how Corti is used in a real project, check out [how SpeechReco
 
 ### Methods Mocked
 
-* `start()`
-* `abort()`
-* `stop()`
-* `addEventListener()`
+- `start()`
+- `abort()`
+- `stop()`
+- `addEventListener()`
 
 ### Attributes Mocked
 
-* `interimResults`
-* `lang`
-* `continuous`
-* `maxAlternatives`
-* `onstart`
-* `onend`
-* `onresult`
-* `onsoundstart`
+- `interimResults`
+- `lang`
+- `continuous`
+- `maxAlternatives`
+- `onstart`
+- `onend`
+- `onresult`
+- `onsoundstart`
 
 ### Events Mocked
 
-* `start`
-* `end`
-* `result`
-* `soundstart`
+- `start`
+- `end`
+- `result`
+- `soundstart`
 
 ### Objects Mocked
 
-* `SpeechRecognition`
-* `SpeechRecognitionEvent`
-* `SpeechRecognitionResultList`
-* `SpeechRecognitionResult`
-* `SpeechRecognitionAlternative`
+- `SpeechRecognition`
+- `SpeechRecognitionEvent`
+- `SpeechRecognitionResultList`
+- `SpeechRecognitionResult`
+- `SpeechRecognitionAlternative`
 
 ### Extra Utility Methods Added To Mocked SpeechRecognition Object
 
-* `isStarted()`
-* `say()`
+- `isStarted()`
+- `say()`
+
 
 ### Author
+
 Tal Ater: [@TalAter](https://twitter.com/TalAter)
 
 ### License
+
 Licensed under [MIT](https://github.com/TalAter/Corti/blob/master/LICENSE).
