@@ -1,11 +1,40 @@
+"use strict";
+var __defProp = Object.defineProperty;
+var __getOwnPropDesc = Object.getOwnPropertyDescriptor;
+var __getOwnPropNames = Object.getOwnPropertyNames;
+var __hasOwnProp = Object.prototype.hasOwnProperty;
 var __typeError = (msg) => {
   throw TypeError(msg);
 };
+var __export = (target, all) => {
+  for (var name in all)
+    __defProp(target, name, { get: all[name], enumerable: true });
+};
+var __copyProps = (to, from, except, desc) => {
+  if (from && typeof from === "object" || typeof from === "function") {
+    for (let key of __getOwnPropNames(from))
+      if (!__hasOwnProp.call(to, key) && key !== except)
+        __defProp(to, key, { get: () => from[key], enumerable: !(desc = __getOwnPropDesc(from, key)) || desc.enumerable });
+  }
+  return to;
+};
+var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: true }), mod);
 var __accessCheck = (obj, member, msg) => member.has(obj) || __typeError("Cannot " + msg);
 var __privateGet = (obj, member, getter) => (__accessCheck(obj, member, "read from private field"), getter ? getter.call(obj) : member.get(obj));
 var __privateAdd = (obj, member, value) => member.has(obj) ? __typeError("Cannot add the same private member more than once") : member instanceof WeakSet ? member.add(obj) : member.set(obj, value);
 var __privateSet = (obj, member, value, setter) => (__accessCheck(obj, member, "write to private field"), setter ? setter.call(obj, value) : member.set(obj, value), value);
 var __privateMethod = (obj, member, method) => (__accessCheck(obj, member, "access private method"), method);
+
+// src/corti.ts
+var corti_exports = {};
+__export(corti_exports, {
+  SpeechRecognition: () => SpeechRecognition,
+  SpeechRecognitionAlternative: () => SpeechRecognitionAlternative_default,
+  SpeechRecognitionEvent: () => SpeechRecognitionEvent_default,
+  SpeechRecognitionResult: () => SpeechRecognitionResult_default,
+  SpeechRecognitionResultList: () => SpeechRecognitionResultList_default
+});
+module.exports = __toCommonJS(corti_exports);
 
 // src/SpeechRecognitionEvent.ts
 var SpeechRecognitionEvent = class extends Event {
@@ -280,11 +309,12 @@ emit_fn = function(eventType, eventObject) {
     onListener(eventToEmit);
   }
 };
-export {
+// Annotate the CommonJS export names for ESM import in node:
+0 && (module.exports = {
   SpeechRecognition,
-  SpeechRecognitionAlternative_default as SpeechRecognitionAlternative,
-  SpeechRecognitionEvent_default as SpeechRecognitionEvent,
-  SpeechRecognitionResult_default as SpeechRecognitionResult,
-  SpeechRecognitionResultList_default as SpeechRecognitionResultList
-};
-//# sourceMappingURL=corti.js.map
+  SpeechRecognitionAlternative,
+  SpeechRecognitionEvent,
+  SpeechRecognitionResult,
+  SpeechRecognitionResultList
+});
+//# sourceMappingURL=corti.cjs.map

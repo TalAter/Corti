@@ -1,25 +1,17 @@
-import { afterAll, beforeAll, beforeEach, describe, expect, it, test, vi } from 'vitest';
+import { beforeEach, describe, expect, it, test, vi } from 'vitest';
 import { getSentence } from '../testUtils';
 
-import { SpeechRecognition, SpeechRecognitionResultList } from '../../dist/corti';
+import { SpeechRecognition, SpeechRecognitionResultList } from '../../src/corti';
 
-beforeAll(() => {
-  vi.stubGlobal('SpeechRecognition', SpeechRecognition);
-});
-
-afterAll(() => {
-  vi.unstubAllGlobals();
-});
-
-let recognition;
-let spyFn1;
-let spyFn2;
+let recognition: SpeechRecognition;
+let spyFn1: ReturnType<typeof vi.fn>;
+let spyFn2: ReturnType<typeof vi.fn>;
 
 beforeEach(() => {
   spyFn1 = vi.fn();
   spyFn2 = vi.fn();
 
-  recognition = new globalThis.SpeechRecognition();
+  recognition = new SpeechRecognition();
 });
 
 test.todo('removeEventListener()');
@@ -292,7 +284,7 @@ describe('nonexistent event', () => {
       recognition.addEventListener('blerg', spyFn1);
     }).not.toThrowError();
     expect(() => {
-      recognition.onblerg = spyFn1;
+      (recognition as any).onblerg = spyFn1;
     }).not.toThrowError();
   });
 });

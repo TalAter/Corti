@@ -1,29 +1,15 @@
-import { afterAll, beforeAll, beforeEach, describe, expect, it, vi } from 'vitest';
+import { beforeEach, describe, expect, it } from 'vitest';
 
-import { SpeechRecognition } from '../../dist/corti';
-
-beforeAll(() => {
-  vi.stubGlobal('SpeechRecognition', SpeechRecognition);
-});
-
-afterAll(() => {
-  vi.unstubAllGlobals();
-});
-
-describe('SpeechRecognition definition', () => {
-  it('should exist in global namespace', () => {
-    expect(globalThis.SpeechRecognition).toBeDefined();
-  });
-});
+import { SpeechRecognition } from '../../src/corti';
 
 describe('SpeechRecognition', () => {
-  let recognition;
+  let recognition: SpeechRecognition;
   beforeEach(() => {
-    recognition = new globalThis.SpeechRecognition();
+    recognition = new SpeechRecognition();
   });
 
   it('should return an instance of SpeechRecognition when called with new', () => {
-    expect(recognition).toBeInstanceOf(globalThis.SpeechRecognition);
+    expect(recognition).toBeInstanceOf(SpeechRecognition);
   });
 
   describe('.isStarted()', () => {
@@ -57,7 +43,7 @@ describe('SpeechRecognition', () => {
         recognition.start();
       } catch (error) {
         expect(error).toBeInstanceOf(DOMException);
-        expect(error.message).toBe(
+        expect((error as DOMException).message).toBe(
           "Failed to execute 'start' on 'SpeechRecognition': recognition has already started."
         );
       }

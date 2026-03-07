@@ -1,3 +1,6 @@
+import type { Mock } from 'vitest';
+import type SpeechRecognitionEvent from '../src/SpeechRecognitionEvent';
+
 const sentences = [
   "You can't take the sky from me",
   "Man walks down the street in a hat like that, you know he's not afraid of anything",
@@ -6,8 +9,9 @@ const sentences = [
   'Curse your sudden but inevitable betrayal',
 ];
 
-const getLastSpiedSpeechRecognitionEvent = spy => spy.mock.calls[spy.mock.calls.length - 1][0];
+const getLastSpiedSpeechRecognitionEvent = (spy: Mock): SpeechRecognitionEvent =>
+  spy.mock.calls[spy.mock.calls.length - 1][0];
 
-const getSentence = index => sentences[index] || sentences[0];
+const getSentence = (index: number): string => sentences[index] || sentences[0];
 
 export { getLastSpiedSpeechRecognitionEvent, getSentence };

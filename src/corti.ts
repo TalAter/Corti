@@ -3,83 +3,76 @@ import SpeechRecognitionResultList from './SpeechRecognitionResultList';
 import SpeechRecognitionResult from './SpeechRecognitionResult';
 import SpeechRecognitionAlternative from './SpeechRecognitionAlternative';
 
+type CortiEventType = 'start' | 'soundstart' | 'end' | 'result';
+type CortiEventListener = (event: Event) => void;
+
 class SpeechRecognition {
-  /**
-   * The maximum number of SpeechRecognitionAlternatives provided per SpeechRecognitionResult
-   * @type {number}
-   */
   #maxAlternatives = 1;
-
-  /**
-   * The language of the current SpeechRecognition
-   * @type {string}
-   */
   #lang = '';
-
-  /**
-   * Controls whether continuous results are returned for each recognition, or only a single result
-   * @type {boolean}
-   */
   #continuous = false;
-
-  /**
-   * Indicates whether interim results should be returned (true) or just the final result (false)
-   * @type {boolean}
-   */
   #interimResults = false;
-
-  /**
-   * Indicates whether the recognition service has started
-   * @type {boolean}
-   * @private
-   */
   #started = false;
 
-  /**
-   * Listeners for the events registered with addEventListener
-   * @type {Map<string, Function[]>}
-   * @private
-   * @todo Add support for other listeners defined in the spec https://dvcs.w3.org/hg/speech-api/raw-file/tip/webspeechapi#speechreco-events
-   */
-  #listeners = new Map([
+  #listeners = new Map<CortiEventType, CortiEventListener[]>([
     ['start', []],
     ['soundstart', []],
     ['end', []],
     ['result', []],
   ]);
 
-  /**
-   * Listeners for the events registered with on* methods
-   * @type {Map<string, Function|null>}
-   * @private
-   * @todo Add support for other listeners defined in the spec https://dvcs.w3.org/hg/speech-api/raw-file/tip/webspeechapi#speechreco-events
-   */
-  #onListeners = new Map([
+  // @todo Add support for other listeners defined in the spec https://dvcs.w3.org/hg/speech-api/raw-file/tip/webspeechapi#speechreco-events
+  #onListeners = new Map<string, CortiEventListener | null>([
     ['onstart', null],
     ['onsoundstart', null],
     ['onend', null],
     ['onresult', null],
   ]);
 
-  constructor() {
-    // Dynamically add getters and setters for on* properties
-    this.#onListeners.forEach((_, eventType) => {
-      Object.defineProperty(this, eventType, {
-        get: () => this.#onListeners.get(eventType),
-        set: value => {
-          if (typeof value === 'function') {
-            this.#onListeners.set(eventType, value);
-          }
-        },
-      });
-    });
+  get onstart(): CortiEventListener | null {
+    return this.#onListeners.get('onstart') ?? null;
   }
 
-  get maxAlternatives() {
+  set onstart(value: CortiEventListener) {
+    if (typeof value === 'function') {
+      this.#onListeners.set('onstart', value);
+    }
+  }
+
+  get onsoundstart(): CortiEventListener | null {
+    return this.#onListeners.get('onsoundstart') ?? null;
+  }
+
+  set onsoundstart(value: CortiEventListener) {
+    if (typeof value === 'function') {
+      this.#onListeners.set('onsoundstart', value);
+    }
+  }
+
+  get onend(): CortiEventListener | null {
+    return this.#onListeners.get('onend') ?? null;
+  }
+
+  set onend(value: CortiEventListener) {
+    if (typeof value === 'function') {
+      this.#onListeners.set('onend', value);
+    }
+  }
+
+  get onresult(): CortiEventListener | null {
+    return this.#onListeners.get('onresult') ?? null;
+  }
+
+  set onresult(value: CortiEventListener) {
+    if (typeof value === 'function') {
+      this.#onListeners.set('onresult', value);
+    }
+  }
+
+  get maxAlternatives(): number {
     return this.#maxAlternatives;
   }
 
-  set maxAlternatives(val) {
+  set maxAlternatives(val: any) {
     if (typeof val === 'number') {
       this.#maxAlternatives = Math.floor(val);
     } else {
@@ -87,11 +80,11 @@ class SpeechRecognition {
     }
   }
 
-  get lang() {
+  get lang(): string {
     return this.#lang;
   }
 
-  set lang(val) {
+  set lang(val: any) {
     if (val === undefined) {
       this.#lang = 'undefined';
     } else {
@@ -99,36 +92,35 @@ class SpeechRecognition {
     }
   }
 
-  get continuous() {
+  get continuous(): boolean {
     return this.#continuous;
   }
 
-  set continuous(val) {
+  set continuous(val: any) {
     this.#continuous = Boolean(val);
   }
 
-  get interimResults() {
+  get interimResults(): boolean {
     return this.#interimResults;
   }
 
-  set interimResults(val) {
+  set interimResults(val: any) {
     this.#interimResults = Boolean(val);
   }
 
   /**
    * Checks if the recognition has started.
-   * This is not part of the spec, but is used by mock object for testing.
-   * @returns {boolean}
+   * This is not part of the spec, but is used by the mock object for testing.
    */
-  isStarted() {
+  isStarted(): boolean {
     return this.#started;
   }
 
   /**
-   * Starts the speech recognition
+   * Starts the speech recognition.
    * @throws {DOMException} If recognition has already started
    */
-  start() {
+  start(): void {
     if (this.#started) {
       throw new DOMException("Failed to execute 'start' on 'SpeechRecognition': recognition has already started.");
     }
@@ -140,9 +132,9 @@ class SpeechRecognition {
   }
 
   /**
-   * Aborts the speech recognition
+   * Aborts the speech recognition.
    */
-  abort() {
+  abort(): void {
     if (!this.#started) {
       return;
     }
@@ -151,39 +143,32 @@ class SpeechRecognition {
   }
 
   /**
-   * Stops the speech recognition and attempts to return a SpeechRecognitionResult
+   * Stops the speech recognition and attempts to return a SpeechRecognitionResult.
    * @todo Implement stop's behavior according to the spec. Unlike abort, stop will attempt to return a SpeechRecognitionResult using the audio captured so far.
    */
-  stop() {
+  stop(): void {
     return this.abort();
   }
 
   /**
-   * Register an event listener for the given event type
-   * @param {string} type The type of event to listen for
-   * @param {Function} listener The callback function to be called when the event is fired
+   * Register an event listener for the given event type.
    */
-  addEventListener(type, listener) {
-    if (this.#listeners.has(type)) {
-      this.#listeners.get(type).push(listener);
+  addEventListener(type: string, listener: CortiEventListener): void {
+    if (this.#listeners.has(type as CortiEventType)) {
+      this.#listeners.get(type as CortiEventType)!.push(listener);
     }
   }
 
-  /* eslint class-methods-use-this: "off" */
-  /* eslint no-unused-vars: "off" */
   /**
-   * Remove an event listener for the given event type
-   * @param {string} type The type of event to remove
-   * @param {Function} listener The callback function to be removed
+   * Remove an event listener for the given event type.
    * @todo Implement removeEventListener
    */
-  removeEventListener(type, listener) {}
+  removeEventListener(_type: string, _listener: CortiEventListener): void {}
 
   /**
-   * Simulate speech said and recognized (if SpeechRecognition is running)
-   * @param {string|string[]} alternatives The sentence or sentences to be said
+   * Simulate speech said and recognized (if SpeechRecognition is running).
    */
-  say(alternatives) {
+  say(alternatives: string | string[]): void {
     if (!this.#started) {
       return;
     }
@@ -197,7 +182,6 @@ class SpeechRecognition {
       const paddingNeeded = this.#maxAlternatives - sentences.length;
       let previousPaddedSentence = sentences[0];
       for (let i = 0; i < paddingNeeded; i += 1) {
-        // if i is even, add "and so on" to previousPaddedSentence else add "and so forth"
         if (i % 2 === 0) {
           previousPaddedSentence = `${previousPaddedSentence} and so on`;
         } else {
@@ -208,7 +192,6 @@ class SpeechRecognition {
     }
 
     const speechRecognitionAlternatives = sentences.map((sentence, index) => {
-      // Confidence starts at 0.95 and decreases by 10% but never under 0.01
       const confidence = Math.max(0.95 * 0.9 ** index, 0.01);
       return new SpeechRecognitionAlternative(sentence, confidence);
     });
@@ -225,17 +208,15 @@ class SpeechRecognition {
   }
 
   /**
-   * Emit an event to all registered listeners
-   * @param {string} eventType The type of event to emit
-   * @param {Object} eventObject The event object to emit
+   * Emit an event to all registered listeners.
    * @todo Corti will emit events in the order they were registered with addEventListener and then with the on* property. This is not the same as the Chrome implementation which will emit the listener registered with on* at the order it was registered.
    */
-  #emit(eventType, eventObject) {
+  #emit(eventType: CortiEventType, eventObject?: Event): void {
     const eventToEmit = eventObject || new Event(eventType);
 
-    // Iterate over the listeners for the given event type
-    if (this.#listeners.has(eventType)) {
-      this.#listeners.get(eventType).forEach(listener => listener(eventToEmit));
+    const listeners = this.#listeners.get(eventType);
+    if (listeners) {
+      listeners.forEach((listener) => listener(eventToEmit));
     }
     const onListener = this.#onListeners.get(`on${eventType}`);
     if (onListener) {

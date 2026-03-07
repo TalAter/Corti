@@ -1,4 +1,4 @@
-import { afterAll, beforeAll, beforeEach, describe, expect, it, test, vi } from 'vitest';
+import { beforeEach, describe, expect, it, test, vi } from 'vitest';
 import { getLastSpiedSpeechRecognitionEvent, getSentence } from '../testUtils';
 
 import {
@@ -7,23 +7,15 @@ import {
   SpeechRecognitionResultList,
   SpeechRecognitionResult,
   SpeechRecognitionAlternative,
-} from '../../dist/corti';
+} from '../../src/corti';
 
-beforeAll(() => {
-  vi.stubGlobal('SpeechRecognition', SpeechRecognition);
-});
-
-afterAll(() => {
-  vi.unstubAllGlobals();
-});
-
-let recognition;
-let spyFn1;
+let recognition: SpeechRecognition;
+let spyFn1: ReturnType<typeof vi.fn>;
 
 beforeEach(() => {
   spyFn1 = vi.fn();
 
-  recognition = new globalThis.SpeechRecognition();
+  recognition = new SpeechRecognition();
   recognition.addEventListener('result', spyFn1);
   recognition.continuous = true;
   recognition.start();
@@ -70,7 +62,7 @@ describe('SpeechRecognitionEvent', () => {
 });
 
 describe('SpeechRecognitionResultList (SpeechRecognitionEvent.results)', () => {
-  let resultListObject;
+  let resultListObject: SpeechRecognitionResultList;
 
   beforeEach(() => {
     resultListObject = getLastSpiedSpeechRecognitionEvent(spyFn1).results;
@@ -91,7 +83,6 @@ describe('SpeechRecognitionResultList (SpeechRecognitionEvent.results)', () => {
     expect(resultListObject[Symbol.iterator]).toEqual(expect.any(Function));
     expect([...resultListObject]).toEqual([expect.any(SpeechRecognitionResult)]);
     let count = 0;
-    /* eslint-disable no-restricted-syntax */
     for (const result of resultListObject) {
       expect(result).toEqual(expect.any(SpeechRecognitionResult));
       count += 1;
@@ -115,8 +106,8 @@ describe('SpeechRecognitionResultList (SpeechRecognitionEvent.results)', () => {
     });
 
     it('should throw a TypeError if called with no arguments', () => {
-      expect(() => resultListObject.item()).toThrowError(TypeError);
-      expect(() => resultListObject.item()).toThrowError(
+      expect(() => (resultListObject.item as any)()).toThrowError(TypeError);
+      expect(() => (resultListObject.item as any)()).toThrowError(
         "Failed to execute 'item' on 'SpeechRecognitionResultList': 1 argument required, but only 0 present."
       );
     });
@@ -128,10 +119,10 @@ describe('SpeechRecognitionResultList (SpeechRecognitionEvent.results)', () => {
 });
 
 describe('SpeechRecognitionResult', () => {
-  let resultObject;
+  let resultObject: SpeechRecognitionResult;
 
   beforeEach(() => {
-    resultObject = getLastSpiedSpeechRecognitionEvent(spyFn1).results.item(0);
+    resultObject = getLastSpiedSpeechRecognitionEvent(spyFn1).results.item(0)!;
   });
 
   it('should be a SpeechRecognitionResult object', () => {
@@ -147,10 +138,10 @@ describe('SpeechRecognitionResult', () => {
     it('should be equal to the maxAlternatives setting', () => {
       recognition.maxAlternatives = 1;
       recognition.say(getSentence(1));
-      expect(getLastSpiedSpeechRecognitionEvent(spyFn1).results.item(0).length).toEqual(1);
+      expect(getLastSpiedSpeechRecognitionEvent(spyFn1).results.item(0)!.length).toEqual(1);
       recognition.maxAlternatives = 4;
       recognition.say(getSentence(2));
-      expect(getLastSpiedSpeechRecognitionEvent(spyFn1).results.item(0).length).toEqual(4);
+      expect(getLastSpiedSpeechRecognitionEvent(spyFn1).results.item(0)!.length).toEqual(4);
     });
   });
 
@@ -170,8 +161,8 @@ describe('SpeechRecognitionResult', () => {
     });
 
     it('should throw a TypeError if called with no arguments', () => {
-      expect(() => resultObject.item()).toThrowError(TypeError);
-      expect(() => resultObject.item()).toThrowError(
+      expect(() => (resultObject.item as any)()).toThrowError(TypeError);
+      expect(() => (resultObject.item as any)()).toThrowError(
         "Failed to execute 'item' on 'SpeechRecognitionResult': 1 argument required, but only 0 present."
       );
     });
@@ -185,7 +176,6 @@ describe('SpeechRecognitionResult', () => {
     expect(resultObject[Symbol.iterator]).toEqual(expect.any(Function));
     expect([...resultObject]).toEqual([expect.any(SpeechRecognitionAlternative)]);
     let count = 0;
-    /* eslint-disable no-restricted-syntax */
     for (const result of resultObject) {
       expect(result).toEqual(expect.any(SpeechRecognitionAlternative));
       count += 1;
@@ -195,10 +185,10 @@ describe('SpeechRecognitionResult', () => {
 });
 
 describe('SpeechRecognitionAlternative', () => {
-  let alternativeObject;
+  let alternativeObject: SpeechRecognitionAlternative;
 
   beforeEach(() => {
-    alternativeObject = getLastSpiedSpeechRecognitionEvent(spyFn1).results.item(0).item(0);
+    alternativeObject = getLastSpiedSpeechRecognitionEvent(spyFn1).results.item(0)!.item(0)!;
   });
 
   it('should be a SpeechRecognitionAlternative object', () => {

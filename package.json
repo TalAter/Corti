@@ -18,43 +18,41 @@
     "type": "git",
     "url": "git+https://github.com/TalAter/Corti.git"
   },
+  "type": "module",
   "license": "MIT",
   "author": "Tal Ater <tal@talater.com> (https://www.talater.com/)",
   "exports": {
     ".": {
-      "import": "./dist/corti.mjs",
-      "require": "./dist/corti.cjs.js",
-      "default": "./dist/corti.js"
+      "import": {
+        "types": "./dist/corti.d.ts",
+        "default": "./dist/corti.js"
+      },
+      "require": {
+        "types": "./dist/corti.d.cts",
+        "default": "./dist/corti.cjs"
+      }
     }
   },
-  "main": "dist/corti.cjs.js",
-  "module": "dist/corti.mjs",
-  "browser": "dist/corti.js",
+  "main": "dist/corti.cjs",
+  "module": "dist/corti.js",
+  "types": "dist/corti.d.ts",
   "files": [
     "dist",
     "LICENSE",
     "README.md"
   ],
   "scripts": {
-    "build": "rollup -c",
-    "build:watch": "rollup -c -w",
-    "dev": "npm-run-all --parallel format:watch lint:watch build:watch",
-    "format": "prettier --write 'src/**/*.js' 'test/**/*.js' 'test/**/*.html' 'package.json' '.eslintrc.json'",
-    "format:watch": "chokidar 'src/**/*.js' 'test/**/*.js' 'test/**/*.html' 'package.json' '.eslintrc.json' -c 'npm run format'",
-    "lint": "eslint 'src/**/*.js' 'test/**/*.js'",
-    "lint:watch": "chokidar 'src/**/*.js' 'test/**/*.js' -c 'npm run lint'",
-    "test": "vitest"
+    "build": "tsup",
+    "dev": "tsup --watch",
+    "format": "prettier --write 'src/**/*.ts' 'test/**/*.ts' 'test/**/*.js' 'test/**/*.html' 'package.json'",
+    "test": "vitest",
+    "typecheck": "tsc --noEmit"
   },
   "devDependencies": {
-    "chokidar-cli": "^3.0.0",
-    "eslint": "^8.57.0",
-    "eslint-config-airbnb-base": "^15.0.0",
-    "eslint-config-prettier": "^9.1.0",
-    "eslint-plugin-import": "^2.29.1",
-    "eslint-plugin-prettier": "^5.1.3",
-    "npm-run-all": "^4.1.5",
+    "@types/dom-speech-recognition": "^0.0.7",
     "prettier": "^3.3.1",
-    "rollup": "^4.18.0",
+    "tsup": "^8.5.1",
+    "typescript": "^5.9.3",
     "vitest": "^1.6.0"
   },
   "packageManager": "pnpm@9.1.2+sha512.127dc83b9ea10c32be65d22a8efb4a65fb952e8fefbdfded39bdc3c97efc32d31b48b00420df2c1187ace28c921c902f0cb5a134a4d032b8b5295cbfa2c681e2"

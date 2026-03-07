@@ -1,31 +1,17 @@
-import { afterAll, beforeAll, beforeEach, describe, expect, it, vi } from 'vitest';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { getSentence } from '../testUtils';
 
-import { SpeechRecognition } from '../../dist/corti';
-
-beforeAll(() => {
-  vi.stubGlobal('SpeechRecognition', SpeechRecognition);
-});
-
-afterAll(() => {
-  vi.unstubAllGlobals();
-});
-
-describe('SpeechRecognition definition', () => {
-  it('should exist in global namespace', () => {
-    expect(globalThis.SpeechRecognition).toBeDefined();
-  });
-});
+import { SpeechRecognition } from '../../src/corti';
 
 describe('SpeechRecognition', () => {
-  let recognition;
-  let spyFn1;
-  let spyFn2;
+  let recognition: SpeechRecognition;
+  let spyFn1: ReturnType<typeof vi.fn>;
+  let spyFn2: ReturnType<typeof vi.fn>;
 
   beforeEach(() => {
     spyFn1 = vi.fn();
     spyFn2 = vi.fn();
-    recognition = new globalThis.SpeechRecognition();
+    recognition = new SpeechRecognition();
   });
 
   describe('.maxAlternatives', () => {
@@ -34,8 +20,8 @@ describe('SpeechRecognition', () => {
     });
 
     it('should not be called as a function', () => {
-      expect(() => recognition.maxAlternatives()).toThrowError();
-      expect(() => recognition.maxAlternatives(2)).toThrowError();
+      expect(() => (recognition as any).maxAlternatives()).toThrowError();
+      expect(() => (recognition as any).maxAlternatives(2)).toThrowError();
     });
 
     it('should be of type "number" when tested directly', () => {
@@ -55,15 +41,15 @@ describe('SpeechRecognition', () => {
     it('should return any value it was assigned during assignment (even if it will not be set', () => {
       expect((recognition.maxAlternatives = 5)).toEqual(5);
       expect((recognition.maxAlternatives = 5.2)).toEqual(5.2);
-      expect((recognition.maxAlternatives = 'argh')).toEqual('argh');
+      expect((recognition.maxAlternatives = 'argh' as any)).toEqual('argh');
     });
 
     it('should set value to 0 when assigned anything but a number', () => {
       recognition.maxAlternatives = 5;
       expect(recognition.maxAlternatives).toEqual(5);
-      recognition.maxAlternatives = 'argh';
+      recognition.maxAlternatives = 'argh' as any;
       expect(recognition.maxAlternatives).toEqual(0);
-      recognition.maxAlternatives = undefined;
+      recognition.maxAlternatives = undefined as any;
       expect(recognition.maxAlternatives).toEqual(0);
     });
 
@@ -93,23 +79,24 @@ describe('SpeechRecognition', () => {
     });
 
     it('should return any value it was assigned during assignment', () => {
-      expect((recognition.lang = 5)).toEqual(5);
-      expect((recognition.lang = 5.2)).toEqual(5.2);
+      expect((recognition.lang = 5 as any)).toEqual(5);
+      expect((recognition.lang = 5.2 as any)).toEqual(5.2);
       expect((recognition.lang = 'en-US')).toEqual('en-US');
     });
 
     it('should cast anything it is assigned to a string', () => {
-      recognition.lang = 5;
+      recognition.lang = 5 as any;
       expect(recognition.lang).toEqual('5');
-      recognition.lang = 5.2;
+      recognition.lang = 5.2 as any;
       expect(recognition.lang).toEqual('5.2');
-      recognition.lang = [];
+      recognition.lang = [] as any;
       expect(recognition.lang).toEqual('');
-      recognition.lang = function shiny() {};
-      expect(recognition.lang).toEqual('function shiny() {}');
-      recognition.lang = {};
+      const shiny = () => {};
+      recognition.lang = shiny as any;
+      expect(recognition.lang).toEqual(shiny.toString());
+      recognition.lang = {} as any;
       expect(recognition.lang).toEqual('[object Object]');
-      recognition.lang = undefined;
+      recognition.lang = undefined as any;
       expect(recognition.lang).toEqual('undefined');
       expect(recognition.lang).toEqual(expect.any(String));
     });
@@ -120,6 +107,7 @@ describe('SpeechRecognition', () => {
       expect(recognition.lang).toEqual('en-US');
     });
   });
+
   describe('.continuous', () => {
     it('should be a property of SpeechRecognition', () => {
       expect(recognition).toHaveProperty('continuous');
@@ -136,25 +124,25 @@ describe('SpeechRecognition', () => {
     });
 
     it('should return any value it was assigned during assignment', () => {
-      expect((recognition.continuous = 5)).toEqual(5);
-      expect((recognition.continuous = 5.2)).toEqual(5.2);
+      expect((recognition.continuous = 5 as any)).toEqual(5);
+      expect((recognition.continuous = 5.2 as any)).toEqual(5.2);
       expect((recognition.continuous = true)).toEqual(true);
     });
 
     it('should cast anything it is assigned to a boolean', () => {
-      recognition.continuous = 5;
+      recognition.continuous = 5 as any;
       expect(recognition.continuous).toEqual(Boolean(5));
-      recognition.continuous = 0;
+      recognition.continuous = 0 as any;
       expect(recognition.continuous).toEqual(Boolean(0));
-      recognition.continuous = -1;
+      recognition.continuous = -1 as any;
       expect(recognition.continuous).toEqual(Boolean(-1));
       recognition.continuous = true;
       expect(recognition.continuous).toEqual(Boolean(true));
       recognition.continuous = false;
       expect(recognition.continuous).toEqual(Boolean(false));
-      recognition.continuous = [];
+      recognition.continuous = [] as any;
       expect(recognition.continuous).toEqual(Boolean([]));
-      recognition.continuous = undefined;
+      recognition.continuous = undefined as any;
       expect(recognition.continuous).toEqual(Boolean(undefined));
     });
 
@@ -199,25 +187,25 @@ describe('SpeechRecognition', () => {
     });
 
     it('should return any value it was assigned during assignment', () => {
-      expect((recognition.interimResults = 5)).toEqual(5);
-      expect((recognition.interimResults = 5.2)).toEqual(5.2);
+      expect((recognition.interimResults = 5 as any)).toEqual(5);
+      expect((recognition.interimResults = 5.2 as any)).toEqual(5.2);
       expect((recognition.interimResults = true)).toEqual(true);
     });
 
     it('should cast anything it is assigned to a boolean', () => {
-      recognition.interimResults = 5;
+      recognition.interimResults = 5 as any;
       expect(recognition.interimResults).toEqual(Boolean(5));
-      recognition.interimResults = 0;
+      recognition.interimResults = 0 as any;
       expect(recognition.interimResults).toEqual(Boolean(0));
-      recognition.interimResults = -1;
+      recognition.interimResults = -1 as any;
       expect(recognition.interimResults).toEqual(Boolean(-1));
       recognition.interimResults = true;
       expect(recognition.interimResults).toEqual(Boolean(true));
       recognition.interimResults = false;
       expect(recognition.interimResults).toEqual(Boolean(false));
-      recognition.interimResults = [];
+      recognition.interimResults = [] as any;
       expect(recognition.interimResults).toEqual(Boolean([]));
-      recognition.interimResults = undefined;
+      recognition.interimResults = undefined as any;
       expect(recognition.interimResults).toEqual(Boolean(undefined));
     });
   });
