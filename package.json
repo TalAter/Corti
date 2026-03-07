@@ -2,14 +2,7 @@
   "name": "corti",
   "version": "1.0.0",
   "description": "Replace window.SpeechRecognition with a mock object and automate your tests",
-  "keywords": [
-    "recognition",
-    "speech",
-    "speechrecognition",
-    "webkitSpeechRecognition",
-    "mock",
-    "test"
-  ],
+  "keywords": ["recognition", "speech", "speechrecognition", "webkitSpeechRecognition", "mock", "test"],
   "homepage": "https://github.com/TalAter/Corti",
   "bugs": {
     "url": "https://github.com/TalAter/Corti/issues"
@@ -36,11 +29,7 @@
   "main": "dist/corti.cjs",
   "module": "dist/corti.js",
   "types": "dist/corti.d.ts",
-  "files": [
-    "dist",
-    "LICENSE",
-    "README.md"
-  ],
+  "files": ["dist", "LICENSE", "README.md"],
   "scripts": {
     "build": "tsup",
     "dev": "tsup --watch",
