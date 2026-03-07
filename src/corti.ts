@@ -216,7 +216,7 @@ class SpeechRecognition {
 
     const listeners = this.#listeners.get(eventType);
     if (listeners) {
-      listeners.forEach((listener) => listener(eventToEmit));
+      listeners.forEach(listener => listener(eventToEmit));
     }
     const onListener = this.#onListeners.get(`on${eventType}`);
     if (onListener) {
