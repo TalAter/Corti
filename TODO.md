@@ -1,5 +1,9 @@
 # TODO
 
+## Release
+
+- Submit PR to [cdnjs/packages](https://github.com/cdnjs/packages) to add Corti with npm auto-update
+
 ## API Improvements
 
 - Add missing events: `error`, `nomatch`, `audiostart`, `audioend`, `speechstart`, `speechend`

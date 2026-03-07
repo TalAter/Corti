@@ -8,6 +8,7 @@ Corti is a mock implementation of the browser’s SpeechRecognition API (aka web
 - Mock SpeechRecognition API for testing purposes (can replace window.SpeechRecognition, window.webkitSpeechRecognition, window.mozSpeechRecognition, etc.)
 - Compatible with all JavaScript testing frameworks
 - Can be required (CJS), imported (ESM), or included via a script tag for testing in Node.js or in a browser
+- Written in TypeScript — ships with full type declarations
 - Adds additional functionality to the SpeechRecognition API to support programmatically simulating speech and checking the current status
 
 ## Getting Started
@@ -87,24 +88,9 @@ test('SpeechRecognition', () => {
 });
 ```
 
-#### In Browser (ESM)
+#### In Browser (script tag)
 ```html
-<script type="module">
-  // Mock native SpeechRecognition
-  import { SpeechRecognition } from 'corti.js';
-  window.SpeechRecognition = SpeechRecognition;
-
-  // Run some tests
-  const recognition = new window.SpeechRecognition();
-  recognition.onresult = () => console.log('I hear it!');
-  recognition.start();
-  recognition.say('Hello world');
-</script>
-```
-
-#### In Browser (without modules)
-```html
-<script src="../dist/corti.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/corti/2.0.0/corti.iife.min.js"></script>
 <script>
   // Mock native SpeechRecognition
   window.SpeechRecognition = corti.SpeechRecognition;
@@ -161,4 +147,4 @@ For an example of how Corti is used in a real project, check out [how SpeechReco
 Tal Ater: [@TalAter](https://twitter.com/TalAter)
 
 ### License
-Licensed under [MIT](https://github.com/TalAter/SpeechKITT/blob/master/LICENSE).
+Licensed under [MIT](https://github.com/TalAter/Corti/blob/master/LICENSE).
