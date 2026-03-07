@@ -225,6 +225,19 @@ class SpeechRecognition {
   }
 }
 
+/**
+ * Interface for casting a DOM SpeechRecognition instance to access Corti-specific
+ * test methods (say, isStarted). Extends the DOM SpeechRecognition interface so
+ * consumers can cast without going through `unknown`:
+ *
+ *   const sr = getSpeechRecognizer() as CortiSpeechRecognition;
+ *   sr.say('hello');
+ */
+interface CortiSpeechRecognition extends globalThis.SpeechRecognition {
+  say(alternatives: string | string[]): void;
+  isStarted(): boolean;
+}
+
 export {
   SpeechRecognition,
   SpeechRecognitionEvent,
@@ -232,3 +245,4 @@ export {
   SpeechRecognitionResult,
   SpeechRecognitionAlternative,
 };
+export type { CortiSpeechRecognition };

@@ -147,6 +147,9 @@ For an example of how Corti is used in a real project, check out [how SpeechReco
 - `isStarted()`
 - `say()`
 
+### Types Exported
+
+- `CortiSpeechRecognition` — Extends the DOM's `SpeechRecognition` interface with `say()` and `isStarted()`
 
 ### Author
 
