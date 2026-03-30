@@ -94,7 +94,7 @@ test('SpeechRecognition', () => {
 #### In Browser (script tag)
 
 ```html
-<script src="https://cdn.jsdelivr.net/npm/corti@2.1.0/dist/corti.iife.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/corti@2/dist/corti.iife.min.js"></script>
 <script>
   // Mock native SpeechRecognition
   window.SpeechRecognition = corti.SpeechRecognition;
